@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		4E6DBC031FD9A17F00C6EFB1 /* Hampy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6DBC021FD9A17F00C6EFB1 /* Hampy.swift */; };
+		4E6DBC061FD9A50B00C6EFB1 /* APILogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6DBC051FD9A50B00C6EFB1 /* APILogin.swift */; };
+		4E6DBC091FD9AB6F00C6EFB1 /* HampyResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6DBC081FD9AB6F00C6EFB1 /* HampyResponse.swift */; };
+		4E6DBC0B1FD9B4E300C6EFB1 /* HampyResponsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6DBC0A1FD9B4E300C6EFB1 /* HampyResponsable.swift */; };
+		4E6DBC0E1FD9B64600C6EFB1 /* HampySingletons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6DBC0D1FD9B64600C6EFB1 /* HampySingletons.swift */; };
 		OBJ_368 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_374 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_40 /* Package.swift */; };
 		OBJ_380 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_65 /* Package.swift */; };
@@ -559,6 +563,10 @@
 
 /* Begin PBXFileReference section */
 		4E6DBC021FD9A17F00C6EFB1 /* Hampy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hampy.swift; sourceTree = "<group>"; };
+		4E6DBC051FD9A50B00C6EFB1 /* APILogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APILogin.swift; sourceTree = "<group>"; };
+		4E6DBC081FD9AB6F00C6EFB1 /* HampyResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HampyResponse.swift; sourceTree = "<group>"; };
+		4E6DBC0A1FD9B4E300C6EFB1 /* HampyResponsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HampyResponsable.swift; sourceTree = "<group>"; };
+		4E6DBC0D1FD9B64600C6EFB1 /* HampySingletons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HampySingletons.swift; sourceTree = "<group>"; };
 		"COpenSSL::COpenSSL::Product" /* COpenSSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = COpenSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_100 /* ameth_lib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ameth_lib.c; sourceTree = "<group>"; };
 		OBJ_101 /* asn1_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = asn1_.c; sourceTree = "<group>"; };
@@ -1008,9 +1016,37 @@
 		4E6DBC011FD9A15700C6EFB1 /* ServerCore */ = {
 			isa = PBXGroup;
 			children = (
+				4E6DBC0C1FD9B57000C6EFB1 /* singletons */,
+				4E6DBC071FD9AA5D00C6EFB1 /* model */,
+				4E6DBC041FD9A4F100C6EFB1 /* api */,
 				4E6DBC021FD9A17F00C6EFB1 /* Hampy.swift */,
 			);
 			path = ServerCore;
+			sourceTree = "<group>";
+		};
+		4E6DBC041FD9A4F100C6EFB1 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				4E6DBC051FD9A50B00C6EFB1 /* APILogin.swift */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		4E6DBC071FD9AA5D00C6EFB1 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				4E6DBC081FD9AB6F00C6EFB1 /* HampyResponse.swift */,
+				4E6DBC0A1FD9B4E300C6EFB1 /* HampyResponsable.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		4E6DBC0C1FD9B57000C6EFB1 /* singletons */ = {
+			isa = PBXGroup;
+			children = (
+				4E6DBC0D1FD9B64600C6EFB1 /* HampySingletons.swift */,
+			);
+			path = singletons;
 			sourceTree = "<group>";
 		};
 		OBJ_10 /* Tests */ = {
@@ -1204,7 +1240,7 @@
 			path = ".build/checkouts/Perfect-CZlib-src.git--8503750424862953877/PerfectCZlib";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1213,7 +1249,6 @@
 				OBJ_12 /* Dependencies */,
 				OBJ_352 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_58 /* include */ = {
@@ -1879,7 +1914,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_352 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1912,6 +1947,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				4E6DBC0B1FD9B4E300C6EFB1 /* HampyResponsable.swift in Sources */,
+				4E6DBC091FD9AB6F00C6EFB1 /* HampyResponse.swift in Sources */,
+				4E6DBC061FD9A50B00C6EFB1 /* APILogin.swift in Sources */,
+				4E6DBC0E1FD9B64600C6EFB1 /* HampySingletons.swift in Sources */,
 				OBJ_368 /* Package.swift in Sources */,
 				4E6DBC031FD9A17F00C6EFB1 /* Hampy.swift in Sources */,
 			);
