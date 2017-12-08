@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "PerfectCURL",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-CURL.git",
+        "state": {
+          "branch": null,
+          "revision": "b8a7f792cbacf6ce8867958a875952784cb3627e",
+          "version": "3.0.1"
+        }
+      },
+      {
         "package": "PerfectCZlib",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-CZlib-src.git",
         "state": {
@@ -56,6 +65,15 @@
         }
       },
       {
+        "package": "PerfectMongoDB",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-MongoDB.git",
+        "state": {
+          "branch": null,
+          "revision": "9d8e961b089ab3a5340cc89127f102a7d6c66636",
+          "version": "3.0.1"
+        }
+      },
+      {
         "package": "PerfectNet",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Net.git",
         "state": {
@@ -71,6 +89,24 @@
           "branch": null,
           "revision": "1846390a47bfe0c5263bb70ba318b2bbe751ac95",
           "version": "3.0.2"
+        }
+      },
+      {
+        "package": "cURL",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-libcurl.git",
+        "state": {
+          "branch": null,
+          "revision": "672f6695d9ae04fce16ad01decef0649e0b872b0",
+          "version": "2.0.6"
+        }
+      },
+      {
+        "package": "libmongoc",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-mongo-c.git",
+        "state": {
+          "branch": null,
+          "revision": "63be08491b8a934f834a09b1f06708509944a477",
+          "version": "2.0.1"
         }
       }
     ]
