@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum HampyHTTPCode: UInt16, Codable {
+enum HampyHTTPCode: Int, Codable {
     case ok = 200
     case created = 201
     case badRequest = 400
@@ -15,6 +15,12 @@ enum HampyHTTPCode: UInt16, Codable {
     case forbidden = 403
     case notFound = 404
     case internalError = 500
+    case unknown = -1
+    
+    init(code: Int) {
+        self = HampyHTTPCode(rawValue: code) ?? .unknown
+    }
+
 }
 
 struct HampyResponse: HampyResponsable {

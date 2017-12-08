@@ -17,19 +17,11 @@ public final class Hampy {
     
     // MARK: - Private API
     public static func start() throws {
+        
+        let stripe = APIStripe()
 
-        routes.add(method: .get, uri: "/", handler: {
-            request, response in
-            response.setHeader(.contentType, value: "text/html")
-            response.appendBody(string: "<html><title>Hello, world!</title><body>Hello, world!</body></html>")
-            response.completed()
-        }
-        )
-        
-        // Add the routes to the server.
+        routes.add(stripe.routes())
         server.addRoutes(routes)
-        
-        // Set a listen port of 8181
         server.serverPort = 8181
         
         try server.start()
