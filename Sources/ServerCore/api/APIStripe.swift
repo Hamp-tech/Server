@@ -8,7 +8,7 @@
 import PerfectHTTP
 import PerfectCURL
 
-class APIStripe {
+class APIStripe: APIAble {
     func routes() -> Routes {
         var routes = Routes()
         routes.add(pay())
@@ -73,7 +73,7 @@ private extension APIStripe {
 
 private extension APIStripe {
     // MARK: - Helper
-    func connectWithStripe(url: String, method: HTTPMethod = .post, data: String, completion: @escaping (HampyResponse) -> ()) {
+    func connectWithStripe(url: String, method: HTTPMethod = .post, data: String, completion: @escaping (HampyResponse<String>) -> ()) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")
         let contentType = CURLRequest.Option.addHeader(CURLRequest.Header.Name.contentType, "application/x-www-form-urlencoded")
         let met = CURLRequest.Option.httpMethod(method)

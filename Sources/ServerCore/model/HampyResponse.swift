@@ -23,14 +23,20 @@ enum HampyHTTPCode: Int, Codable {
 
 }
 
-struct HampyResponse: HampyResponsable {
+struct HampyResponse<T>: HampyCodable where T: HampyCodable {
     var code: HampyHTTPCode
     var message: String
-    var data: String
+    var data: T? = nil
     
-    init(code: HampyHTTPCode, message: String = "", data: String = "") {
+    init() {
+        code = .unknown
+        message = ""
+//        data = nil
+    }
+    
+    init(code: HampyHTTPCode, message: String = "", data: T? = nil) {
         self.code = code
         self.message = message
-        self.data = data
+//        self.data = data
     }
 }
