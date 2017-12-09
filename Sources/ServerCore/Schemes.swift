@@ -26,5 +26,9 @@ internal struct Schemes {
             static let users = "users"
         }
     }
+    
+    struct Security {
+        static let gateway = "QfTjWnZr4u7x!A%D*G-JaNdRgUkXp2s5"
+    }
 }
 
