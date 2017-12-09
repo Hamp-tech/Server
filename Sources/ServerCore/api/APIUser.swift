@@ -40,13 +40,16 @@ private extension APIUser {
             if let u = user, let mc = self.mongoCollection {
                 let bson = try! BSON.init(json: u.json)
                 let res = mc.save(document: bson)
-                print(res)
-                hampyResponse.code = .ok
-                hampyResponse.data = u
-                response.setBody(json: hampyResponse.json)
+                
+                switch res {
+                case .success:
+                    hampyResponse.code = .created
+                    hampyResponse.data = u
+                default:
+                    hampyResponse.code = .unknown
+                }
             }
-            
-            
+            response.setBody(json: hampyResponse.json)
             response.completed()
         })
     }

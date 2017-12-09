@@ -29,14 +29,12 @@ struct HampyResponse<T>: HampyCodable where T: HampyCodable {
     var data: T? = nil
     
     init() {
-        code = .unknown
+        code = .badRequest
         message = ""
-//        data = nil
     }
     
     init(code: HampyHTTPCode, message: String = "", data: T? = nil) {
         self.code = code
         self.message = message
-//        self.data = data
     }
 }
