@@ -18,8 +18,8 @@ internal struct Schemes {
         static let uri = "mongodb://localhost"
         
         struct Databases {
-            static let production = "hamp-prod"
-            static let development = "hamp-dev"
+            static let production = "hamp"
+            static let development = "hampdev"
         }
         
         struct Collections {

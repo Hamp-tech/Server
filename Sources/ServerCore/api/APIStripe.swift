@@ -23,6 +23,7 @@ private extension APIStripe {
     
     func pay() -> Route {
         // Funciona amb token de visa
+        // TODO: Pass amount on parameter
         return Route(method: .post, uri: "/api/v1/pay/{token}", handler: { request, response in
             
             let url = "https://api.stripe.com/v1/charges"

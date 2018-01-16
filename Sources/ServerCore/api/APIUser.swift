@@ -34,19 +34,35 @@ private extension APIUser {
     func create() -> Route {
         return Route(method: .post, uri: Schemes.User.create, handler: {request, response in
             let data = request.postBodyString?.data(using: .utf8)
-            let user = try? JSONDecoder().decode(HampyUser.self, from: data!)
-            var hampyResponse = HampyResponse<HampyUser>()
+            var user = try? JSONDecoder().decode(HampyUser.self, from: data!)
+            user?.lastActivity = Date().iso8601()
+            user?.identifier = UUID.init().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
             
-            if let u = user, let mc = self.mongoCollection {
-                let bson = try! BSON.init(json: u.json)
-                let res = mc.save(document: bson)
-                
-                switch res {
-                case .success:
-                    hampyResponse.code = .created
-                    hampyResponse.data = u
-                default:
-                    hampyResponse.code = .unknown
+            var hampyResponse = HampyResponse<HampyUser>()
+
+            if var u = user, let mc = self.mongoCollection {
+                do {
+                    let bson = try BSON.init(json: u.json)
+                    let result = mc.save(document: bson)
+
+                    switch result {
+                    case .success:
+                        
+                        // TODO: Move to another model
+                        u.password = nil
+                        u.lastActivity = nil
+                        u.language = nil
+                        u.tokenFCM = nil
+                        u.os = nil
+                        // End TODO
+                        
+                        hampyResponse.code = .created
+                        hampyResponse.data = u
+                    default:
+                        hampyResponse.code = .unknown
+                    }
+                } catch let error {
+                    print("APIUser - Bson init error => \(error)")
                 }
             }
             response.setBody(json: hampyResponse.json)

@@ -13,11 +13,6 @@ protocol HampyCodable: Codable {
 
 extension HampyCodable {
     var json: String {
-        do {
-            try HampySingletons.sharedJSONEncoder.encode(self)
-        } catch let error {
-            print("\(error)")
-        }
         return String(data: try! HampySingletons.sharedJSONEncoder.encode(self), encoding: .utf8) ?? ""
     }
 }
