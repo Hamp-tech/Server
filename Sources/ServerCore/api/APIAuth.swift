@@ -13,11 +13,11 @@ class APIAuth: APIAble {
     
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
-    var mongoCollection: MongoCollection?
+    var repository: HampyRepository<HampyUser>?
     
-    required init(mongoDatabase: MongoDatabase) {
+    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyUser>? = nil) {
         self.mongoDatabase = mongoDatabase
-        self.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.users)
+        self.repository = repository
     }
 
     // MARK: - APIAble
@@ -26,10 +26,6 @@ class APIAuth: APIAble {
         routes.add(signin())
         routes.add(signup())
         return routes
-    }
-    
-    deinit {
-        mongoCollection?.close()
     }
 }
 
@@ -43,21 +39,16 @@ private extension APIAuth {
                 assert(false)
             }
             var hampyResponse = HampyResponse<HampyUser>()
-            var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
-            
-            if let u = user, let mc = self.mongoCollection {
+            let user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
+        
+            if let u = user {
                 do {
                     let bson = try BSON(json: u.json)
-                    let result = mc.find(query: bson)
-                    var arr = Array<Data>()
-                    for i in result!{
-                        arr.append(i.asString.data(using: .utf8)!)
-                    }
-                    
-                    if arr.count > 0 {
-                        user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: arr[0])
+                    let result = self.repository!.exists(query: bson)
+                
+                    if result.0 {
                         hampyResponse.code = .ok
-                        hampyResponse.data = user
+                        hampyResponse.data = result.1
                     } else {
                         hampyResponse.code = .notFound
                         hampyResponse.message = "User doesn't exists"
@@ -68,8 +59,10 @@ private extension APIAuth {
                 
                 response.setBody(json: hampyResponse.json)
                 response.completed()
+            } else {
+                hampyResponse.code = .notFound
+                hampyResponse.message = "User doesn't exists"
             }
-            
         })
     }
     
@@ -86,30 +79,40 @@ private extension APIAuth {
             user?.identifier = UUID.init().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
             
             var hampyResponse = HampyResponse<HampyUser>()
-            if var u = user, let mc = self.mongoCollection {
+            
+            if var u = user {
                 do {
-                    let bson = try BSON(json: u.json)
-                    let result = mc.save(document: bson)
+                    var userToFind = HampyUser()
+                    userToFind.email = u.email
+                    userToFind.password = u.password
                     
-                    switch result {
-                    case .success:
-                        
-                        // TODO: Move to another model
-                        u.password = nil
-                        u.lastActivity = nil
-                        u.language = nil
-                        u.tokenFCM = nil
-                        u.os = nil
-                        // End TODO
-                        
-                        hampyResponse.code = .created
-                        hampyResponse.data = u
-                    default:
-                        hampyResponse.code = .unknown
+                    let bson = try BSON(json: userToFind.json)
+                    
+                    let repResult = self.repository!.exists(query: bson)
+                    
+                    if repResult.0 {
+                        hampyResponse.code = .conflict
+                        hampyResponse.message = "User already exists"
+                    } else {
+
+                        let result = self.repository!.create(obj: u)
+                        switch result {
+                        case .success:
+                        // TODO: Change it to remove response
+                            u.password = nil
+                            u.lastActivity = nil
+                            u.language = nil
+                            u.tokenFCM = nil
+                        // TODO: --
+                            hampyResponse.code = .created
+                            hampyResponse.message = "User created"
+                        default:
+                            hampyResponse.code = .unknown
+                        }
                     }
-                    bson.close()
                 } catch let error {
                     print("APIUser - Bson init error => \(error)")
+                    hampyResponse.code = .unknown
                 }
             }
             response.setBody(json: hampyResponse.json)

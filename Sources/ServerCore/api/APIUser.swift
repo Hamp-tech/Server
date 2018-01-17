@@ -14,11 +14,13 @@ class APIUser: APIAble {
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
     var mongoCollection: MongoCollection?
+    var repository: HampyRepository<HampyUser>?
     
     // MARK: - Init
-    required init(mongoDatabase: MongoDatabase) {
+    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyUser>? = nil) {
         self.mongoDatabase = mongoDatabase
         self.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.users)
+        self.repository = repository
     }
     
     // MARK: - APIAble

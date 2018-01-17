@@ -9,11 +9,12 @@ import PerfectHTTP
 import PerfectMongoDB
 
 protocol APIAble {
+    associatedtype T
     
     var mongoDatabase: MongoDatabase { get }
-    var mongoCollection: MongoCollection? { get }
+    var repository: HampyRepository<T>? { get }
     
-    init(mongoDatabase: MongoDatabase)
+    init(mongoDatabase: MongoDatabase, repository: HampyRepository<T>?)
     
     func routes() -> Routes
 }

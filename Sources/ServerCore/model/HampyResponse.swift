@@ -14,6 +14,7 @@ enum HampyHTTPCode: Int, Codable {
     case unauthorized = 401
     case forbidden = 403
     case notFound = 404
+    case conflict = 409
     case internalError = 500
     case unknown = -1
     
