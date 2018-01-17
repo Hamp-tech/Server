@@ -61,8 +61,8 @@ private extension APIAuth {
                 response.setBody(json: hampyResponse.json)
                 response.completed()
             } else {
-                hampyResponse.code = .notFound
-                hampyResponse.message = "User doesn't exists"
+                hampyResponse.code = .badRequest
+                hampyResponse.message = "Bad request"
             }
         })
     }

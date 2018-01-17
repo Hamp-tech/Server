@@ -31,12 +31,11 @@ public final class Hampy {
         
         usersRepository = HampyUsersRepository(mongoDatabase: mongoDatabase)
         
-        let stripe = APIStripe(mongoDatabase: mongoDatabase)
-        let userAPI = APIUser(mongoDatabase: mongoDatabase)
+        let userAPI = APIUser(mongoDatabase: mongoDatabase, repository: usersRepository)
         let authAPI = APIAuth(mongoDatabase: mongoDatabase, repository: usersRepository)
 
 //        routes.add(stripe.routes())
-//        routes.add(userAPI.routes())
+        routes.add(userAPI.routes())
         routes.add(authAPI.routes())
         
         server.addRoutes(routes)

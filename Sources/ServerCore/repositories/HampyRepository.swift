@@ -30,4 +30,8 @@ class HampyRepository<T>: HampyRepositable {
     func create(obj: T) -> MongoResult {
         fatalError("Must override")
     }
+    
+    func update(obj: T) -> MongoResult {
+        fatalError("Must override")
+    }
 }

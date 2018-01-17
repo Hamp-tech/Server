@@ -7,12 +7,12 @@
 
 internal struct Schemes {
     private static let baseURL = "/api/v1"
-    private static let userURL = baseURL + "/{id}"
-    private static let authURL = baseURL
+    private static let userURL = baseURL + "/users/{id}"
+    private static let authURL = baseURL + "/auth"
     
-    struct User {
+    struct Users {
 //        internal static let createCostumer = Schemes.userURL + "/costumer"
-        static let signup = Schemes.userURL
+        static let users = Schemes.userURL
     }
     
     struct Auth {

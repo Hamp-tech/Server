@@ -26,48 +26,45 @@ class APIUser: APIAble {
     // MARK: - APIAble
     func routes() -> Routes {
         var routes = Routes()
-//        routes.add(create())
+        routes.add(update())
         return routes
     }
 }
 
 private extension APIUser {
-//    func create() -> Route {
-//        return Route(method: .post, uri: Schemes.User.create, handler: {request, response in
-//            let data = request.postBodyString?.data(using: .utf8)
-//            var user = try? JSONDecoder().decode(HampyUser.self, from: data!)
-//            user?.lastActivity = Date().iso8601()
-//            user?.identifier = UUID.init().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-//
-//            var hampyResponse = HampyResponse<HampyUser>()
-//
-//            if var u = user, let mc = self.mongoCollection {
-//                do {
-//                    let bson = try BSON.init(json: u.json)
-//                    let result = mc.save(document: bson)
-//
-//                    switch result {
-//                    case .success:
-//
-//                        // TODO: Move to another model
-//                        u.password = nil
-//                        u.lastActivity = nil
-//                        u.language = nil
-//                        u.tokenFCM = nil
-//                        u.os = nil
-//                        // End TODO
-//
-//                        hampyResponse.code = .created
-//                        hampyResponse.data = u
-//                    default:
-//                        hampyResponse.code = .unknown
-//                    }
-//                } catch let error {
-//                    print("APIUser - Bson init error => \(error)")
-//                }
-//            }
-//            response.setBody(json: hampyResponse.json)
-//            response.completed()
-//        })
-//    }
+    
+    // PRE: Is needed an existing user
+    func update() -> Route {
+        return Route(method: .put, uri: Schemes.Users.users, handler: { (request, response) in
+            let data = request.postBodyString?.data(using: .utf8)
+            guard let d = data else {
+                // TODO: Implement error handler
+                assert(false)
+            }
+            
+            var hampyResponse = HampyResponse<HampyUser>()
+            var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
+            user?.identifier = request.urlVariables["id"]
+            
+            if let u = user {
+                let result = self.repository!.update(obj: u)
+                
+                switch result {
+                case .success:
+                    hampyResponse.message = "User updated successfully"
+                    hampyResponse.code = .ok
+                   
+                default:
+                    hampyResponse.message = "User doesn't exists"
+                    hampyResponse.code = .badRequest
+                    
+                }
+            } else {
+                hampyResponse.code = .badRequest
+                hampyResponse.message = "Bad request"
+            }
+            response.appendBody(string: hampyResponse.json)
+            response.completed()
+        })
+    }
 }

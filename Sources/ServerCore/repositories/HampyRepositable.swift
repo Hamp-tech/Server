@@ -19,4 +19,5 @@ protocol HampyRepositable {
     func find(query: BSON) -> [T]
     func exists(query: BSON) -> (exists: Bool, obj: T?)
     func create(obj: T) -> MongoResult
+    func update(obj: T) -> MongoResult
 }

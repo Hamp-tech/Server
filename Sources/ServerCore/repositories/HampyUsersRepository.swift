@@ -37,6 +37,16 @@ class HampyUsersRepository: HampyRepository<HampyUser>{
         let bson = try! BSON(json: obj.json)
         return mongoCollection.save(document: bson)
     }
+    
+    override func update(obj: HampyUser) -> MongoResult{
+        guard let id = obj.identifier else { return MongoResult.error(0, 0, "")}
+        let old = BSON()
+        old.append(key: "identifier", string: id)
+        
+        let new = BSON()
+        new.append(key: "$set", document: try! BSON(json: obj.json))
+        return mongoCollection.update(selector: old, update: new)
+    }
 }
 
 
