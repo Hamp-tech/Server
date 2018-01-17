@@ -20,16 +20,23 @@ public final class Hampy {
     // MARK: - Private API
     public static func start() throws {
         
+        let mongoDatabase = client.getDatabase(name: Schemes.Mongo.Databases.development)
+        
         defer {
             server.stop()
             client.close()
+            mongoDatabase.close()
         }
         
-        let stripe = APIStripe()
-        let userAPI = APIUser(mongoClient: client.getDatabase(name: Schemes.Mongo.Databases.development))
+        
+        
+        let stripe = APIStripe(mongoDatabase: mongoDatabase)
+        let userAPI = APIUser(mongoDatabase: mongoDatabase)
+        let authAPI = APIAuth(mongoDatabase: mongoDatabase)
 
-        routes.add(stripe.routes())
-        routes.add(userAPI.routes())
+//        routes.add(stripe.routes())
+//        routes.add(userAPI.routes())
+        routes.add(authAPI.routes())
         
         server.addRoutes(routes)
         server.serverPort = 8181

@@ -9,7 +9,7 @@ struct HampyUser: HampyCodable {
     var identifier: String?
     var name: String?
     var surname: String?
-    var mail: String?
+    var email: String?
     var password: String?
     var phone: String?
     var birthday: String?

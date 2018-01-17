@@ -7,8 +7,17 @@
 
 import PerfectHTTP
 import PerfectCURL
+import PerfectMongoDB
 
 class APIStripe: APIAble {
+    
+    var mongoDatabase: MongoDatabase
+    var mongoCollection: MongoCollection?
+    
+    required init(mongoDatabase: MongoDatabase) {
+        self.mongoDatabase = mongoDatabase
+    }
+    
     func routes() -> Routes {
         var routes = Routes()
         routes.add(pay())

@@ -8,10 +8,16 @@
 internal struct Schemes {
     private static let baseURL = "/api/v1"
     private static let userURL = baseURL + "/{id}"
+    private static let authURL = baseURL
     
     struct User {
 //        internal static let createCostumer = Schemes.userURL + "/costumer"
-        static let create = Schemes.userURL
+        static let signup = Schemes.userURL
+    }
+    
+    struct Auth {
+        static let signin = Schemes.authURL + "/signin"
+        static let signup = Schemes.authURL + "/signup"
     }
     
     struct Mongo {
