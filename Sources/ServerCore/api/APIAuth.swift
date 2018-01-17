@@ -25,6 +25,7 @@ class APIAuth: APIAble {
         var routes = Routes()
         routes.add(signin())
         routes.add(signup())
+        routes.add(restore())
         return routes
     }
 }
@@ -115,6 +116,16 @@ private extension APIAuth {
                     hampyResponse.code = .unknown
                 }
             }
+            response.setBody(json: hampyResponse.json)
+            response.completed()
+        })
+    }
+    
+    func restore() -> Route {
+        // TODO: implement
+        return Route(method: .post, uri: Schemes.Auth.restore, handler: { (request, response) in
+            var hampyResponse = HampyResponse<HampyUser>()
+            hampyResponse.message = "TODO: IMPLEMENT"
             response.setBody(json: hampyResponse.json)
             response.completed()
             

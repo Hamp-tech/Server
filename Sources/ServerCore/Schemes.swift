@@ -18,6 +18,7 @@ internal struct Schemes {
     struct Auth {
         static let signin = Schemes.authURL + "/signin"
         static let signup = Schemes.authURL + "/signup"
+        static let restore = Schemes.authURL + "/restore/{id}"
     }
     
     struct Mongo {
