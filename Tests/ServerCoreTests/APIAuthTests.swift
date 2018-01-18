@@ -7,6 +7,8 @@ class APIAuthTests: XCTestCase {
     
     let client = try! MongoClient(uri: "mongodb://localhost")
     
+    // RUN TESTS FROM TOP TO BOTTOM
+    
     func testSignup_newUser() {
         
         let db = client.getDatabase(name: "testAuth")
@@ -25,7 +27,7 @@ class APIAuthTests: XCTestCase {
             {
                 "name" : "Joannnn",
                 "surname" : "Molinas",
-                "email" : "\(email)",
+                "email" : "joanmramon@gmail.com",
                 "password" : "1234567890",
                 "phone" : "646548142",
                 "gender" : "M",
@@ -56,7 +58,7 @@ class APIAuthTests: XCTestCase {
             {
                 "name" : "Joannnn",
                 "surname" : "Molinas",
-                "email" : "98355@gmail.com",
+                "email" : "joanmramon@gmail.com",
                 "password" : "1234567890",
                 "phone" : "646548142",
                 "gender" : "M",
@@ -86,7 +88,7 @@ class APIAuthTests: XCTestCase {
         
         let json = """
             {
-                "email" : "98355@gmail.com",
+                "email" : "joanmramon@gmail.com",
                 "password" : "1234567890"
             }
         """
@@ -110,7 +112,7 @@ class APIAuthTests: XCTestCase {
         
         let json = """
             {
-                "email" : "9835511@gmail.com",
+                "email" : "joanmramon1@gmail.com",
                 "password" : "1234567890"
             }
         """
@@ -134,7 +136,7 @@ class APIAuthTests: XCTestCase {
         
         let json = """
             {
-                "email" : "98355@gmail.com",
+                "email" : "joanmramon@gmail.com",
                 "password" : "12345"
             }
         """
@@ -143,5 +145,10 @@ class APIAuthTests: XCTestCase {
         let response = auth.signin(body: data)
         
         XCTAssertEqual(response.code, .notFound)
+    }
+    
+    func testRemoveDatabase() {
+        client.getDatabase(name: "testAuth").drop()
+        client.close()
     }
 }

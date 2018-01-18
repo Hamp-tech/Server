@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4E28A81D2011272E001EF514 /* APIUserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E28A81C2011272E001EF514 /* APIUserTests.swift */; };
 		OBJ_1001 /* Bytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_385 /* Bytes.swift */; };
 		OBJ_1002 /* Dir.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_386 /* Dir.swift */; };
 		OBJ_1003 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_387 /* File.swift */; };
@@ -868,6 +869,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4E28A81C2011272E001EF514 /* APIUserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIUserTests.swift; sourceTree = "<group>"; };
 		"COpenSSL::COpenSSL::Product" /* COpenSSL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = COpenSSL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_10 /* Schemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schemes.swift; sourceTree = "<group>"; };
 		OBJ_100 /* uncompr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = uncompr.c; sourceTree = "<group>"; };
@@ -1797,6 +1799,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_36 /* APIAuthTests.swift */,
+				4E28A81C2011272E001EF514 /* APIUserTests.swift */,
 			);
 			name = ServerCoreTests;
 			path = Tests/ServerCoreTests;
@@ -1927,7 +1930,7 @@
 			path = ".build/checkouts/Perfect-MongoDB.git--8154448075697536604/Sources/PerfectMongoDB";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -1937,7 +1940,6 @@
 				OBJ_38 /* Dependencies */,
 				OBJ_396 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_57 /* PerfectHTTPServer 3.0.3 */ = {
@@ -2525,7 +2527,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_396 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -2591,6 +2593,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_416 /* Package.swift in Sources */,
+				4E28A81D2011272E001EF514 /* APIUserTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
