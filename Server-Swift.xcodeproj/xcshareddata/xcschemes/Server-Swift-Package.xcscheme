@@ -197,6 +197,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Server-Swift::serverTests"
+               BuildableName = "serverTests.xctest"
+               BlueprintName = "serverTests"
+               ReferencedContainer = "container:Server-Swift.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <AdditionalOptions>
       </AdditionalOptions>

@@ -8,7 +8,7 @@
 import Foundation
 import PerfectMongoDB
 
-class HampyRepository<T>: HampyRepositable {
+internal class HampyRepository<T>: HampyRepositable {
     var mongoDatabase: MongoDatabase
     var mongoCollection: MongoCollection!
     
@@ -37,5 +37,9 @@ class HampyRepository<T>: HampyRepositable {
     
     func update(obj: T) -> MongoResult {
         fatalError("Must override")
+    }
+    
+    func close() {
+        fatalError("Must Override")
     }
 }

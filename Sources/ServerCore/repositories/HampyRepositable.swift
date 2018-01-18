@@ -21,4 +21,6 @@ protocol HampyRepositable {
     func exists(obj: T) -> (exists: Bool, obj: T?)
     func create(obj: T) -> MongoResult
     func update(obj: T) -> MongoResult
+    
+    func close()
 }

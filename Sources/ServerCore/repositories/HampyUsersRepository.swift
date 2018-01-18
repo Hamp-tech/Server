@@ -19,8 +19,8 @@ class HampyUsersRepository: HampyRepository<HampyUser>{
     override func find(query: BSON) -> [HampyUser] {
         let result = self.mongoCollection.find(query: query)
         var arr = Array<HampyUser>()
-        for r in result! {
-            let data = r.asString.data(using: .utf8)!
+        result?.forEach{
+            let data = $0.asString.data(using: .utf8)!
             arr.append(try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: data))
         }
         
@@ -58,6 +58,10 @@ class HampyUsersRepository: HampyRepository<HampyUser>{
         let new = BSON()
         new.append(key: "$set", document: try! BSON(json: obj.json))
         return mongoCollection.update(selector: old, update: new)
+    }
+    
+    override func close() {
+        mongoCollection.close()
     }
 }
 
