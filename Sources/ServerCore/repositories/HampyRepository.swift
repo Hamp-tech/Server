@@ -27,6 +27,10 @@ class HampyRepository<T>: HampyRepositable {
         fatalError("Must override")
     }
     
+    func exists(obj: T) -> (exists: Bool, obj: T?) {
+        fatalError("Must override")
+    }
+    
     func create(obj: T) -> MongoResult {
         fatalError("Must override")
     }

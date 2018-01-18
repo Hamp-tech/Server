@@ -27,12 +27,24 @@ class HampyUsersRepository: HampyRepository<HampyUser>{
         return arr
     }
     
-    override func exists(query: BSON) -> (exits: Bool, obj: HampyUser?) {
+    override func exists(query: BSON) -> (exists: Bool, obj: HampyUser?) {
         let arr = find(query: query)
         let exists = arr.count > 0
         return (exists, exists ? arr[0] : nil)
     }
     
+    override func exists(obj: HampyUser) -> (exists: Bool, obj: HampyUser?) {
+        let bson: BSON
+        do {
+           bson = try BSON(json: obj.json)
+        } catch {
+            return (false, nil)
+        }
+        
+        return exists(query: bson)
+    }
+    
+    // PRE: Assuming that obj has correct properties setted
     override func create(obj: HampyUser) -> MongoResult {
         let bson = try! BSON(json: obj.json)
         return mongoCollection.save(document: bson)

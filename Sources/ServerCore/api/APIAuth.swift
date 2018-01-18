@@ -35,6 +35,7 @@ private extension APIAuth {
     func signin() -> Route {
         return Route(method: .post, uri: Schemes.Auth.signin, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
+            
             guard let d = data else {
                 // TODO: Implement error handler
                 assert(false)
@@ -43,27 +44,22 @@ private extension APIAuth {
             let user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
         
             if let u = user {
-                do {
-                    let bson = try BSON(json: u.json)
-                    let result = self.repository!.exists(query: bson)
+                let result = self.repository!.exists(obj: u)
                 
-                    if result.0 {
-                        hampyResponse.code = .ok
-                        hampyResponse.data = result.1
-                    } else {
-                        hampyResponse.code = .notFound
-                        hampyResponse.message = "User doesn't exists"
-                    }
-                } catch {
-                    hampyResponse.code = .unknown
+                if result.0 {
+                    hampyResponse.code = .ok
+                    hampyResponse.data = result.1
+                } else {
+                    hampyResponse.code = .notFound
+                    hampyResponse.message = "User doesn't exists"
                 }
-                
-                response.setBody(json: hampyResponse.json)
-                response.completed()
             } else {
                 hampyResponse.code = .badRequest
                 hampyResponse.message = "Bad request"
             }
+            
+            response.setBody(json: hampyResponse.json)
+            response.completed()
         })
     }
     
@@ -82,38 +78,28 @@ private extension APIAuth {
             var hampyResponse = HampyResponse<HampyUser>()
             
             if var u = user {
-                do {
-                    var userToFind = HampyUser()
-                    userToFind.email = u.email
-                    userToFind.password = u.password
-                    
-                    let bson = try BSON(json: userToFind.json)
-                    
-                    let repResult = self.repository!.exists(query: bson)
-                    
-                    if repResult.0 {
-                        hampyResponse.code = .conflict
-                        hampyResponse.message = "User already exists"
-                    } else {
-
-                        let result = self.repository!.create(obj: u)
-                        switch result {
-                        case .success:
+                var userToFind = HampyUser()
+                userToFind.email = u.email
+                let existsResult = self.repository!.exists(obj: userToFind)
+                
+                if existsResult.0 {
+                    hampyResponse.code = .conflict
+                    hampyResponse.message = "User already exists"
+                } else {
+                    let result = self.repository!.create(obj: u)
+                    switch result {
+                    case .success:
                         // TODO: Change it to remove response
-                            u.password = nil
-                            u.lastActivity = nil
-                            u.language = nil
-                            u.tokenFCM = nil
+                        u.password = nil
+                        u.lastActivity = nil
+                        u.language = nil
+                        u.tokenFCM = nil
                         // TODO: --
-                            hampyResponse.code = .created
-                            hampyResponse.message = "User created"
-                        default:
-                            hampyResponse.code = .unknown
-                        }
+                        hampyResponse.code = .created
+                        hampyResponse.message = "User created"
+                    default:
+                        hampyResponse.code = .unknown
                     }
-                } catch let error {
-                    print("APIUser - Bson init error => \(error)")
-                    hampyResponse.code = .unknown
                 }
             }
             response.setBody(json: hampyResponse.json)
