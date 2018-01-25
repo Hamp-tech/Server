@@ -13,11 +13,12 @@ class APIAuth: APIAble {
     
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
-    var repository: HampyRepository<HampyUser>?
+    var repositories: HampyRepositories?
     
-    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyUser>? = nil) {
+    // MARK: - Init
+    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
         self.mongoDatabase = mongoDatabase
-        self.repository = repository
+        self.repositories = repositories
     }
 
     // MARK: - APIAble
@@ -82,7 +83,7 @@ internal extension APIAuth {
         let user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
         
         if let u = user {
-            let result = self.repository!.exists(obj: u)
+            let result = self.repositories!.usersRepository.exists(obj: u)
             
             if result.0 {
                 hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: result.1!)
@@ -106,12 +107,12 @@ internal extension APIAuth {
         if let u = user {
             var userToFind = HampyUser()
             userToFind.email = u.email
-            let existsResult = self.repository!.exists(obj: userToFind)
+            let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
             
             if existsResult.0 {
                 hampyResponse = APIHampyResponsesFactory.Auth.signupFailConflict()
             } else {
-                let result = self.repository!.create(obj: u)
+                let result = self.repositories!.usersRepository.create(obj: u)
                 switch result {
                 case .success:
                     hampyResponse = APIHampyResponsesFactory.Auth.signupOK(user: u)

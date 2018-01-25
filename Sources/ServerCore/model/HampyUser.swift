@@ -5,7 +5,10 @@
 //  Created by Joan Molinas Ramon on 8/12/17.
 //
 
-class HampyUser: HampyDatabaseable {
+struct HampyUser: HampyDatabaseable {
+    
+    static var databaseScheme: String = Schemes.Mongo.Collections.users
+    
     var identifier: String?
     var name: String?
     var surname: String?

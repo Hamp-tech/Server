@@ -40,9 +40,11 @@ internal struct Schemes {
         }
         
         struct Collections {
+            static let `default` = ""
             static let users = "users"
             static let services = "services"
             static let points = "points"
+            static let bookings = "bookings"
         }
     }
     

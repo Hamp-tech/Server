@@ -6,6 +6,9 @@
 //
 
 struct HampyService: HampyDatabaseable {
+    
+    static var databaseScheme: String = Schemes.Mongo.Collections.services
+    
     var identifier: String?
     var name: String?
     var description: String?

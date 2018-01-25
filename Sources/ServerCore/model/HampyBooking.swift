@@ -7,16 +7,20 @@
 
 import Foundation
 
-class HampyBooking: HampyDatabaseObject {
+struct HampyBooking: HampyDatabaseable {
+    
+    static var databaseScheme: String = Schemes.Mongo.Collections.bookings
+    
     enum PickUpTime: String, HampyCodable {
         case morning = "0"
         case afternoon = "1"
     }
     
+    var identifier: String?
     var userID: String?
     var basket: Array<HampyHiredService>?
     var price: String?
-    var hampyPoint: String? // Identifier to location
+    var point: String? // Identifier to location
     var pickUpTime: PickUpTime?
     var deliveryLocker: HampyLocker?
     var pickUpLocker: HampyLocker?

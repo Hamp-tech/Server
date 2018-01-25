@@ -12,13 +12,13 @@ import PerfectMongoDB
 class APIStripe: APIAble {
     
     // MARK: Properties
-    var repository: HampyRepository<HampyDatabaseObject>?
     var mongoDatabase: MongoDatabase
-    var mongoCollection: MongoCollection?
+    var repositories: HampyRepositories?
     
-    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyDatabaseObject>? = nil) {
+    // MARK: - Init
+    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
         self.mongoDatabase = mongoDatabase
-        self.repository = repository
+        self.repositories = repositories
     }
     
     func routes() -> Routes {

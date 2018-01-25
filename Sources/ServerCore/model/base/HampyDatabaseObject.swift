@@ -8,5 +8,6 @@
 import Foundation
 
 class HampyDatabaseObject: HampyDatabaseable {
+    static var databaseScheme: String = Schemes.Mongo.Collections.`default`
     var identifier: String?
 }

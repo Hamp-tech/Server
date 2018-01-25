@@ -10,12 +10,6 @@ import PerfectMongoDB
 
 class HampyUsersRepository: HampyRepository<HampyUser>{
     typealias T = HampyUser
-    
-    required init(mongoDatabase: MongoDatabase) {
-        super.init(mongoDatabase: mongoDatabase)
-        super.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.users)!
-    }
-    
 
 }
 

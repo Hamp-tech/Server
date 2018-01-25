@@ -17,6 +17,8 @@ protocol HampyRepositable {
     init(mongoDatabase: MongoDatabase)
     
     func find(query: BSON) -> [T]
+    func find(properties: Dictionary<String, Any>) -> [T]
+    func find(elements by: Array<Dictionary<String, Any>>) -> [T]
     func exists(query: BSON) -> (exists: Bool, obj: T?)
     func exists(obj: T) -> (exists: Bool, obj: T?)
     func create(obj: T) -> MongoResult

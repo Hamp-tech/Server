@@ -10,16 +10,15 @@ import PerfectMongoDB
 import PerfectHTTP
 
 class APIScripts: APIAble {
+    
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
-    var mongoCollection: MongoCollection?
-    var repository: HampyRepository<HampyUser>?
+    var repositories: HampyRepositories?
     
     // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyUser>? = nil) {
+    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
         self.mongoDatabase = mongoDatabase
-        self.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.users)
-        self.repository = repository
+        self.repositories = repositories
     }
     
     // MARK: - APIAble

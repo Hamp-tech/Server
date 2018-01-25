@@ -17,38 +17,28 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
              fatalError("HampyRepository instances can not be created")
         }
         self.mongoDatabase = mongoDatabase
+        self.mongoCollection = self.mongoDatabase.getCollection(name: T.databaseScheme)
     }
-    
-//    func find(query: BSON) -> [T] {
-//        fatalError("Must ")
-//    }
-//
-//    func exists(query: BSON) -> (exists: Bool, obj: T?) {
-//        fatalError("Must ")
-//    }
-//
-//    func exists(obj: T) -> (exists: Bool, obj: T?) {
-//        fatalError("Must ")
-//    }
-//
-//    func create(obj: T) -> MongoResult {
-//        fatalError("Must ")
-//    }
-//
-//    func update(obj: T) -> MongoResult {
-//        fatalError("Must ")
-//    }
-    
-    func close() {
-        mongoCollection.close()
-    }
-    
+
     func find(query: BSON) -> [T] {
         let result = self.mongoCollection.find(query: query)
         var arr = Array<T>()
         result?.forEach{
             let data = $0.asString.data(using: .utf8)!
             arr.append(try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data))
+        }
+        
+        return arr
+    }
+    
+    func find(properties: Dictionary<String, Any>) -> [T] {
+        let bson = BSON(map: properties)
+        return find(query: bson)
+    }
+    
+    func find(elements by: Array<Dictionary<String, Any>>) -> [T] {
+        let arr = by.flatMap{
+            find(properties: $0)
         }
         
         return arr
@@ -85,5 +75,9 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         let new = BSON()
         new.append(key: "$set", document: try! BSON(json: obj.json))
         return mongoCollection.update(selector: old, update: new)
+    }
+    
+    func close() {
+        mongoCollection.close()
     }
 }

@@ -17,7 +17,9 @@ public final class Hampy {
     private static var routes = Routes()
     private static let client = try! MongoClient(uri: Schemes.Mongo.uri)
     private static var usersRepository: HampyUsersRepository!
+    private static var pointsRepository: HampyPointsRepository!
     private static var environtment: HampyEnvirontment = .development
+    private static var repositories: HampyRepositories!
     
     // MARK: - Private API
     public static func start() throws {
@@ -30,11 +32,11 @@ public final class Hampy {
             mongoDatabase.close()
         }
 
-        usersRepository = HampyUsersRepository(mongoDatabase: mongoDatabase)
+        repositories = HampyRepositories(mongoDatabase: mongoDatabase)
         
-        let userAPI = APIUser(mongoDatabase: mongoDatabase, repository: usersRepository)
-        let authAPI = APIAuth(mongoDatabase: mongoDatabase, repository: usersRepository)
-        let bookingAPI = APIBooking(mongoDatabase: mongoDatabase)
+        let userAPI = APIUser(mongoDatabase: mongoDatabase, repositories: repositories)
+        let authAPI = APIAuth(mongoDatabase: mongoDatabase, repositories: repositories)
+        let bookingAPI = APIBooking(mongoDatabase: mongoDatabase, repositories: repositories)
 
         routes.add(userAPI.routes())
         routes.add(authAPI.routes())

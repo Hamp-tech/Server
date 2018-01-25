@@ -9,4 +9,5 @@ import Foundation
 
 protocol HampyDatabaseable: HampyCodable {
     var identifier: String? { get set }
+    static var databaseScheme: String { get }
 }

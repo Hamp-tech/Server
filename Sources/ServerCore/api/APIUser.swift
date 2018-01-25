@@ -13,14 +13,12 @@ class APIUser: APIAble {
     
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
-    var mongoCollection: MongoCollection?
-    var repository: HampyRepository<HampyUser>?
+    var repositories: HampyRepositories?
     
     // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyUser>? = nil) {
+    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
         self.mongoDatabase = mongoDatabase
-        self.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.users)
-        self.repository = repository
+        self.repositories = repositories
     }
     
     // MARK: - APIAble
@@ -47,10 +45,10 @@ private extension APIUser {
             user?.identifier = request.urlVariables["id"]
             
             if let u = user {
-                let result = self.repository!.update(obj: u)
+                let result = self.repositories?.usersRepository.update(obj: u)
                 
                 switch result {
-                case .success:
+                case .success?:
                     hampyResponse.message = "User updated successfully"
                     hampyResponse.code = .ok
                    
