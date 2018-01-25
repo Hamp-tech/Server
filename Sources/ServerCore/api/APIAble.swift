@@ -9,7 +9,7 @@ import PerfectHTTP
 import PerfectMongoDB
 
 protocol APIAble {
-    associatedtype T
+    associatedtype T: HampyDatabaseable
     
     var mongoDatabase: MongoDatabase { get }
     var repository: HampyRepository<T>? { get }

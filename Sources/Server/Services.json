@@ -1,0 +1,11 @@
+[
+    {
+        "identifier": 1,
+        "active": true,
+        "name": "Small bag",
+        "description": "A small bag",
+        "imageURL": "",
+        "price": 13.0,
+        "size": "S" 
+    }
+]

@@ -78,22 +78,19 @@ private extension APIAuth {
 internal extension APIAuth {
     
     func signin(body: Data) -> HampyResponse<HampyUser> {
-        var hampyResponse = HampyResponse<HampyUser>()
+        var hampyResponse: HampyResponse<HampyUser>!
         let user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
         
         if let u = user {
             let result = self.repository!.exists(obj: u)
             
             if result.0 {
-                hampyResponse.code = .ok
-                hampyResponse.data = result.1
+                hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: result.1!)
             } else {
-                hampyResponse.code = .notFound
-                hampyResponse.message = "User doesn't exists"
+                hampyResponse = APIHampyResponsesFactory.Auth.signinFailNotFound()
             }
         } else {
-            hampyResponse.code = .badRequest
-            hampyResponse.message = "Bad request"
+            hampyResponse = APIHampyResponsesFactory.Auth.signinFailBadRequest()
         }
         
         return hampyResponse
@@ -102,32 +99,25 @@ internal extension APIAuth {
     func signup(body: Data) -> HampyResponse<HampyUser> {
         var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
         user?.lastActivity = Date().iso8601()
-        user?.identifier = UUID.init().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+        user?.identifier = UUID.generateHampIdentifier()
         
-        var hampyResponse = HampyResponse<HampyUser>()
+        var hampyResponse: HampyResponse<HampyUser>!
         
-        if var u = user {
+        if let u = user {
             var userToFind = HampyUser()
             userToFind.email = u.email
             let existsResult = self.repository!.exists(obj: userToFind)
             
             if existsResult.0 {
-                hampyResponse.code = .conflict
-                hampyResponse.message = "User already exists"
+                hampyResponse = APIHampyResponsesFactory.Auth.signupFailConflict()
             } else {
                 let result = self.repository!.create(obj: u)
                 switch result {
                 case .success:
-                    // TODO: Change it to remove response
-                    u.password = nil
-                    u.lastActivity = nil
-                    u.language = nil
-                    u.tokenFCM = nil
-                    // TODO: --
-                    hampyResponse.code = .created
-                    hampyResponse.message = "User created"
+                    hampyResponse = APIHampyResponsesFactory.Auth.signupOK(user: u)
                 default:
-                    hampyResponse.code = .unknown
+                    hampyResponse = APIHampyResponsesFactory.Auth.signupFailUnknown()
+                    break
                 }
             }
         }

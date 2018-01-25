@@ -5,7 +5,7 @@
 //  Created by Joan Molinas Ramon on 8/12/17.
 //
 
-struct HampyUser: HampyCodable {
+class HampyUser: HampyDatabaseable {
     var identifier: String?
     var name: String?
     var surname: String?

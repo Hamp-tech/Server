@@ -9,10 +9,20 @@ internal struct Schemes {
     private static let baseURL = "/api/v1"
     private static let userURL = baseURL + "/users/{id}"
     private static let authURL = baseURL + "/auth"
+    private static let bookingURL = userURL + "/booking/"
+    private static let scriptsURL = baseURL + "/scripts"
     
     struct Users {
-//        internal static let createCostumer = Schemes.userURL + "/costumer"
         static let users = Schemes.userURL
+    }
+    
+    struct Booking {
+        static let newBooking = Schemes.bookingURL
+    }
+    
+    struct Scripts {
+        static let createServices = Schemes.scriptsURL + "/services/create"
+        static let createHampPoints = Schemes.scriptsURL + "/hamppoints/create"
     }
     
     struct Auth {
@@ -31,6 +41,8 @@ internal struct Schemes {
         
         struct Collections {
             static let users = "users"
+            static let services = "services"
+            static let points = "points"
         }
     }
     

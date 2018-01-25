@@ -1,51 +1,24 @@
 //
-//  HampyRepository.swift
+//  HampyPointsRepository.swift
 //  Server-SwiftPackageDescription
 //
-//  Created by Joan Molinas Ramon on 17/1/18.
+//  Created by Joan Molinas Ramon on 25/1/18.
 //
 
 import Foundation
 import PerfectMongoDB
 
-internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
-    var mongoDatabase: MongoDatabase
-    var mongoCollection: MongoCollection!
+class HampyPointsRepository: HampyRepository<HampyPoint> {
+    typealias T = HampyPoint
     
     required init(mongoDatabase: MongoDatabase) {
-        guard type(of: self) != HampyRepository.self else {
-             fatalError("HampyRepository instances can not be created")
-        }
-        self.mongoDatabase = mongoDatabase
+        super.init(mongoDatabase: mongoDatabase)
+        super.mongoCollection = mongoDatabase.getCollection(name: Schemes.Mongo.Collections.points)!
     }
     
-//    func find(query: BSON) -> [T] {
-//        fatalError("Must ")
-//    }
-//
-//    func exists(query: BSON) -> (exists: Bool, obj: T?) {
-//        fatalError("Must ")
-//    }
-//
-//    func exists(obj: T) -> (exists: Bool, obj: T?) {
-//        fatalError("Must ")
-//    }
-//
-//    func create(obj: T) -> MongoResult {
-//        fatalError("Must ")
-//    }
-//
-//    func update(obj: T) -> MongoResult {
-//        fatalError("Must ")
-//    }
-    
-    func close() {
-        mongoCollection.close()
-    }
-    
-    func find(query: BSON) -> [T] {
+    override func find(query: BSON) -> [T] {
         let result = self.mongoCollection.find(query: query)
-        var arr = Array<T>()
+        var arr = Array<HampyPoint>()
         result?.forEach{
             let data = $0.asString.data(using: .utf8)!
             arr.append(try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data))
@@ -54,13 +27,13 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         return arr
     }
     
-     func exists(query: BSON) -> (exists: Bool, obj: T?) {
+    override func exists(query: BSON) -> (exists: Bool, obj: T?) {
         let arr = find(query: query)
         let exists = arr.count > 0
         return (exists, exists ? arr[0] : nil)
     }
     
-     func exists(obj: T) -> (exists: Bool, obj: T?) {
+    override func exists(obj: T) -> (exists: Bool, obj: T?) {
         let bson: BSON
         do {
             bson = try BSON(json: obj.json)
@@ -72,12 +45,12 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     }
     
     // PRE: Assuming that obj has correct properties setted
-     func create(obj: T) -> MongoResult {
+    override func create(obj: T) -> MongoResult {
         let bson = try! BSON(json: obj.json)
         return mongoCollection.save(document: bson)
     }
     
-     func update(obj: T) -> MongoResult{
+    override func update(obj: T) -> MongoResult{
         guard let id = obj.identifier else { return MongoResult.error(0, 0, "")}
         let old = BSON()
         old.append(key: "identifier", string: id)

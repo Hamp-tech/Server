@@ -12,11 +12,11 @@ import PerfectMongoDB
 class APIStripe: APIAble {
     
     // MARK: Properties
-    var repository: HampyRepository<AnyObject>?
+    var repository: HampyRepository<HampyDatabaseObject>?
     var mongoDatabase: MongoDatabase
     var mongoCollection: MongoCollection?
     
-    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<AnyObject>? = nil) {
+    required init(mongoDatabase: MongoDatabase, repository: HampyRepository<HampyDatabaseObject>? = nil) {
         self.mongoDatabase = mongoDatabase
         self.repository = repository
     }

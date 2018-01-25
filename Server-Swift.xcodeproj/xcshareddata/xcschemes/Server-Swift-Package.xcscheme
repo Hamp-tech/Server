@@ -201,9 +201,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "Server-Swift::serverTests"
-               BuildableName = "serverTests.xctest"
-               BlueprintName = "serverTests"
+               BlueprintIdentifier = "Server-Swift::ServerCoreTests"
+               BuildableName = "ServerCoreTests.xctest"
+               BlueprintName = "ServerCoreTests"
                ReferencedContainer = "container:Server-Swift.xcodeproj">
             </BuildableReference>
          </TestableReference>

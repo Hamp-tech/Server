@@ -1,7 +1,7 @@
 # Models
 
 ## User:
-  - `id = [unsigned long]`
+  - `identifier = [unsigned long]`
   - `name = [string]`
   - `surname = [string]`
   - `mail = [string]`
@@ -30,7 +30,7 @@
   - `language = [string]`
   
 ## Register data response
-  - `id = [unsigned long]`
+  - `identifier = [unsigned long]`
   - `name = [string]`
   - `surname = [string]`
   - `phone = [string]`
@@ -43,7 +43,7 @@
   - `password = [string]`
   
 ## Login response
-  - `id = [unsigned long]`
+  - `identifier = [unsigned long]`
   - `name = [string]`
   - `surname = [string]`
   - `phone = [string]`
@@ -59,9 +59,9 @@
   - `gender = [M|F|U]`
 
 ## Locker
-  - `id = [long]`
-  - `number = [int8]`
-  - `key = [int8]`
+  - `identifier = [long]`
+  - `number = [int]`
+  - `key = [int]`
   - `available = [bool]`
   - `capacity = [S|M]`
   
@@ -78,7 +78,7 @@
   - `lockers = [Array<Lockers>]`
   
 ## Service
-  - `id = [unsigned long]`
+  - `identifier = [unsigned long]`
   - `active = [bool]`
   - `name = [string]`
   - `description = [string]`
@@ -89,13 +89,13 @@
   
 ## Hired service
   - `service = [Service]`
-  - `quantity = [integer]`
+  - `amount = [integer]`
   
 ## Basket 
   - `hiredServices = [Array<Services>]`
   
-## Order
-  - `id = [unsigned long]`
+## Booking
+  - `identifier = [unsigned long]`
   - `userID = [string]`
   - `basket = [Basket]`
   - `price = [string]`
@@ -103,10 +103,9 @@
   - `pickUpTime = [Morning|Afternoon]`
   - `deliveryLocker = [Locker]`
   - `pickUpLocker = [Locker]`
-  - `location = [Location]`
 
 ## Transaction
-  - `id = [long]`
+  - `identifier = [long]`
   - `order = [Order]`
   - `creditCardIdentifier = [string]`
   - `date = [date - iso8601]`

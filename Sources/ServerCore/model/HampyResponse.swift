@@ -5,8 +5,6 @@
 //  Created by Joan Molinas Ramon on 7/12/17.
 //
 
-import Foundation
-
 enum HampyHTTPCode: Int, Codable {
     case ok = 200
     case created = 201
