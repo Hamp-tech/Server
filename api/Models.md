@@ -106,7 +106,7 @@
 
 ## Transaction
   - `identifier = [long]`
-  - `order = [Order]`
+  - `booking = [booking]`
   - `creditCardIdentifier = [string]`
   - `date = [date - iso8601]`
   
