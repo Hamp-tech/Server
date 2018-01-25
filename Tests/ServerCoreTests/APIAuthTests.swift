@@ -1,4 +1,3 @@
-import Foundation
 import XCTest
 @testable import ServerCore
 import PerfectMongoDB
@@ -12,16 +11,17 @@ class APIAuthTests: XCTestCase {
     func testSignup_newUser() {
         
         let db = client.getDatabase(name: "testAuth")
-        let repository = HampyUsersRepository(mongoDatabase: db)
-        let auth = APIAuth(mongoDatabase: db, repository: repository)
+        let repositories = HampyRepositories(mongoDatabase: db)
+        
+        let auth = APIAuth(mongoDatabase: db, repositories: repositories)
         
         defer {
-            repository.close()
+            repositories.close()
             db.close()
         }
     
         let randomNum = arc4random_uniform(100000)
-        let email = "\(randomNum)@gmail.com"
+        //let email = "\(randomNum)@gmail.com"
         
         let json = """
             {
@@ -45,14 +45,14 @@ class APIAuthTests: XCTestCase {
     
     func testSignup_existentUser() {
         let db = client.getDatabase(name: "testAuth")
-        let repository = HampyUsersRepository(mongoDatabase: db)
+        let repositories = HampyRepositories(mongoDatabase: db)
         
         defer {
-            repository.close()
+            repositories.close()
             db.close()
         }
         
-        let auth = APIAuth(mongoDatabase: db, repository: repository)
+        let auth = APIAuth(mongoDatabase: db, repositories: repositories)
         
         let json = """
             {
@@ -77,15 +77,14 @@ class APIAuthTests: XCTestCase {
     
     func testSignin_existentCredentials() {
         let db = client.getDatabase(name: "testAuth")
-        let repository = HampyUsersRepository(mongoDatabase: db)
+        let repositories = HampyRepositories(mongoDatabase: db)
         
         defer {
-            repository.close()
+            repositories.close()
             db.close()
         }
         
-        let auth = APIAuth(mongoDatabase: db, repository: repository)
-        
+        let auth = APIAuth(mongoDatabase: db, repositories: repositories)
         let json = """
             {
                 "email" : "joanmramon@gmail.com",
@@ -101,14 +100,14 @@ class APIAuthTests: XCTestCase {
     
     func testSignin_badCredentials_email() {
         let db = client.getDatabase(name: "testAuth")
-        let repository = HampyUsersRepository(mongoDatabase: db)
+        let repositories = HampyRepositories(mongoDatabase: db)
         
         defer {
-            repository.close()
+            repositories.close()
             db.close()
         }
         
-        let auth = APIAuth(mongoDatabase: db, repository: repository)
+        let auth = APIAuth(mongoDatabase: db, repositories: repositories)
         
         let json = """
             {
@@ -125,14 +124,14 @@ class APIAuthTests: XCTestCase {
     
     func testSignin_badCredentials_pass() {
         let db = client.getDatabase(name: "testAuth")
-        let repository = HampyUsersRepository(mongoDatabase: db)
+        let repositories = HampyRepositories(mongoDatabase: db)
         
         defer {
-            repository.close()
+            repositories.close()
             db.close()
         }
         
-        let auth = APIAuth(mongoDatabase: db, repository: repository)
+        let auth = APIAuth(mongoDatabase: db, repositories: repositories)
         
         let json = """
             {
@@ -148,7 +147,7 @@ class APIAuthTests: XCTestCase {
     }
     
     func testRemoveDatabase() {
-        client.getDatabase(name: "testAuth").drop()
+        _ = client.getDatabase(name: "testAuth").drop()
         client.close()
     }
 }

@@ -23,4 +23,10 @@ class HampyRepositories {
         self.pointsRepository = HampyPointsRepository(mongoDatabase: mongoDatabase)
         self.servicesRepository = HampyServicesRespository(mongoDatabase: mongoDatabase)
     }
+    
+    func close() {
+        usersRepository.close()
+        pointsRepository.close()
+        servicesRepository.close()
+    }
 }
