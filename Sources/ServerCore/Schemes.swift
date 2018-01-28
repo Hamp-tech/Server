@@ -11,6 +11,7 @@ internal struct Schemes {
     private static let authURL = baseURL + "/auth"
     private static let bookingURL = userURL + "/booking/"
     private static let scriptsURL = baseURL + "/scripts"
+    private static let transactionsURL = userURL + "/transactions/"
     
     struct Users {
         static let users = Schemes.userURL
@@ -31,6 +32,10 @@ internal struct Schemes {
         static let restore = Schemes.authURL + "/restore/{id}"
     }
     
+    struct URLs {
+        static let transactions = Schemes.transactionsURL
+    }
+    
     struct Mongo {
         static let uri = "mongodb://localhost"
         
@@ -45,6 +50,7 @@ internal struct Schemes {
             static let services = "services"
             static let points = "points"
             static let bookings = "bookings"
+            static let transactions = "transactions"
         }
     }
     
