@@ -22,6 +22,6 @@ struct HampyBooking: HampyDatabaseable {
     var price: String?
     var point: String? // Identifier to location
     var pickUpTime: PickUpTime?
-    var deliveryLocker: HampyLocker?
-    var pickUpLocker: HampyLocker?
+    var deliveryLockers: [HampyLocker]?
+    var pickUpLockers: [HampyLocker]?
 }

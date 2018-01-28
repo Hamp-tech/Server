@@ -66,7 +66,7 @@ internal extension APIBooking {
                 l.available = false
                 
                 booking.identifier = UUID.generateHampIdentifier()
-                booking.deliveryLocker = l
+                booking.deliveryLockers = [l]
                 
                 let result = saveBooking(booking: booking)
                 
@@ -84,21 +84,7 @@ internal extension APIBooking {
                 default:
                     hampyResponse = APIHampyResponsesFactory.Booking.bookingFailed()
                 }
-                
-//                point.updateLocker(locker: l)
-//
-//                let result = self.repositories?.pointsRepository.update(obj: point)
-//
-//                switch result {
-//                case .success?:
-//                    booking.identifier = UUID.generateHampIdentifier()
-//                    booking.deliveryLocker = l
-//
-//
-//                    hampyResponse = APIHampyResponsesFactory.Booking.bookingSuccess(booking: booking)
-//                default:
-//                    hampyResponse = APIHampyResponsesFactory.Booking.bookingFailed()
-//                }
+            
             } else {
                 // No lockers available to this booking
                 hampyResponse = APIHampyResponsesFactory.Booking.bookingNotEnoughLockers()
