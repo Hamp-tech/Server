@@ -1,5 +1,5 @@
 //
-//  APIStripe.swift
+//  StripeManager.swift
 //  Server-SwiftPackageDescription
 //
 //  Created by Joan Molinas Ramon on 8/12/17.
@@ -9,29 +9,16 @@ import PerfectHTTP
 import PerfectCURL
 import PerfectMongoDB
 
-class APIStripe: APIAble {
+class StripeManager {
     
-    // MARK: Properties
-    var mongoDatabase: MongoDatabase
-    var repositories: HampyRepositories?
-    
-    // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
-        self.mongoDatabase = mongoDatabase
-        self.repositories = repositories
-    }
-    
-    func routes() -> Routes {
-        var routes = Routes()
-        routes.add(pay())
-        routes.add(createCustomer())
-        routes.add(addCard())
-        return routes
+    // MARK: - Public API
+    static func pay(cardID: String, amount: Float32, completionHandler: (HampyResponse<HampyUser>) -> ()) {
+        completionHandler(HampyResponse<HampyUser>())
     }
     
 }
 
-private extension APIStripe {
+private extension StripeManager {
     
     func pay() -> Route {
         // Funciona amb token de visa
@@ -84,7 +71,7 @@ private extension APIStripe {
     }
 }
 
-private extension APIStripe {
+private extension StripeManager {
     // MARK: - Helper
     func connectWithStripe(url: String, method: HTTPMethod = .post, data: String, completion: @escaping (HampyResponse<String>) -> ()) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")

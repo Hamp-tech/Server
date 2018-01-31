@@ -50,50 +50,76 @@ internal extension APIBooking {
     func booking(data: Data, userID: String) -> HampyResponse<HampyBooking> {
         var hampyResponse: HampyResponse<HampyBooking> = HampyResponse()
         
-        do {
-            var booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
-            booking.userID = userID
-            
-            // Get services booked
-            let size = basketSizes(booking: booking).first
-            
-            // Get point associated
-            var point = self.repositories!.pointsRepository.find(properties: ["identifier" : booking.point!]).first!
-            let lockers = point.freeLockers(with: size!)
-            
-            // Lockers available
-            if var l = lockers?.first {
-                l.available = false
-                
-                booking.identifier = UUID.generateHampIdentifier()
-                booking.deliveryLockers = [l]
-                
-                let result = saveBooking(booking: booking)
-                
-                switch result {
-                case .success:
-                    
-                    let result = updateLocker(point: &point, locker: l)
-                    switch result {
-                    case .success:
-                        hampyResponse = APIHampyResponsesFactory.Booking.bookingSuccess(booking: booking)
-                    default:
-                        hampyResponse = APIHampyResponsesFactory.Booking.bookingFailed()
-                    }
-                
-                default:
-                    hampyResponse = APIHampyResponsesFactory.Booking.bookingFailed()
-                }
-            
-            } else {
-                // No lockers available to this booking
-                hampyResponse = APIHampyResponsesFactory.Booking.bookingNotEnoughLockers()
-            }
-        } catch let error {
-            hampyResponse = APIHampyResponsesFactory.Booking.bookingFailed(message: error.localizedDescription)
-        }
+//        do {
+//            var booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
+//            booking.userID = userID
+//            
+//            // Get services booked
+//            let size = basketSizes(booking: booking).first
+//            
+//            // Get point associated
+//            var point = self.repositories!.pointsRepository.find(properties: ["identifier" : booking.point!]).first!
+//            let lockers = point.freeLockers(with: size!)
+//            
+//            // Lockers available
+//            if var l = lockers?.first {
+////                l.available = false
+////                
+////                booking.identifier = UUID.generateHampIdentifier()
+////                booking.deliveryLockers = [l]
+////                
+////                let result = saveBooking(booking: booking)
+////                
+////                switch result {
+////                case .success:
+////                    
+////                    let result = updateLocker(point: &point, locker: l)
+////                    switch result {
+////                    case .success:
+////                        hampyResponse = APIHampyResponsesFactory.Booking.transactionSuccess(booking: booking)
+////                    default:
+////                        hampyResponse = APIHampyResponsesFactory.Booking.transactionFailed()
+////                    }
+////                
+////                default:
+////                    hampyResponse = APIHampyResponsesFactory.Booking.transactionFailed()
+////                }
+////            
+////            } else {
+////                // No lockers available to this booking
+////                hampyResponse = APIHampyResponsesFactory.Booking.transactionNotEnoughLockers()
+////            }
+//        } catch let error {
+////            hampyResponse = APIHampyResponsesFactory.Booking.transactionFailed(message: error.localizedDescription)
+//        }
         
         return hampyResponse
+    }
+    
+    func createBooking(data: Data, userID: String) throws -> HampyBooking {
+        var booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
+        booking.userID = userID
+        
+        // Get services booked
+        let size = basketSizes(booking: booking).first
+        
+        // Get point associated
+        var point = self.repositories!.pointsRepository.find(properties: ["identifier" : booking.point!]).first!
+        let lockers = point.freeLockers(with: size!)
+        
+        if var l = lockers?.first {
+            l.available = false
+            booking.identifier = UUID.generateHampIdentifier()
+            booking.deliveryLockers = [l]
+        }
+        
+        return booking
+    }
+    
+    // Return if was saved or not
+    func saveBooking(booking: HampyBooking) -> MongoResult {
+        let repository = repositories!.bookingRepository
+        return repository.create(obj: booking)
     }
 }
 
@@ -103,12 +129,6 @@ private extension APIBooking {
         let services = self.repositories?.servicesRepository.find(elements: servicesIdentifiers!)
         
         return services!.map{$0.size!}
-    }
-    
-    // Return if was saved or not
-    func saveBooking(booking: HampyBooking) -> MongoResult {
-        let repository = repositories!.bookingRepository
-        return repository.create(obj: booking)
     }
     
     func updateLocker(point: inout HampyPoint, locker: HampyLocker) -> MongoResult {

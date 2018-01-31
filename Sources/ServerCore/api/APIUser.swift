@@ -6,7 +6,6 @@
 //
 
 import PerfectHTTP
-import Foundation
 import PerfectMongoDB
 
 class APIUser: APIAble {

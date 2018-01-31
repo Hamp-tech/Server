@@ -75,34 +75,37 @@ extension APIHampyResponsesFactory {
         }
     }
     
-    struct Booking {
-        static func bookingSuccess(booking: HampyBooking) -> HampyResponse<HampyBooking> {
-            var hampyResponse = HampyResponse<HampyBooking>()
+    struct Transaction {
+        static func transactionSuccess(transaction: HampyTransaction) -> HampyResponse<HampyTransaction> {
+            var hampyResponse = HampyResponse<HampyTransaction>()
             hampyResponse.code = .ok
             hampyResponse.message = "Services booked"
-            hampyResponse.data = booking
+            hampyResponse.data = transaction
             
             return hampyResponse
         }
         
-        static func bookingNotEnoughLockers() -> HampyResponse<HampyBooking> {
-            var hampyResponse = HampyResponse<HampyBooking>()
+        static func transactionNotEnoughLockers() -> HampyResponse<HampyTransaction> {
+            var hampyResponse = HampyResponse<HampyTransaction>()
             hampyResponse.code = .conflict
-            hampyResponse.message = "Not enough  lockers to satisfy your necessities"
+            hampyResponse.message = "Not enough lockers to satisfy your necessities"
             
             return hampyResponse
         }
         
-        static func bookingFailed() -> HampyResponse<HampyBooking> {
-            var hampyResponse = HampyResponse<HampyBooking>()
-            hampyResponse.code = .unknown
-            hampyResponse.message = "Something wrong happened"
-            
+        static func transactionStripeError(stripeError: AnyObject) -> HampyResponse<String> {
+            var hampyResponse = HampyResponse<String>()
+            hampyResponse.code = .internalError
+            hampyResponse.message = "Stripe error"
             return hampyResponse
         }
         
-        static func bookingFailed(message: String) -> HampyResponse<HampyBooking> {
-            var hampyResponse = HampyResponse<HampyBooking>()
+        static func transactionFailed() -> HampyResponse<HampyTransaction> {
+            return transactionFailed(message: "Something wrong happened")
+        }
+        
+        static func transactionFailed(message: String) -> HampyResponse<HampyTransaction> {
+            var hampyResponse = HampyResponse<HampyTransaction>()
             hampyResponse.code = .badRequest
             hampyResponse.message = message
             

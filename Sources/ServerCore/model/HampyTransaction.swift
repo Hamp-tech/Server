@@ -12,6 +12,10 @@ struct HampyTransaction: HampyDatabaseable {
     // MARK: - Properties
     static var databaseScheme: String = Schemes.Mongo.Collections.transactions
     var identifier: String?
+    var userID: String?
+    var booking: HampyBooking?
+    var creditCardIdentifier: String?
+    var date: String?
     
     
 }

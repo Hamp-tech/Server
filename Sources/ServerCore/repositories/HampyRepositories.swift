@@ -16,6 +16,7 @@ class HampyRepositories {
     let pointsRepository: HampyPointsRepository
     let servicesRepository: HampyServicesRespository
     let bookingRepository: HampyBookingRepository
+    let transactionsRepository: HampyTransactionsRepository
     
     // MARK: - Life cycle
     init(mongoDatabase: MongoDatabase) {
@@ -24,6 +25,7 @@ class HampyRepositories {
         self.pointsRepository = HampyPointsRepository(mongoDatabase: mongoDatabase)
         self.servicesRepository = HampyServicesRespository(mongoDatabase: mongoDatabase)
         self.bookingRepository = HampyBookingRepository(mongoDatabase: mongoDatabase)
+        self.transactionsRepository = HampyTransactionsRepository(mongoDatabase: mongoDatabase)
     }
     
     func close() {
@@ -31,5 +33,6 @@ class HampyRepositories {
         pointsRepository.close()
         servicesRepository.close()
         bookingRepository.close()
+        transactionsRepository.close()
     }
 }

@@ -51,7 +51,7 @@
   - `gender = [M|F|U]`
   - `stripeID = [string]`
   
-## Profile request
+## Profile response
   - `name = [string]`
   - `surname = [string]`
   - `phone = [string]`
@@ -96,7 +96,6 @@
   
 ## Booking
   - `identifier = [unsigned long]`
-  - `userID = [string]`
   - `basket = [Basket]`
   - `price = [string]`
   - `location = [Location]`
@@ -106,6 +105,7 @@
 
 ## Transaction
   - `identifier = [long]`
+  - `userID = [string]`
   - `booking = [booking]`
   - `creditCardIdentifier = [string]`
   - `date = [date - iso8601]`
