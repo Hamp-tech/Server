@@ -35,5 +35,6 @@ struct HampyResponse<T>: HampyCodable where T: HampyCodable {
     init(code: HampyHTTPCode, message: String = "", data: T? = nil) {
         self.code = code
         self.message = message
+        self.data = data
     }
 }

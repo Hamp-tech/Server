@@ -48,12 +48,12 @@ class APITransactionTests: XCTestCase {
             
             let jsonResult = """
                 {
-                    "date": "2018-01-31T11:49:58.899",
+                    "pickUpDate": "2018-01-31T11:49:58.899",
                     "userID": "f40de5d7ba4246598ad41daef45ac7e5",
                     "identifier": "090cd5b1009c4f84b778bb047ea4397a",
                     "creditCardIdentifier": "1234",
                     "booking": {
-                        "deliveryLockers": [
+                        "pickUpLockers": [
                             {
                                 "code": 1111,
                                 "number": 1,
@@ -80,13 +80,13 @@ class APITransactionTests: XCTestCase {
             XCTAssertNotNil(resp.identifier)
             resp.identifier = nil
             
-            XCTAssertNotNil(resp.date)
-            resp.date = nil
+            XCTAssertNotNil(resp.pickUpDate)
+            resp.pickUpDate = nil
             
-            XCTAssertNotNil(resp.booking?.deliveryLockers)
-            XCTAssertNil(resp.booking?.pickUpLockers)
+            XCTAssertNil(resp.booking?.deliveryLockers)
+            XCTAssertNotNil(resp.booking?.pickUpLockers)
             
-            let dl = resp.booking!.deliveryLockers![0]
+            let dl = resp.booking!.pickUpLockers![0]
             let l = HampyLocker(identifier: "1", number: 1, code: 1111, available: true, capacity: .S)
             
             XCTAssertEqual(dl.json, l.json)

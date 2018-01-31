@@ -23,7 +23,8 @@ struct HampyTransaction: HampyDatabaseable {
     var userID: String?
     var booking: HampyBooking?
     var creditCardIdentifier: String?
-    var date: String?
+    var pickUpDate: String?
+    var deliveryDate: String?
     var state: State?
     
     

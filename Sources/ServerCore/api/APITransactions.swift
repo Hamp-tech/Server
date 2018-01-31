@@ -45,7 +45,10 @@ private extension APITransactions {
     
     func userTransactions() -> Route {
         return Route(method: .get, uri: Schemes.URLs.transactions, handler: { (request, response) in
-            Logger.log("Test")
+            
+            let hampyResponse = self.transactions(userID: request.urlVariables["id"]!)
+            response.setBody(json: hampyResponse.json)
+            response.completed()
         })
     }
 }
@@ -58,7 +61,7 @@ internal extension APITransactions {
             var transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
             transaction.userID = userID
             transaction.identifier = UUID.generateHampIdentifier()
-            transaction.date = Date().iso8601()
+            transaction.pickUpDate = Date().iso8601()
             //                transaction.state = .initial
             
             let basketSizes = self.basketSizes(booking: transaction.booking!)
@@ -99,6 +102,11 @@ internal extension APITransactions {
             completionBlock(hampyResponse)
         }
     }
+    
+    func transactions(userID: String) -> HampyResponse<Array<HampyTransaction>> {
+        let transactions = repositories?.transactionsRepository.find(properties: ["userID": userID])
+        return HampyResponse<Array<HampyTransaction>>(code: .ok, data: transactions)
+    }
 }
 
 private extension APITransactions {
@@ -116,7 +124,7 @@ private extension APITransactions {
             point.updateLocker(locker: l)
         }
         
-        transaction.booking?.deliveryLockers = lockers
+        transaction.booking?.pickUpLockers = lockers
         
         let result = repositories!.pointsRepository.update(obj: point)
         

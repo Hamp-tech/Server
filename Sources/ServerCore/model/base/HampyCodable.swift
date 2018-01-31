@@ -16,3 +16,7 @@ extension HampyCodable {
         return String(data: try! HampySingletons.sharedJSONEncoder.encode(self), encoding: .utf8) ?? ""
     }
 }
+
+extension Array: HampyCodable {
+    
+}
