@@ -41,6 +41,7 @@ private extension APITransactions {
                 var transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: d)
                 transaction.userID = request.urlVariables["id"]
                 transaction.identifier = UUID.generateHampIdentifier()
+                transaction.date = Date().iso8601()
                 
                 let basketSizes = self.basketSizes(booking: transaction.booking!)
                 
