@@ -35,60 +35,65 @@ private extension APITransactions {
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else { assert(false) }
             
-            var hampyResponse: HampyResponse<HampyTransaction>!
-            
-            do {
-                var transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: d)
-                transaction.userID = request.urlVariables["id"]
-                transaction.identifier = UUID.generateHampIdentifier()
-                transaction.date = Date().iso8601()
-//                transaction.state = .initial
-            
-                let basketSizes = self.basketSizes(booking: transaction.booking!)
-                
-                // Calculate if we have enought lockers to put the basket
-                // 1st Version
-                let size = basketSizes.first!
-                
-                var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
-                let lockers = point.freeLockers(with: size)
-                
-                if let l = lockers?.first {
-                    
-                    StripeManager.pay(cardID: "123", amount: 10, completionHandler: { (resp) in
-                        
-//                        if resp == success { }
-//                        else { }
-                        
-                        let updatePointResult = self.updatePoint(transaction: transaction, point: &point, lockers: [l])
-                        let createTransactionResult = self.createTransaction(transaction: transaction)
-                        
-                        if updatePointResult.updated && createTransactionResult.created {
-                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
-                        } else {
-                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
-                        }
-                        
-                        response.setBody(json: hampyResponse.json)
-                        response.completed()
-                    })
-                    // END PAY STRIPE
-                } else {
-                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
-                }
-                // END 1st Version
-            } catch let error {
-                hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed(message: error.localizedDescription)
-            }
-            
-            response.setBody(json: hampyResponse.json)
-            response.completed()
-            
+            self.newTransaction(data: d, userID: request.urlVariables["id"]!, completionBlock: { (resp) in
+                response.setBody(json: resp.json)
+                response.completed()
+            })
         })
     }
 }
 
 private extension APITransactions {
+    
+    func newTransaction(data: Data, userID: String, completionBlock: (HampyResponse<HampyTransaction>) -> ()) {
+        var hampyResponse: HampyResponse<HampyTransaction>!
+        
+        do {
+            var transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
+            transaction.userID = userID
+            transaction.identifier = UUID.generateHampIdentifier()
+            transaction.date = Date().iso8601()
+            //                transaction.state = .initial
+            
+            let basketSizes = self.basketSizes(booking: transaction.booking!)
+            
+            // Calculate if we have enought lockers to put the basket
+            // 1st Version
+            let size = basketSizes.first!
+            
+            var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
+            let lockers = point.freeLockers(with: size)
+            
+            if let l = lockers?.first {
+                
+                StripeManager.pay(cardID: "123", amount: 10, completionHandler: { (resp) in
+                    
+                    //                        if resp == success { }
+                    //                        else { }
+                    
+                    let updatePointResult = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
+                    let createTransactionResult = self.createTransaction(transaction: transaction)
+                    
+                    if updatePointResult.updated && createTransactionResult.created {
+                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                    } else {
+                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
+                    }
+                    
+                    completionBlock(hampyResponse)
+                })
+                // END PAY STRIPE
+            } else {
+                hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
+                completionBlock(hampyResponse)
+            }
+            // END 1st Version
+        } catch let error {
+            hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed(message: error.localizedDescription)
+            completionBlock(hampyResponse)
+        }
+    }
+    
     func basketSizes(booking: HampyBooking) -> [Size] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
         let services = self.repositories?.servicesRepository.find(elements: servicesIdentifiers!)
@@ -96,12 +101,14 @@ private extension APITransactions {
         return services!.map{$0.size!}
     }
     
-    func updatePoint(transaction: HampyTransaction, point: inout HampyPoint, lockers: [HampyLocker]) -> (updated: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
+    func updatePoint(transaction: inout HampyTransaction, point: inout HampyPoint, lockers: [HampyLocker]) -> (updated: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
         lockers.forEach {
             var l = $0
             l.available = false
             point.updateLocker(locker: l)
         }
+        
+        transaction.booking?.deliveryLockers = lockers
         
         let result = repositories!.pointsRepository.update(obj: point)
         
