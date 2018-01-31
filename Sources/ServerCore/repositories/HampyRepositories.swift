@@ -12,11 +12,11 @@ class HampyRepositories {
     
     // MARK: - Properties
     private let mongoDatabase: MongoDatabase
-    let usersRepository: HampyUsersRepository
-    let pointsRepository: HampyPointsRepository
-    let servicesRepository: HampyServicesRespository
-    let bookingRepository: HampyBookingRepository
-    let transactionsRepository: HampyTransactionsRepository
+    let usersRepository: HampyRepository<HampyUser>
+    let pointsRepository: HampyRepository<HampyPoint>
+    let servicesRepository: HampyRepository<HampyService>
+    let bookingRepository: HampyRepository<HampyBooking>
+    let transactionsRepository: HampyRepository<HampyTransaction>
     
     // MARK: - Life cycle
     init(mongoDatabase: MongoDatabase) {

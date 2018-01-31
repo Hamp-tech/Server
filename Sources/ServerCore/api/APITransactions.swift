@@ -24,6 +24,7 @@ struct APITransactions: APIAble {
     func routes() -> Routes {
         var routes = Routes()
         routes.add(newTransaction())
+        routes.add(userTransactions())
         return routes
     }
 }
@@ -41,10 +42,15 @@ private extension APITransactions {
             })
         })
     }
+    
+    func userTransactions() -> Route {
+        return Route(method: .get, uri: Schemes.URLs.transactions, handler: { (request, response) in
+            Logger.log("Test")
+        })
+    }
 }
 
-private extension APITransactions {
-    
+internal extension APITransactions {
     func newTransaction(data: Data, userID: String, completionBlock: (HampyResponse<HampyTransaction>) -> ()) {
         var hampyResponse: HampyResponse<HampyTransaction>!
         
@@ -93,7 +99,9 @@ private extension APITransactions {
             completionBlock(hampyResponse)
         }
     }
-    
+}
+
+private extension APITransactions {
     func basketSizes(booking: HampyBooking) -> [Size] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
         let services = self.repositories?.servicesRepository.find(elements: servicesIdentifiers!)
