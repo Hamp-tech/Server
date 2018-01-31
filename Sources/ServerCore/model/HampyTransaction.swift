@@ -8,6 +8,14 @@
 import Foundation
 
 struct HampyTransaction: HampyDatabaseable {
+    // To be able to use 2 phase commits
+    enum State: String, Codable {
+        case initial
+        case accepted
+        case paying
+        case done
+        case canceled
+    }
     
     // MARK: - Properties
     static var databaseScheme: String = Schemes.Mongo.Collections.transactions
@@ -16,6 +24,7 @@ struct HampyTransaction: HampyDatabaseable {
     var booking: HampyBooking?
     var creditCardIdentifier: String?
     var date: String?
+    var state: State?
     
     
 }

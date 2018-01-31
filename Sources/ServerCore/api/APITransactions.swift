@@ -42,11 +42,11 @@ private extension APITransactions {
                 transaction.userID = request.urlVariables["id"]
                 transaction.identifier = UUID.generateHampIdentifier()
                 transaction.date = Date().iso8601()
-                
+//                transaction.state = .initial
+            
                 let basketSizes = self.basketSizes(booking: transaction.booking!)
                 
                 // Calculate if we have enought lockers to put the basket
-                
                 // 1st Version
                 let size = basketSizes.first!
                 
@@ -55,23 +55,22 @@ private extension APITransactions {
                 
                 if let l = lockers?.first {
                     
-                    // PAY STRIPE
                     StripeManager.pay(cardID: "123", amount: 10, completionHandler: { (resp) in
                         
 //                        if resp == success { }
 //                        else { }
                         
                         let updatePointResult = self.updatePoint(transaction: transaction, point: &point, lockers: [l])
-                        if updatePointResult.updated {
-                            let createTransactionResult = self.createTransaction(transaction: transaction)
-                            if createTransactionResult.created {
-                                hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
-                            } else {
-                               hampyResponse = createTransactionResult.errorResponse!
-                            }
+                        let createTransactionResult = self.createTransaction(transaction: transaction)
+                        
+                        if updatePointResult.updated && createTransactionResult.created {
+                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
                         } else {
-                            hampyResponse = updatePointResult.errorResponse!
+                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
                         }
+                        
+                        response.setBody(json: hampyResponse.json)
+                        response.completed()
                     })
                     // END PAY STRIPE
                 } else {
@@ -101,7 +100,7 @@ private extension APITransactions {
         lockers.forEach {
             var l = $0
             l.available = false
-            point.updateLocker(locker: $0)
+            point.updateLocker(locker: l)
         }
         
         let result = repositories!.pointsRepository.update(obj: point)
