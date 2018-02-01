@@ -12,6 +12,7 @@ internal struct Schemes {
     private static let bookingURL = userURL + "/booking"
     private static let scriptsURL = baseURL + "/scripts"
     private static let transactionsURL = userURL + "/transactions"
+    private static let stripeURL = "https://api.stripe.com/v1"
     
     struct Users {
         static let users = Schemes.userURL
@@ -32,6 +33,10 @@ internal struct Schemes {
         static let transactions = Schemes.transactionsURL
         static let transactionsID = Schemes.transactionsURL + "/{tid}"
         static let transactionsDeliver = Schemes.transactionsURL + "/{tid}/deliver"
+        
+        struct Stripe {
+            static let createCostumer = Schemes.stripeURL + "/customers"
+        }
     }
     
     struct Mongo {

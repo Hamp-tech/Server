@@ -38,9 +38,20 @@ class APIAuthTests: XCTestCase {
         """
         
         let data = json.data(using: .utf8)!
-        let response = auth.signup(body: data)
         
-        XCTAssertEqual(response.code, .created)
+        let singupExpectation = expectation(description: "Sign up ok expectation")
+        
+        auth.signup(body: data) { (response) in
+            XCTAssertEqual(response.code, .created)
+            singupExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                Logger.d(error.localizedDescription, event: .e)
+            }
+        }
+        
     }
     
     func testSignup_existentUser() {
@@ -69,9 +80,18 @@ class APIAuthTests: XCTestCase {
         """
         
         let data = json.data(using: .utf8)!
-        let response = auth.signup(body: data)
+        let singupExpectation = expectation(description: "Sign up expectation")
         
-        XCTAssertEqual(response.code, .conflict)
+        auth.signup(body: data) { (response) in
+            XCTAssertEqual(response.code, .conflict)
+            singupExpectation.fulfill()
+        }
+        
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                Logger.d(error.localizedDescription, event: .e)
+            }
+        }
         
     }
     

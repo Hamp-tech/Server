@@ -12,9 +12,18 @@ import PerfectMongoDB
 class StripeManager {
     
     // MARK: - Public API
-    static func pay(cardID: String, amount: Float32, completionHandler: (HampyResponse<HampyUser>) -> ()) {
+    static func pay(costumerID: String = "", cardID: String, amount: Float32, completionHandler: (HampyResponse<HampyUser>) -> ()) {
         completionHandler(HampyResponse<HampyUser>())
     }
+    
+    static func createCostumer(userID: String, completionHandler: @escaping (HampyResponse<[String: Any]>) -> ()) {
+        let url = Schemes.URLs.Stripe.createCostumer
+        
+        let data = "description=Costumer associated to \(userID)"
+        
+        self.connectWithStripe(url: url, data: data, completion: completionHandler)
+    }
+    
     
 }
 
@@ -32,10 +41,10 @@ private extension StripeManager {
                 data += "description=\("Example")&"
                 data += "source=\(request.urlVariables["token"]!)"
             
-            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
-                response.setBody(json: hampyResponse.json)
-                response.completed()
-            })
+//            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
+//                response.setBody(json: hampyResponse.json)
+//                response.completed()
+//            })
         })
     }
     
@@ -48,10 +57,10 @@ private extension StripeManager {
             var data = "description=\("Customer create on example")&"
             data += "source=\(request.urlVariables["card_token"]!)"
             
-            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
-                response.setBody(json: hampyResponse.json)
-                response.completed()
-            })
+//            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
+//                response.setBody(json: hampyResponse.json)
+//                response.completed()
+//            })
         })
     }
     
@@ -63,17 +72,17 @@ private extension StripeManager {
             
             let data = "source=\("tok_visa_debit")"
             
-            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
-                response.setBody(json: hampyResponse.json)
-                response.completed()
-            })
+//            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
+//                response.setBody(json: hampyResponse.json)
+//                response.completed()
+//            })
         })
     }
 }
 
 private extension StripeManager {
     // MARK: - Helper
-    func connectWithStripe(url: String, method: HTTPMethod = .post, data: String, completion: @escaping (HampyResponse<String>) -> ()) {
+    static func connectWithStripe(url: String, method: HTTPMethod = .post, data: String, completion: @escaping (HampyResponse<[String : Any]>) -> ()) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")
         let contentType = CURLRequest.Option.addHeader(CURLRequest.Header.Name.contentType, "application/x-www-form-urlencoded")
         let met = CURLRequest.Option.httpMethod(method)
@@ -82,13 +91,24 @@ private extension StripeManager {
         CURLRequest(url, options: [met, user, contentType, dataPost]).perform { (confirmation) in
             do {
                 let resp = try confirmation()
-                let error = HampyHTTPCode(code: resp.responseCode)
-                print(resp.bodyJSON)
-                completion(HampyResponse(code: error))
+                let code = HampyHTTPCode(code: resp.responseCode)
+                var message: String
+                
+                switch code {
+                case .ok:
+                    message = "User created"
+                default:
+                    message = "Something wrong happened"
+                }
+                
+                let hampyResponse = HampyResponse<[String : Any]>(code: code, message: message, data: resp.bodyJSON)
+                completion(hampyResponse)
             } catch let error as CURLResponse.Error {
                 print("Failed: response code \(error.response.bodyJSON)")
+                Logger.d("FIRE COMPLETION HANDLER \(error.localizedDescription)", event: .e)
             } catch {
                 print("Fatal error \(error)")
+                Logger.d("FIRE COMPLETION HANDLER", event: .e)
             }
         }
     }

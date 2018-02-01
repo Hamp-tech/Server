@@ -12,7 +12,7 @@ struct APIHampyResponsesFactory {}
 extension APIHampyResponsesFactory {
     struct Auth {
         static func signupOK(user: HampyUser) -> HampyResponse<HampyUser> {
-            var u = HampyUser()
+            var u = user
             u.password = nil
             u.lastActivity = nil
             u.language = nil

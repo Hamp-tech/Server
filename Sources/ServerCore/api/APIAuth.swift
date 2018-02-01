@@ -57,10 +57,16 @@ private extension APIAuth {
                 assert(false)
             }
             
-            let hampyResponse = self.signup(body: d)
+            Logger.d("Sign un started")
             
-            response.setBody(json: hampyResponse.json)
-            response.completed()
+            self.signup(body: d, completionBlock: { (resp) in
+                response.setBody(json: resp.json)
+                response.completed()
+                
+                Logger.d("Sign up finished")
+            })
+            
+            
         })
     }
     
@@ -97,32 +103,35 @@ internal extension APIAuth {
         return hampyResponse
     }
     
-    func signup(body: Data) -> HampyResponse<HampyUser> {
-        var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
-        user?.lastActivity = Date().iso8601()
-        user?.identifier = UUID.generateHampIdentifier()
+    func signup(body: Data, completionBlock:@escaping (HampyResponse<HampyUser>) -> ()) {
+        var user = try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
+        user.lastActivity = Date().iso8601()
+        user.identifier = UUID.generateHampIdentifier()
+    
+        var userToFind = HampyUser()
+        userToFind.email = user.email
+        let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
         
-        var hampyResponse: HampyResponse<HampyUser>!
-        
-        if let u = user {
-            var userToFind = HampyUser()
-            userToFind.email = u.email
-            let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
-            
-            if existsResult.0 {
-                hampyResponse = APIHampyResponsesFactory.Auth.signupFailConflict()
-            } else {
-                let result = self.repositories!.usersRepository.create(obj: u)
-                switch result {
-                case .success:
-                    hampyResponse = APIHampyResponsesFactory.Auth.signupOK(user: u)
+        if existsResult.0 {
+            completionBlock(APIHampyResponsesFactory.Auth.signupFailConflict())
+            Logger.d("User exists!")
+        } else {
+            Logger.d("Create costumer started")
+            StripeManager.createCostumer(userID: user.identifier!) { (stripeResponse) in
+                switch stripeResponse.code {
+                case .ok:
+                    Logger.d("Create costumer finished")
+                    Logger.d("Create user on database")
+                    user.stripeID = stripeResponse.data!["id"] as? String
+                    let _ = self.repositories!.usersRepository.create(obj: user)
+                    Logger.d("Create user on database finished")
+                    
+                    completionBlock(APIHampyResponsesFactory.Auth.signupOK(user: user))
                 default:
-                    hampyResponse = APIHampyResponsesFactory.Auth.signupFailUnknown()
-                    break
+                    completionBlock(APIHampyResponsesFactory.Auth.signupFailUnknown())
+                    Logger.d("Create costumer error, look logs!", event: .e)
                 }
             }
         }
-        
-        return hampyResponse
     }
 }
