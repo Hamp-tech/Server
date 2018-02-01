@@ -30,4 +30,8 @@ struct HampyPoint: HampyDatabaseable {
         guard idx != NSNotFound else { return }
         self.lockers?[idx!] = locker
     }
+    
+    func findLockers(numbersOfLocker: Array<Int>) -> Array<HampyLocker> {
+        return lockers!.filter{numbersOfLocker.contains($0.number!)}
+    }
 }

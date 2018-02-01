@@ -24,6 +24,7 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         let result = self.mongoCollection.find(query: query)
         var arr = Array<T>()
         result?.forEach{
+            Logger.d($0.asString)
             let data = $0.asString.data(using: .utf8)!
             arr.append(try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data))
         }

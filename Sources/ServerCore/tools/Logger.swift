@@ -8,7 +8,7 @@
 import Foundation
 
 struct Logger {
-    static func log(_ message: String,
+    static func d(_ message: String,
                     event: Event = .d,
                     fileName: String = #file,
                     line: Int = #line,

@@ -86,6 +86,8 @@ class APITransactionTests: XCTestCase {
             XCTAssertNil(resp.booking?.deliveryLockers)
             XCTAssertNotNil(resp.booking?.pickUpLockers)
             
+            XCTAssertEqual(transaction.transactions(userID: "de7d6f7733324fd69d52b562ddd7589f").data?.count, 1)
+            
             let dl = resp.booking!.pickUpLockers![0]
             let l = HampyLocker(identifier: "1", number: 1, code: 1111, available: true, capacity: .S)
             

@@ -35,7 +35,7 @@ private extension APIUser {
         return Route(method: .put, uri: Schemes.Users.users, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                // TODO: Implement error handler
+                Logger.d("Handler", event: .e)
                 assert(false)
             }
             

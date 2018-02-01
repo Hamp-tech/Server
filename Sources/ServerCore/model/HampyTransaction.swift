@@ -9,12 +9,22 @@ import Foundation
 
 struct HampyTransaction: HampyDatabaseable {
     // To be able to use 2 phase commits
-    enum State: String, Codable {
+    enum DBState: String, Codable {
         case initial
         case accepted
         case paying
         case done
         case canceled
+    }
+    
+    enum Phase: Int, Codable {
+        case toPickUp
+        case washing
+        case drying
+        case folding
+        case toDeliver
+        case delivering
+        case delivered
     }
     
     // MARK: - Properties
@@ -25,7 +35,8 @@ struct HampyTransaction: HampyDatabaseable {
     var creditCardIdentifier: String?
     var pickUpDate: String?
     var deliveryDate: String?
-    var state: State?
+    var dbState: DBState?
+    var phase: Phase?
     
     
 }

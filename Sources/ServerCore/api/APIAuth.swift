@@ -38,7 +38,7 @@ private extension APIAuth {
             let data = request.postBodyString?.data(using: .utf8)
             
             guard let d = data else {
-                // TODO: Implement error handler
+                Logger.d("Handler", event: .e)
                 assert(false)
             }
             
@@ -53,7 +53,7 @@ private extension APIAuth {
         return Route(method: .post, uri: Schemes.Auth.signup, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                // TODO: Implement error handler
+                Logger.d("Handler", event: .e)
                 assert(false)
             }
             
