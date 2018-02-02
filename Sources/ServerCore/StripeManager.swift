@@ -12,57 +12,51 @@ import PerfectMongoDB
 class StripeManager {
     
     // MARK: - Public API
-    static func pay(costumerID: String = "", cardID: String, amount: Float32, completionHandler: (HampyResponse<HampyUser>) -> ()) {
+    static func pay(costumerID: String = "",
+                    cardID: String,
+                    amount: Float32,
+                    completionHandler: (HampyResponse<HampyUser>) -> ()) {
         completionHandler(HampyResponse<HampyUser>())
     }
     
-    static func createCostumer(userID: String, completionHandler: @escaping (HampyResponse<[String: Any]>) -> ()) {
-        let url = Schemes.URLs.Stripe.createCostumer
+    static func createCustomer(userID: String,
+                               completionHandler: @escaping (HampyResponse<[String: Any]>) -> ()) {
+        let url = Schemes.URLs.Stripe.createCustomer
         
         let data = "description=Costumer associated to \(userID)"
         
         self.connectWithStripe(url: url, data: data, completion: completionHandler)
     }
     
+    static func createCard(customerID: String,
+                           card: String,
+                           completionHandler: @escaping (HampyResponse<[String: Any]>) -> ()) {
+        let url = Schemes.URLs.Stripe.createCard.replacingOccurrences(of: "{id}", with: customerID)
+        
+        let card = [
+            "object" : "card",
+            "number" : "4242424242424242",
+            "exp_month" : "12",
+            "exp_year" : "21",
+            "cvc": "222",
+        ]
+        
+        let foo = "source=[object=card&number=4242424242424242&exp_month=12&exp_year=21&cvc=222]"
+        let bar = "source:{\"object\": \"card\", \"number\": \"4242424242424242\", \"exp_month\": 12, \"exp_year\": 21, \"cvc\": 222 }"
+        
+        
+        
+        let json = String.init(data: try!HampySingletons.sharedJSONEncoder.encode(card), encoding: .utf8)
+        let data = "source=\(json!)"
+        self.connectWithStripe(url: url, data: foo) { (response) in
+            Logger.d(response)
+        }
+    }
+    
     
 }
 
 private extension StripeManager {
-    
-    func pay() -> Route {
-        // Funciona amb token de visa
-        // TODO: Pass amount on parameter
-        return Route(method: .post, uri: "/api/v1/pay/{token}", handler: { request, response in
-            
-            let url = "https://api.stripe.com/v1/charges"
-            
-            var data = "amount=\(2)&"
-                data += "currency=eur&"
-                data += "description=\("Example")&"
-                data += "source=\(request.urlVariables["token"]!)"
-            
-//            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
-//                response.setBody(json: hampyResponse.json)
-//                response.completed()
-//            })
-        })
-    }
-    
-    func createCustomer() -> Route {
-        
-        return Route(method: .post, uri: "/api/v1/customers/{card_token}", handler: { request, response in
-            
-            let url = "https://api.stripe.com/v1/customers"
-            
-            var data = "description=\("Customer create on example")&"
-            data += "source=\(request.urlVariables["card_token"]!)"
-            
-//            self.connectWithStripe(url: url, data: data, completion: { (hampyResponse) in
-//                response.setBody(json: hampyResponse.json)
-//                response.completed()
-//            })
-        })
-    }
     
     func addCard() -> Route {
         return Route(method: .post, uri: "/api/v1/cards/{customer_id}", handler: { request, response in

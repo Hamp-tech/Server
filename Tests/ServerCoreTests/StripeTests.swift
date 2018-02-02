@@ -15,19 +15,32 @@ class StripeTests: XCTestCase {
         
         let exp = expectation(description: "POST: Stripe create costumer")
         
-        StripeManager.createCostumer(userID: "1234") { (response) in
+        StripeManager.createCustomer(userID: "1234") { (response) in
             XCTAssertEqual(response.code, .ok)
             Logger.d(response)
             exp.fulfill()
         }
-        
-
+    
+        waitForExpectations(timeout: 10) { (error) in
+            if let error = error {
+                Logger.d(error.localizedDescription)
+            }
+        }
+    }
+    
+    func testCreateCard() {
+        let exp = expectation(description: "POST: Stripe create card")
+        StripeManager.createCard(customerID: "cus_CFJ0E06fxO4iBi", card: "") { (response) in
+            exp.fulfill()
+        }
         
         waitForExpectations(timeout: 10) { (error) in
             if let error = error {
                 Logger.d(error.localizedDescription)
             }
         }
+        
+        
     }
     
 }

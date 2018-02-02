@@ -35,7 +35,8 @@ internal struct Schemes {
         static let transactionsDeliver = Schemes.transactionsURL + "/{tid}/deliver"
         
         struct Stripe {
-            static let createCostumer = Schemes.stripeURL + "/customers"
+            static let createCustomer = Schemes.stripeURL + "/customers"
+            static let createCard = Schemes.stripeURL + "/customers/{id}/sources"
         }
     }
     

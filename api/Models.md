@@ -16,6 +16,7 @@
   - `lastActivity = [date-iso8601]`
   - `unsubscribed = [bool]`
   - `stripeID = [string]`
+  - `cards = [creditCard]`
   
 ## Register data request
   - `name = [string]`
@@ -57,6 +58,14 @@
   - `phone = [string]`
   - `birthday = [string]`
   - `gender = [M|F|U]`
+
+## Credit Card
+  - `number = [string]`
+  - `month = [int]`
+  - `year = [int]`
+  - `cvv = [string]`
+  - `lastDigits = [string]`
+  - isExpired = [bool]`
 
 ## Locker
   - `identifier = [long]`

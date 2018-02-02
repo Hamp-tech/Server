@@ -117,7 +117,7 @@ internal extension APIAuth {
             Logger.d("User exists!")
         } else {
             Logger.d("Create costumer started")
-            StripeManager.createCostumer(userID: user.identifier!) { (stripeResponse) in
+            StripeManager.createCustomer(userID: user.identifier!) { (stripeResponse) in
                 switch stripeResponse.code {
                 case .ok:
                     Logger.d("Create costumer finished")
