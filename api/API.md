@@ -2,7 +2,7 @@
 
 **API endpoint**
 ```
-http://localhost:8181
+http://localhost:8181/api/v1
 ```
 
 ### Description
@@ -10,43 +10,54 @@ http://localhost:8181
 ### Auth
 **Sign in**
 ```
-POST: /api/v1/auth/signin
+POST: /auth/signin
 ```
 
 **Sign up**
 ```
-POST: /api/v1/auth/signup
+POST: /auth/signup
 ```
 
 **Restore pass**
 ```
-POST: /api/v1/auth/{userid}/restore
+POST: /auth/{userid}/restore
 ```
 
 ### User
 **Update**
 ```
-PUT: /api/v1/users/{userid}
+PUT: /users/{userid}
 ```
 
 ### Transaction
 
 **Create**
 ```
-POST: /api/v1/users/{userid}/transactions
+POST: /users/{userid}/transactions
 ```
 
 **All transactions from user**
 ```
-GET: /api/v1/users/{userid}/transactions/
+GET: /users/{userid}/transactions/
 ```
 
 **Deliver**
 ```
-POST: /api/v1/users/{userid}/transactions/{transactionid}/deliver
+POST: /users/{userid}/transactions/{transactionid}/deliver
 ```
 
 **Update phase**
 ```
-PUT: /api/v1/users/{userid}/transactions/{transactionid}
+PUT: /users/{userid}/transactions/{transactionid}
+```
+### Scripts
+
+**Create default services**
+```
+POST: /scripts/services/create
+```
+
+**Create default points**
+```
+POST: /scripts/hamppoints/create
 ```
