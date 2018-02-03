@@ -97,7 +97,6 @@ internal extension APITransactions {
             transaction.userID = userID
             transaction.identifier = UUID.generateHampIdentifier()
             transaction.pickUpDate = Date().iso8601()
-            //                transaction.state = .initial
             
             let basketSizes = self.basketSizes(booking: transaction.booking!)
             
@@ -108,29 +107,35 @@ internal extension APITransactions {
             var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
             let lockers = point.freeLockers(with: size)
             
-            if let l = lockers?.first {
-                StripeGateway.pay(customer: userID, cardToken: transaction.creditCardIdentifier!, amount: transaction.booking!.price!, completion: { (resp) in
-                    
-                    if resp.code == .ok {
-                        let updatePointResult = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
-                        let createTransactionResult = self.createTransaction(transaction: &transaction)
-                        
-                        if updatePointResult.updated && createTransactionResult.created {
-                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
-                        } else {
-                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
-                        }
-                    } else {
-                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
-                    }
-                    
-                    completionBlock(hampyResponse)
-                })
-                // END PAY STRIPE
-            } else {
+            
+            guard let l = lockers?.first else {
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
                 completionBlock(hampyResponse)
+                return
             }
+            
+            let user = self.repositories!.usersRepository.find(properties: ["identifier": userID]).first!
+            
+            // START Stripe
+            StripeGateway.pay(customer: user.stripeID!,
+                              cardToken: transaction.creditCardIdentifier!,
+                              amount: transaction.booking!.price!,
+                              userID: userID,
+                              completion: { (resp) in
+                
+                if resp.code == .ok {
+                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
+                    let _ = self.createTransaction(transaction: &transaction)
+                    
+                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                } else {
+                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
+                }
+                
+                completionBlock(hampyResponse)
+            })
+            // END PAY STRIPE
+            
             // END 1st Version
         } catch let error {
             hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed(message: error.localizedDescription)

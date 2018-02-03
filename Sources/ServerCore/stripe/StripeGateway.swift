@@ -31,20 +31,16 @@ struct StripeGateway: Stripeable {
         request(url: url, params: aux, completion: completion)
     }
     
-    static func pay(customer: String, cardToken: String, amount: Float32, completion: @escaping Stripeable.StripeResponse) {
-        
-//        createCardToken(cardID: cardToken) { (response) in
-//            Logger.d(response)
-//        }
+    static func pay(customer: String, cardToken: String, amount: Float32, userID: String, completion: @escaping Stripeable.StripeResponse) {
         
         let url = Schemes.URLs.Stripe.pay
 
         let params: [String: Any] = [
             "amount": Int(amount*100),
             "currency": "eur",
-            "customer": "cus_CFjpE5AoYwhwDP",
+            "customer": customer,
             "source" : cardToken,
-            "description": "Charge of \(amount) € to user \(customer)"
+            "description": "Charge of \(amount) € to user \(userID)"
             ]
 
         request(url: url, params: params, completion: completion)
@@ -53,17 +49,7 @@ struct StripeGateway: Stripeable {
     static func cards(customer: String, completion: @escaping Stripeable.StripeResponse) {
         
     }
-    
-    static func createCardToken(cardID: String, completion: @escaping Stripeable.StripeResponse) {
-        let url = "https://api.stripe.com/v1/tokens"
         
-        let params = [
-            "card": "card_1BrEM5CiVhDLJHAGWborZ8hE"
-        ]
-        
-        request(url: url, params: params, completion: completion)
-    }
-    
     static func request(url: String, method: HTTPMethod = .post, params: Stripeable.Params? = nil, completion: @escaping Stripeable.StripeResponse) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")
         let contentType = CURLRequest.Option.addHeader(CURLRequest.Header.Name.contentType, "application/x-www-form-urlencoded")
