@@ -31,12 +31,37 @@ struct StripeGateway: Stripeable {
         request(url: url, params: aux, completion: completion)
     }
     
-    static func pay(customer: String, cardToken: String, completion: @escaping Stripeable.StripeResponse) {
+    static func pay(customer: String, cardToken: String, amount: Float32, completion: @escaping Stripeable.StripeResponse) {
         
+//        createCardToken(cardID: cardToken) { (response) in
+//            Logger.d(response)
+//        }
+        
+        let url = Schemes.URLs.Stripe.pay
+
+        let params: [String: Any] = [
+            "amount": Int(amount*100),
+            "currency": "eur",
+            "customer": "cus_CFjpE5AoYwhwDP",
+            "source" : cardToken,
+            "description": "Charge of \(amount) € to user \(customer)"
+            ]
+
+        request(url: url, params: params, completion: completion)
     }
     
     static func cards(customer: String, completion: @escaping Stripeable.StripeResponse) {
         
+    }
+    
+    static func createCardToken(cardID: String, completion: @escaping Stripeable.StripeResponse) {
+        let url = "https://api.stripe.com/v1/tokens"
+        
+        let params = [
+            "card": "card_1BrEM5CiVhDLJHAGWborZ8hE"
+        ]
+        
+        request(url: url, params: params, completion: completion)
     }
     
     static func request(url: String, method: HTTPMethod = .post, params: Stripeable.Params? = nil, completion: @escaping Stripeable.StripeResponse) {
@@ -54,7 +79,7 @@ struct StripeGateway: Stripeable {
                 
                 switch code {
                 case .ok:
-                    message = "User created"
+                    message = ""
                 default:
                     message = "Something wrong happened"
                 }

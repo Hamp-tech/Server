@@ -24,6 +24,7 @@ struct HampyUser: HampyDatabaseable {
     var lastActivity: String?
     var unsubscribed: Bool?
     var stripeID: String?
-    
+    var cards: [HampyCreditCard]?
+
     //TODO: Validate properties
 }

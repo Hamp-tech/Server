@@ -15,7 +15,9 @@ internal struct Schemes {
     private static let stripeURL = "https://api.stripe.com/v1"
     
     struct Users {
-        static let users = Schemes.userURL
+        static let base = Schemes.userURL
+        static let newCard = Schemes.Users.base + "/cards"
+        static let removeCard = Schemes.Users.base + "/cards/{id}"
     }
     
     struct Scripts {
@@ -37,6 +39,7 @@ internal struct Schemes {
         struct Stripe {
             static let createCustomer = Schemes.stripeURL + "/customers"
             static let createCard = Schemes.stripeURL + "/customers/{id}/sources"
+            static let pay = Schemes.stripeURL + "/charges"
         }
     }
     

@@ -111,5 +111,13 @@ extension APIHampyResponsesFactory {
             
             return hampyResponse
         }
+        
+        static func transactionStripeFailed() -> HampyResponse<HampyTransaction> {
+            var hampyResponse = HampyResponse<HampyTransaction>()
+            hampyResponse.code = .badRequest
+            hampyResponse.message = "Something wrong occurred while paying."
+            
+            return hampyResponse
+        }
     }
 }

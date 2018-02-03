@@ -29,6 +29,11 @@ POST: /auth/{userid}/restore
 PUT: /users/{userid}
 ```
 
+**Create credit card**
+```
+POST: /users/{userid}/cards/
+```
+
 ### Transaction
 
 **Create**

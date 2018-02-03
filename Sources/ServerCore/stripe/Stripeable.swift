@@ -15,7 +15,7 @@ protocol Stripeable {
     
     static func createCard(customer: String, card: HampyCreditCard, completion: @escaping StripeResponse)
     
-    static func pay(customer: String, cardToken: String, completion: @escaping StripeResponse)
+    static func pay(customer: String, cardToken: String, amount: Float32, completion: @escaping StripeResponse)
     
     static func cards(customer: String, completion: @escaping StripeResponse)
     

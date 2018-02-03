@@ -12,10 +12,12 @@ import PerfectMongoDB
 class StripeManager {
     
     // MARK: - Public API
-    static func pay(costumerID: String = "",
-                    cardID: String,
+    static func pay(costumerID: String,
+                    cardID: String = "",
                     amount: Float32,
                     completionHandler: (HampyResponse<HampyUser>) -> ()) {
+        
+        
         completionHandler(HampyResponse<HampyUser>())
     }
     

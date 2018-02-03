@@ -89,7 +89,7 @@ private extension APITransactions {
 }
 
 internal extension APITransactions {
-    func newTransaction(data: Data, userID: String, completionBlock: (HampyResponse<HampyTransaction>) -> ()) {
+    func newTransaction(data: Data, userID: String, completionBlock: @escaping (HampyResponse<HampyTransaction>) -> ()) {
         var hampyResponse: HampyResponse<HampyTransaction>!
         
         do {
@@ -109,19 +109,19 @@ internal extension APITransactions {
             let lockers = point.freeLockers(with: size)
             
             if let l = lockers?.first {
-                
-                StripeManager.pay(cardID: "123", amount: 10, completionHandler: { (resp) in
+                StripeGateway.pay(customer: userID, cardToken: transaction.creditCardIdentifier!, amount: transaction.booking!.price!, completion: { (resp) in
                     
-                    //                        if resp == success { }
-                    //                        else { }
-                    
-                    let updatePointResult = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
-                    let createTransactionResult = self.createTransaction(transaction: &transaction)
-                    
-                    if updatePointResult.updated && createTransactionResult.created {
-                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                    if resp.code == .ok {
+                        let updatePointResult = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
+                        let createTransactionResult = self.createTransaction(transaction: &transaction)
+                        
+                        if updatePointResult.updated && createTransactionResult.created {
+                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                        } else {
+                            hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
+                        }
                     } else {
-                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed()
+                        hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
                     }
                     
                     completionBlock(hampyResponse)

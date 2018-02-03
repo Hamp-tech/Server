@@ -123,6 +123,7 @@ internal extension APIAuth {
                     Logger.d("Create costumer finished")
                     Logger.d("Create user on database")
                     user.stripeID = stripeResponse.data!["id"] as? String
+                    user.cards = []
                     let _ = self.repositories!.usersRepository.create(obj: user)
                     Logger.d("Create user on database finished")
                     
