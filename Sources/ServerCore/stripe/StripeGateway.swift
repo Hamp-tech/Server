@@ -24,9 +24,7 @@ struct StripeGateway: Stripeable {
         var aux = [String: Any]()
         aux["source[object]"] = "card"
         
-        for (key, value) in dict {
-            aux["source[\(key)]"] = value
-        }
+        dict.forEach{aux["source[\($0)]"] = $1}
 
         request(url: url, params: aux, completion: completion)
     }
@@ -49,7 +47,7 @@ struct StripeGateway: Stripeable {
     static func cards(customer: String, completion: @escaping Stripeable.StripeResponse) {
         
     }
-        
+    
     static func request(url: String, method: HTTPMethod = .post, params: Stripeable.Params? = nil, completion: @escaping Stripeable.StripeResponse) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")
         let contentType = CURLRequest.Option.addHeader(CURLRequest.Header.Name.contentType, "application/x-www-form-urlencoded")
