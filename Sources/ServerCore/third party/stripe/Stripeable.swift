@@ -12,12 +12,9 @@ protocol Stripeable {
     typealias StripeResponse = (HampyResponse<Params>) -> ()
     
     static func createCustomer(userID: String, completion: @escaping StripeResponse)
-    
     static func createCard(customer: String, card: HampyCreditCard, completion: @escaping StripeResponse)
-    
-    static func pay(customer: String, cardToken: String, amount: Float32, userID: String, completion: @escaping StripeResponse)
-    
+    static func removeCard(customer: String, cardId: String, completion: @escaping StripeResponse)
     static func cards(customer: String, completion: @escaping StripeResponse)
-    
+    static func pay(customer: String, cardToken: String, amount: Float32, userID: String, completion: @escaping StripeResponse)
     static func request(url: String, method: HTTPMethod, params: Params?, completion: @escaping StripeResponse)
 }

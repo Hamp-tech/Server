@@ -25,6 +25,7 @@ class APIUser: APIAble {
         var routes = Routes()
         routes.add(update())
         routes.add(newCreditCard())
+        routes.add(removeCreditCard())
         return routes
     }
 }
@@ -95,13 +96,50 @@ private extension APIUser {
                         hampyResponse.data = card
                     }
                     
-                    response.setBody(json: hampyResponse.json)
+                    response.setBody(string: hampyResponse.json)
                     response.completed()
                 })
                 
             } catch let error {
                 Logger.d(error.localizedDescription, event: .e)
             }
+        })
+    }
+    
+    // PRE: Is needed an existing user
+    
+    func removeCreditCard() -> Route {
+        return Route(method: .delete, uri: Schemes.Users.removeCard, handler: { (request, response) in
+            let userId = request.urlVariables["id"]
+            let cardId = request.urlVariables["cid"]
+            
+            guard let uid = userId, let cid = cardId else {
+                Logger.d("Handler", event: .e)
+                assert(false)
+            }
+            
+            var user = self.repositories!.usersRepository.find(properties: ["identifier": uid]).first!
+            
+            StripeGateway.removeCard(customer: user.stripeID!, cardId: cid, completion: { (resp) in
+                var hampyResponse = resp
+                
+                switch resp.code {
+                case .ok:
+                    if let idx = user.cards?.index(where: {$0.id == cid}) {
+                         user.cards!.remove(at: idx)
+                        _ = self.repositories?.usersRepository.update(obj: user)
+                    }
+                    var hampyResponse = resp
+                    hampyResponse.message = "Card remove sucessfully"
+                    hampyResponse.data = nil
+                default:
+                    break
+                }
+                
+                hampyResponse.data = nil
+                response.setBody(string: hampyResponse.json)
+                response.completed()
+            })
         })
     }
 }

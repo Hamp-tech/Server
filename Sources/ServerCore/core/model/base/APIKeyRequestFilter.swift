@@ -14,7 +14,7 @@ struct APIKeyRequestFilter: HTTPRequestFilter {
         if hasKey {
             callback(.continue(request, response))
         } else {
-            response.setBody(json: HampyResponse<String>(code: .unauthorized).json)
+            response.setBody(string: HampyResponse<String>(code: .unauthorized).json)
             callback(.halt(request, response))
         }
     }

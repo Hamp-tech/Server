@@ -25,7 +25,9 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         var arr = Array<T>()
         result?.forEach{
             let data = $0.asString.data(using: .utf8)!
-            arr.append(try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data))
+            let o = try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data)
+            _ = update(obj: o) // To update date
+            arr.append(o)
         }
         
         return arr
@@ -63,17 +65,26 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     
     // PRE: Assuming that obj has correct properties setted
      func create(obj: T) -> MongoResult {
-        let bson = try! BSON(json: obj.json)
+        let d = Date().iso8601()
+        var o = obj
+        o.lastActivity = d
+        o.created = d
+        
+        let bson = try! BSON(json: o.json)
         return mongoCollection.save(document: bson)
     }
     
      func update(obj: T) -> MongoResult{
         guard let id = obj.identifier else { return MongoResult.error(0, 0, "")}
+        
+        var o = obj
+        o.lastActivity = Date().iso8601()
+        
         let old = BSON()
         old.append(key: "identifier", string: id)
         
         let new = BSON()
-        new.append(key: "$set", document: try! BSON(json: obj.json))
+        new.append(key: "$set", document: try! BSON(json: o.json))
         return mongoCollection.update(selector: old, update: new)
     }
     

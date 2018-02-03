@@ -8,6 +8,8 @@
 import Foundation
 
 protocol HampyDatabaseable: HampyCodable {
-    var identifier: String? { get set }
     static var databaseScheme: String { get }
+    var identifier: String? { get set }
+    var lastActivity: String? { get set }
+    var created: String? { get set }
 }

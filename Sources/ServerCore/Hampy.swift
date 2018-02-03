@@ -16,8 +16,6 @@ public final class Hampy {
     private static var server = HTTPServer()
     private static var routes = Routes()
     private static let client = try! MongoClient(uri: Schemes.Mongo.uri)
-    private static var usersRepository: HampyUsersRepository!
-    private static var pointsRepository: HampyPointsRepository!
     private static var environtment: HampyEnvirontment = .development
     private static var repositories: HampyRepositories!
     

@@ -17,7 +17,7 @@ internal struct Schemes {
     struct Users {
         static let base = Schemes.userURL
         static let newCard = Schemes.Users.base + "/cards"
-        static let removeCard = Schemes.Users.base + "/cards/{id}"
+        static let removeCard = Schemes.Users.base + "/cards/{cid}"
     }
     
     struct Scripts {
@@ -37,8 +37,9 @@ internal struct Schemes {
         static let transactionsDeliver = Schemes.transactionsURL + "/{tid}/deliver"
         
         struct Stripe {
-            static let createCustomer = Schemes.stripeURL + "/customers"
-            static let createCard = Schemes.stripeURL + "/customers/{id}/sources"
+            static let customers = Schemes.stripeURL + "/customers"
+            static let cards = Schemes.stripeURL + "/customers/{id}/sources"
+            static let removeCard = Schemes.URLs.Stripe.cards + "/{cid}"
             static let pay = Schemes.stripeURL + "/charges"
         }
     }

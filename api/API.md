@@ -34,6 +34,11 @@ PUT: /users/{userid}
 POST: /users/{userid}/cards/
 ```
 
+**Remove credit card**
+```
+DELETE: /users/{userid}/cards/{cardid}
+```
+
 ### Transaction
 
 **Create**

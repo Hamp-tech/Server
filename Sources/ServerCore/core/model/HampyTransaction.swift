@@ -37,6 +37,8 @@ struct HampyTransaction: HampyDatabaseable {
     var deliveryDate: String?
     var dbState: DBState?
     var phase: Phase?
+    var lastActivity: String?
+    var created: String?
     
     
 }

@@ -42,7 +42,7 @@ private extension APITransactions {
             }
             
             self.newTransaction(data: d, userID: request.urlVariables["id"]!, completionBlock: { (resp) in
-                response.setBody(json: resp.json)
+                response.setBody(string: resp.json)
                 response.completed()
             })
         })
@@ -52,7 +52,7 @@ private extension APITransactions {
         return Route(method: .get, uri: Schemes.URLs.transactions, handler: { (request, response) in
             
             let hampyResponse = self.transactions(userID: request.urlVariables["id"]!)
-            response.setBody(json: hampyResponse.json)
+            response.setBody(string: hampyResponse.json)
             response.completed()
         })
     }
@@ -67,7 +67,7 @@ private extension APITransactions {
             
             let hampyResponse = self.update(transactionID: request.urlVariables["tid"]!, data: d)
             
-            response.setBody(json: hampyResponse.json)
+            response.setBody(string: hampyResponse.json)
             response.completed()
         })
     }
@@ -82,7 +82,7 @@ private extension APITransactions {
             
             let hampyResponse = self.deliver(transactionID: request.urlVariables["tid"]!, data: d)
             
-            response.setBody(json: hampyResponse.json)
+            response.setBody(string: hampyResponse.json)
             response.completed()
         })
     }

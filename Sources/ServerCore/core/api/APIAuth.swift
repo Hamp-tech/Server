@@ -44,7 +44,7 @@ private extension APIAuth {
             
             let hampyResponse = self.signin(body: d)
             
-            response.setBody(json: hampyResponse.json)
+            response.setBody(string: hampyResponse.json)
             response.completed()
         })
     }
@@ -60,7 +60,7 @@ private extension APIAuth {
             Logger.d("Sign un started")
             
             self.signup(body: d, completionBlock: { (resp) in
-                response.setBody(json: resp.json)
+                response.setBody(string: resp.json)
                 response.completed()
                 
                 Logger.d("Sign up finished")
@@ -75,7 +75,7 @@ private extension APIAuth {
         return Route(method: .post, uri: Schemes.Auth.restore, handler: { (request, response) in
             var hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.message = "TODO: IMPLEMENT"
-            response.setBody(json: hampyResponse.json)
+            response.setBody(string: hampyResponse.json)
             response.completed()
             
         })
@@ -117,7 +117,7 @@ internal extension APIAuth {
             Logger.d("User exists!")
         } else {
             Logger.d("Create costumer started")
-            StripeManager.createCustomer(userID: user.identifier!) { (stripeResponse) in
+            StripeGateway.createCustomer(userID: user.identifier!) { (stripeResponse) in
                 switch stripeResponse.code {
                 case .ok:
                     Logger.d("Create costumer finished")

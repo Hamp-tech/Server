@@ -7,6 +7,8 @@
 
 struct HampyUser: HampyDatabaseable {
     
+    
+    
     static var databaseScheme: String = Schemes.Mongo.Collections.users
     
     var identifier: String?
@@ -25,6 +27,7 @@ struct HampyUser: HampyDatabaseable {
     var unsubscribed: Bool?
     var stripeID: String?
     var cards: [HampyCreditCard]?
+    var created: String? = nil
 
     //TODO: Validate properties
 }

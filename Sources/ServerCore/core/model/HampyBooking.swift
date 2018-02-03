@@ -8,7 +8,6 @@
 import Foundation
 
 struct HampyBooking: HampyDatabaseable {
-    
     static var databaseScheme: String = Schemes.Mongo.Collections.bookings
     
     enum PickUpTime: String, HampyCodable {
@@ -24,4 +23,6 @@ struct HampyBooking: HampyDatabaseable {
     var pickUpTime: PickUpTime?
     var deliveryLockers: [HampyLocker]?
     var pickUpLockers: [HampyLocker]?
+    var lastActivity: String?
+    var created: String?
 }

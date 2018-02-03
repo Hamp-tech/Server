@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Files
 
 struct Logger {
     static func d(_ message: Any,
@@ -13,8 +14,21 @@ struct Logger {
                     fileName: String = #file,
                     line: Int = #line,
                     column: Int = #column,
-                    function: String = #function) {
-        print("\(event.rawValue)[\(Date().iso8601())] \(sourceFileName(filePath: fileName)).\(function):\(line) => \(message)")
+                    function: String = #function,
+                    inAnExternalFile: Bool = true) {
+        let log = "\(event.rawValue)[\(Date().iso8601())] \(sourceFileName(filePath: fileName)).\(function):\(line) => \(message)"
+        print(log)
+        
+        if inAnExternalFile {
+            
+            do {
+                let folder = try Folder(path: "/Users/joan/Desktop/hamp/server")
+                let file = try folder.createFileIfNeeded(withName: "HampServer.log")
+                try file.write(string: log)
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 

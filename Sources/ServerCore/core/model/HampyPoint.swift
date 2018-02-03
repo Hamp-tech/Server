@@ -8,7 +8,6 @@
 import Foundation
 
 struct HampyPoint: HampyDatabaseable {
-    
     static var databaseScheme: String = Schemes.Mongo.Collections.points
     
     var identifier: String?
@@ -17,7 +16,27 @@ struct HampyPoint: HampyDatabaseable {
     var address: String?
     var city: String?
     var lockers: Array<HampyLocker>?
+    var lastActivity: String?
+    var created: String?
 
+    init(identifier: String?,
+         location: HampyLocation?,
+         CP: String?,
+         address: String?,
+         city: String?,
+         lockers: Array<HampyLocker>?,
+         lastActivity: String? = nil,
+         created: String? = nil) {
+        self.identifier = identifier
+        self.location = location
+        self.CP = CP
+        self.address = address
+        self.city = city
+        self.lockers = lockers
+        self.lastActivity = lastActivity
+        self.created = created
+    }
+    
 
     func freeLockers(with capacity: Size) -> Array<HampyLocker>? {
         guard let lock = lockers else { return nil }
