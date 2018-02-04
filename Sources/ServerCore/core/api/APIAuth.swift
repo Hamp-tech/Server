@@ -9,20 +9,11 @@ import Foundation
 import PerfectHTTP
 import PerfectMongoDB
 
-class APIAuth: APIAble {
-    
-    // MARK: - Properties
-    var mongoDatabase: MongoDatabase
-    var repositories: HampyRepositories?
-    
-    // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
-        self.mongoDatabase = mongoDatabase
-        self.repositories = repositories
-    }
 
+class APIAuth: APIBase {
+    
     // MARK: - APIAble
-    func routes() -> Routes {
+    override func routes() -> Routes {
         var routes = Routes()
         routes.add(signin())
         routes.add(signup())
@@ -35,14 +26,17 @@ private extension APIAuth {
     
     func signin() -> Route {
         return Route(method: .post, uri: Schemes.Auth.signin, handler: { (request, response) in
+            self.debug()
             let data = request.postBodyString?.data(using: .utf8)
-            
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler error", event: .e)
                 assert(false)
             }
             
+            self.debug("Started")
             let hampyResponse = self.signin(body: d)
+            self.debug(hampyResponse.json)
+            self.debug("Finished", event: hampyResponse.code == .ok ? .d : .e)
             
             response.setBody(string: hampyResponse.json)
             response.completed()
@@ -51,19 +45,21 @@ private extension APIAuth {
     
     func signup() -> Route {
         return Route(method: .post, uri: Schemes.Auth.signup, handler: { (request, response) in
+            self.debug()
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
             
-            Logger.d("Sign un started")
+            self.debug("Started")
             
             self.signup(body: d, completionBlock: { (resp) in
                 response.setBody(string: resp.json)
                 response.completed()
                 
-                Logger.d("Sign up finished")
+                self.debug(resp.json)
+                self.debug("Finished", event: resp.code == .ok ? .d : .e)
             })
             
             
@@ -92,11 +88,14 @@ internal extension APIAuth {
             let result = self.repositories!.usersRepository.exists(obj: u)
             
             if result.0 {
+                self.debug("User exist")
                 hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: result.1!)
             } else {
+                self.debug("User doesn't exist")
                 hampyResponse = APIHampyResponsesFactory.Auth.signinFailNotFound()
             }
         } else {
+            self.debug("Bad request")
             hampyResponse = APIHampyResponsesFactory.Auth.signinFailBadRequest()
         }
         
@@ -114,23 +113,23 @@ internal extension APIAuth {
         
         if existsResult.0 {
             completionBlock(APIHampyResponsesFactory.Auth.signupFailConflict())
-            Logger.d("User exists!")
+            self.debug("User exists!")
         } else {
             Logger.d("Create costumer started")
             StripeGateway.createCustomer(userID: user.identifier!) { (stripeResponse) in
                 switch stripeResponse.code {
                 case .ok:
-                    Logger.d("Create costumer finished")
-                    Logger.d("Create user on database")
+                    self.debug("Create costumer finished")
+                    self.debug("Create user on database")
                     user.stripeID = stripeResponse.data!["id"] as? String
                     user.cards = []
                     let _ = self.repositories!.usersRepository.create(obj: user)
-                    Logger.d("Create user on database finished")
+                    self.debug("Create user on database finished")
                     
                     completionBlock(APIHampyResponsesFactory.Auth.signupOK(user: user))
                 default:
                     completionBlock(APIHampyResponsesFactory.Auth.signupFailUnknown())
-                    Logger.d("Create costumer error, look logs!", event: .e)
+                    self.debug("Create costumer error, look logs!", event: .e)
                 }
             }
         }

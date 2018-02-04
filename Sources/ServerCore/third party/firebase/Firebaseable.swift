@@ -16,7 +16,7 @@ protocol Firebaseable {
     typealias Params = [String: Any]
     typealias FirebaseResponse = (HampyResponse<Params>) -> ()
     
-    static func sendNotification(token: String, map: Params, completion: @escaping FirebaseResponse)
+    static func sendNotification(token: String, params: Params, completion: @escaping FirebaseResponse)
     
-    static func sendNotification(type: OS, map: Params, completion: @escaping FirebaseResponse)
+    static func sendNotification(type: OS, params: Params, completion: @escaping FirebaseResponse)
 }

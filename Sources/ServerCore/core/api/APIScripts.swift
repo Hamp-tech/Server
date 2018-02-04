@@ -9,20 +9,10 @@ import Foundation
 import PerfectMongoDB
 import PerfectHTTP
 
-class APIScripts: APIAble {
-    
-    // MARK: - Properties
-    var mongoDatabase: MongoDatabase
-    var repositories: HampyRepositories?
-    
-    // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
-        self.mongoDatabase = mongoDatabase
-        self.repositories = repositories
-    }
+class APIScripts: APIBase {
     
     // MARK: - APIAble
-    func routes() -> Routes {
+    override func routes() -> Routes {
         var routes = Routes()
         routes.add(createServices())
         routes.add(createHampPoints())

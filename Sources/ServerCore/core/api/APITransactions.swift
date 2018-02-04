@@ -9,19 +9,9 @@ import Foundation
 import PerfectMongoDB
 import PerfectHTTP
 
-struct APITransactions: APIAble {
-    
-    // MARK: - Propertties
-    var mongoDatabase: MongoDatabase
-    var repositories: HampyRepositories?
-    
-    // MARK: - Life cycle
-    init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
-        self.mongoDatabase = mongoDatabase
-        self.repositories = repositories
-    }
-    
-    func routes() -> Routes {
+class APITransactions: APIBase {
+        
+    override func routes() -> Routes {
         var routes = Routes()
         routes.add(newTransaction())
         routes.add(userTransactions())
@@ -37,11 +27,13 @@ private extension APITransactions {
         return Route(method: .post, uri: Schemes.URLs.transactions, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
-            
+            self.debug("Started")
             self.newTransaction(data: d, userID: request.urlVariables["id"]!, completionBlock: { (resp) in
+                self.debug(resp.json)
+                self.debug("Finished", event: resp.code == .ok ? .d : .e)
                 response.setBody(string: resp.json)
                 response.completed()
             })
@@ -50,8 +42,10 @@ private extension APITransactions {
     
     func userTransactions() -> Route {
         return Route(method: .get, uri: Schemes.URLs.transactions, handler: { (request, response) in
-            
+            self.debug("Started")
             let hampyResponse = self.transactions(userID: request.urlVariables["id"]!)
+            self.debug(hampyResponse.json)
+            self.debug("Finished", event: hampyResponse.code == .ok ? .d : .e)
             response.setBody(string: hampyResponse.json)
             response.completed()
         })
@@ -61,12 +55,14 @@ private extension APITransactions {
         return Route(method: .put, uri: Schemes.URLs.transactionsID, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
             
             let hampyResponse = self.update(transactionID: request.urlVariables["tid"]!, data: d)
             
+            self.debug(hampyResponse.json)
+            self.debug("Finished", event: hampyResponse.code == .ok ? .d : .e)
             response.setBody(string: hampyResponse.json)
             response.completed()
         })
@@ -82,6 +78,8 @@ private extension APITransactions {
             
             let hampyResponse = self.deliver(transactionID: request.urlVariables["tid"]!, data: d)
             
+            self.debug(hampyResponse.json)
+            self.debug("Finished", event: hampyResponse.code == .ok ? .d : .e)
             response.setBody(string: hampyResponse.json)
             response.completed()
         })
@@ -102,6 +100,7 @@ internal extension APITransactions {
             
             // Calculate if we have enought lockers to put the basket
             // 1st Version
+            self.debug("Calculating number of lockers")
             let size = basketSizes.first!
             
             var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
@@ -109,6 +108,7 @@ internal extension APITransactions {
             
             
             guard let l = lockers?.first else {
+                self.debug("Not enough lockers. Lockers needed \(0) and \(lockers?.count ?? 0) available")
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
                 completionBlock(hampyResponse)
                 return
@@ -117,6 +117,7 @@ internal extension APITransactions {
             let user = self.repositories!.usersRepository.find(properties: ["identifier": userID]).first!
             
             // START Stripe
+            self.debug("Paying")
             StripeGateway.pay(customer: user.stripeID!,
                               cardToken: transaction.creditCardIdentifier!,
                               amount: transaction.booking!.price!,
@@ -124,11 +125,13 @@ internal extension APITransactions {
                               completion: { (resp) in
                 
                 if resp.code == .ok {
+                    self.debug("Paid successfully")
                     let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
                     let _ = self.createTransaction(transaction: &transaction)
                     
                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
                 } else {
+                    self.debug("Paid error: \(resp.message)", event: .e)
                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
                 }
                 
@@ -138,6 +141,7 @@ internal extension APITransactions {
             
             // END 1st Version
         } catch let error {
+            self.debug(error.localizedDescription, event: .e)
             hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed(message: error.localizedDescription)
             completionBlock(hampyResponse)
         }
@@ -166,7 +170,7 @@ internal extension APITransactions {
             
             
         } catch let error {
-            Logger.d(error.localizedDescription)
+            self.debug(error.localizedDescription, event: .e)
         }
         
         return hampyResponse
@@ -187,8 +191,14 @@ internal extension APITransactions {
             transaction.deliveryDate = Date().iso8601()
             _ = self.repositories?.transactionsRepository.update(obj: transaction)
             
-            // Send push, sms to user
+            let user = self.repositories?.usersRepository.find(properties: ["identifier": transaction.userID!]).first!
             
+            if let token = user?.tokenFCM {
+                self.debug("Sending firebase notification")
+                FirebaseGateway.sendNotification(token: token, params: [:], completion: { (resp) in
+                    self.debug(resp.json)
+                })
+            }
             hampyResponse.code = .ok
             hampyResponse.data = transaction
             

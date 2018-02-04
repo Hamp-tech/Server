@@ -8,20 +8,10 @@
 import PerfectHTTP
 import PerfectMongoDB
 
-class APIUser: APIAble {
-    
-    // MARK: - Properties
-    var mongoDatabase: MongoDatabase
-    var repositories: HampyRepositories?
-    
-    // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
-        self.mongoDatabase = mongoDatabase
-        self.repositories = repositories
-    }
+class APIUser: APIBase {
     
     // MARK: - APIAble
-    func routes() -> Routes {
+    override func routes() -> Routes {
         var routes = Routes()
         routes.add(update())
         routes.add(newCreditCard())
@@ -37,10 +27,10 @@ private extension APIUser {
         return Route(method: .put, uri: Schemes.Users.base, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
-            
+            self.debug("Started")
             var hampyResponse = HampyResponse<HampyUser>()
             var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
             user?.identifier = request.urlVariables["id"]
@@ -62,7 +52,9 @@ private extension APIUser {
                 hampyResponse.code = .badRequest
                 hampyResponse.message = "Bad request"
             }
-            response.appendBody(string: hampyResponse.json)
+            self.debug(hampyResponse.json)
+            self.debug("Finished", event: hampyResponse.code == .ok ? .d : .e)
+            response.setBody(string: hampyResponse.json)
             response.completed()
         })
     }
@@ -72,18 +64,20 @@ private extension APIUser {
         return Route(method: .post, uri: Schemes.Users.newCard, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
             var hampyResponse =  HampyResponse<HampyCreditCard>()
             var user = self.repositories!.usersRepository.find(properties: ["identifier": request.urlVariables["id"]!]).first!
             
             do {
+                self.debug("Creating card")
                 var card = try HampySingletons.sharedJSONDecoder.decode(HampyCreditCard.self, from: d)
                 StripeGateway.createCard(customer: user.stripeID!, card: card, completion: { (resp) in
                     hampyResponse.code = resp.code
                     hampyResponse.message = resp.message
                     if resp.code == .ok {
+                        self.debug("Card created")
                         let token = resp.data!["id"] as? String
                         card.id = token
                         card.number = String(card.number!.suffix(4))
@@ -94,14 +88,14 @@ private extension APIUser {
                         
                         hampyResponse.message = "Card created successfully"
                         hampyResponse.data = card
-                    }
-                    
+                    } 
+                    self.debug("Finished", event: resp.code == .ok ? .d : .e)
                     response.setBody(string: hampyResponse.json)
                     response.completed()
                 })
                 
             } catch let error {
-                Logger.d(error.localizedDescription, event: .e)
+                self.debug(error.localizedDescription, event: .e)
             }
         })
     }
@@ -114,17 +108,19 @@ private extension APIUser {
             let cardId = request.urlVariables["cid"]
             
             guard let uid = userId, let cid = cardId else {
-                Logger.d("Handler", event: .e)
+                self.debug("Handler", event: .e)
                 assert(false)
             }
             
             var user = self.repositories!.usersRepository.find(properties: ["identifier": uid]).first!
             
+            self.debug("Removing card")
             StripeGateway.removeCard(customer: user.stripeID!, cardId: cid, completion: { (resp) in
                 var hampyResponse = resp
                 
                 switch resp.code {
                 case .ok:
+                    self.debug("Card removed")
                     if let idx = user.cards?.index(where: {$0.id == cid}) {
                          user.cards!.remove(at: idx)
                         _ = self.repositories?.usersRepository.update(obj: user)
@@ -137,6 +133,8 @@ private extension APIUser {
                 }
                 
                 hampyResponse.data = nil
+                self.debug(hampyResponse.json)
+                self.debug("Finished", event: resp.code == .ok ? .d : .e)
                 response.setBody(string: hampyResponse.json)
                 response.completed()
             })

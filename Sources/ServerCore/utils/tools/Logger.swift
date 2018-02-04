@@ -21,13 +21,14 @@ struct Logger {
         
         if inAnExternalFile {
             
-            do {
-                let folder = try Folder(path: "/Users/joan/Desktop/hamp/server")
-                let file = try folder.createFileIfNeeded(withName: "HampServer.log")
-                try file.write(string: log)
-            } catch let error {
-                print(error.localizedDescription)
-            }
+//            do {
+//                let folder = try Folder(path: "/Users/joan/Desktop/hamp/server")
+//                let file = try folder.createFileIfNeeded(withName: "HampServer.log")
+//                try file.write(string: log)
+//                file.
+//            } catch let error {
+//                print(error.localizedDescription)
+//            }
         }
     }
 }

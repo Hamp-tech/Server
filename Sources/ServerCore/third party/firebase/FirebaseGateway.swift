@@ -9,11 +9,11 @@ import Foundation
 
 struct FirebaseGateway: Firebaseable {
     
-    static func sendNotification(token: String, map: Firebaseable.Params, completion: @escaping Firebaseable.FirebaseResponse) {
+    static func sendNotification(token: String, params: Firebaseable.Params, completion: @escaping Firebaseable.FirebaseResponse) {
         completion(HampyResponse<Firebaseable.Params>(code: .ok))
     }
     
-    static func sendNotification(type: OS, map: Firebaseable.Params, completion: @escaping Firebaseable.FirebaseResponse) {
+    static func sendNotification(type: OS, params: Firebaseable.Params, completion: @escaping Firebaseable.FirebaseResponse) {
         completion(HampyResponse<Firebaseable.Params>(code: .ok))
     }
     
