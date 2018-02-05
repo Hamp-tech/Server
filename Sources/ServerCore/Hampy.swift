@@ -35,10 +35,12 @@ public final class Hampy {
         let userAPI = APIUser(mongoDatabase: mongoDatabase, repositories: repositories)
         let authAPI = APIAuth(mongoDatabase: mongoDatabase, repositories: repositories)
         let transactionsAPI = APITransactions(mongoDatabase: mongoDatabase, repositories: repositories)
+        let pointsAPI = APIPoints(mongoDatabase: mongoDatabase, repositories: repositories)
 
         routes.add(userAPI.routes())
         routes.add(authAPI.routes())
         routes.add(transactionsAPI.routes())
+        routes.add(pointsAPI.routes())
         
         
         server.addRoutes(routes)

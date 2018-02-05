@@ -13,6 +13,7 @@ internal struct Schemes {
     private static let scriptsURL = baseURL + "/scripts"
     private static let transactionsURL = userURL + "/transactions"
     private static let stripeURL = "https://api.stripe.com/v1"
+    private static let pointsURL = baseURL + "/points/{pid}"
     
     struct Users {
         static let base = Schemes.userURL
@@ -41,6 +42,10 @@ internal struct Schemes {
             static let cards = Schemes.stripeURL + "/customers/{id}/sources"
             static let removeCard = Schemes.URLs.Stripe.cards + "/{cid}"
             static let pay = Schemes.stripeURL + "/charges"
+        }
+        
+        struct Points {
+            static let reset = Schemes.pointsURL + "/{lid}/reset"
         }
     }
     

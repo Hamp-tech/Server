@@ -27,9 +27,9 @@ struct HampyScripts {
     }
     
     static func createHampPoints(database: MongoDatabase) {
-        let vLockers = [HampyLocker(identifier: "1", number: 1, code: 1111, available: true, capacity: .S),
-                        HampyLocker(identifier: "2", number: 2, code: 1112, available: true, capacity: .S),
-                        HampyLocker(identifier: "3", number: 3, code: 1113, available: true, capacity: .M)]
+        let vLockers = [HampyLocker(identifier: "1", number: 1, code: "1111", available: true, capacity: .S),
+                        HampyLocker(identifier: "2", number: 2, code: "1112", available: true, capacity: .S),
+                        HampyLocker(identifier: "3", number: 3, code: "1113", available: true, capacity: .M)]
         let vendrell = HampyPoint(identifier: "1", location: HampyLocation(name: "1", latitude: 0, longitude: 0), CP: "43700", address: "C/ foo bar 1", city: "El Vendrell", lockers: vLockers)
         
         

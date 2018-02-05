@@ -96,19 +96,14 @@ internal extension APITransactions {
             transaction.identifier = UUID.generateHampIdentifier()
             transaction.pickUpDate = Date().iso8601()
             
-            let basketSizes = self.basketSizes(booking: transaction.booking!)
+            let services = self.basketServices(booking: transaction.booking!)
             
-            // Calculate if we have enought lockers to put the basket
-            // 1st Version
             self.debug("Calculating number of lockers")
-            let size = basketSizes.first!
             
             var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
-            let lockers = point.freeLockers(with: size)
             
-            
-            guard let l = lockers?.first else {
-                self.debug("Not enough lockers. Lockers needed \(0) and \(lockers?.count ?? 0) available")
+            guard let lockers = Foo.lockers(to: services, point: point) else {
+                self.debug("Not enough lockers. Lockers needed \(0) and \(0) available")
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
                 completionBlock(hampyResponse)
                 return
@@ -126,7 +121,7 @@ internal extension APITransactions {
                 
                 if resp.code == .ok {
                     self.debug("Paid successfully")
-                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: [l])
+                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: lockers)
                     let _ = self.createTransaction(transaction: &transaction)
                     
                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
@@ -211,11 +206,11 @@ internal extension APITransactions {
 }
 
 private extension APITransactions {
-    func basketSizes(booking: HampyBooking) -> [Size] {
+    func basketServices(booking: HampyBooking) -> [HampyService] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
-        let services = self.repositories?.servicesRepository.find(elements: servicesIdentifiers!)
+        let services = self.repositories!.servicesRepository.find(elements: servicesIdentifiers!)
         
-        return services!.map{$0.size!}
+        return services
     }
     
     func updatePoint(transaction: inout HampyTransaction, point: inout HampyPoint, lockers: [HampyLocker]) -> (updated: Bool, errorResponse: HampyResponse<HampyTransaction>?) {

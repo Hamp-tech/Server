@@ -32,7 +32,7 @@ class StripeTests: XCTestCase {
     
     func testCreateCard() {
         let exp = expectation(description: "POST: Stripe create card")
-        StripeGateway.createCard(customer: "cus_CFJ0E06fxO4iBi", card: HampyCreditCard(number: "4242424242424242", exp_month: 12, exp_year: 21, cvc: "333")) { (response) in
+        StripeGateway.createCard(customer: "cus_CFJ0E06fxO4iBi", card: HampyCreditCard(id: nil, number: "4242424242424242", exp_month: 12, exp_year: 21, cvc: "333")) { (response) in
             exp.fulfill()
         }
         

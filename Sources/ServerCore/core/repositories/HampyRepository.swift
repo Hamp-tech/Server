@@ -25,10 +25,16 @@ internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         var arr = Array<T>()
         result?.forEach{
             let data = $0.asString.data(using: .utf8)!
-            let o = try! HampySingletons.sharedJSONDecoder.decode(T.self, from: data)
-            _ = update(obj: o) // To update date
-            arr.append(o)
+            
+            do {
+                let o = try HampySingletons.sharedJSONDecoder.decode(T.self, from: data)
+                _ = update(obj: o) // To update date
+                arr.append(o)
+            } catch let error{
+                Logger.d(error.localizedDescription, event: .e)
+            }
         }
+        
         
         return arr
     }
