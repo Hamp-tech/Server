@@ -7,7 +7,7 @@ http://localhost:8181/api/v1
 
 ### Description
 
-### Auth
+### Auth
 **Sign in**
 ```
 POST: /auth/signin
@@ -39,7 +39,7 @@ POST: /users/{userid}/cards/
 DELETE: /users/{userid}/cards/{cardid}
 ```
 
-### Transaction
+### Transaction
 
 **Create**
 ```
