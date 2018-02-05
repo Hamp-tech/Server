@@ -1,6 +1,6 @@
 import PackageDescription
 let package = Package(
-    name: "Server-Swift",
+    name: "Server",
     targets: [
         Target(name: "Server", dependencies: ["ServerCore"]),
         Target(name: "ServerCore")
