@@ -24,7 +24,7 @@ private extension APIUser {
     
     // PRE: Is needed an existing user
     func update() -> Route {
-        return Route(method: .put, uri: Schemes.Users.base, handler: { (request, response) in
+        return Route(method: .put, uri: Schemes.URLs.Users.base, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
                 self.debug("Handler", event: .e)
@@ -61,7 +61,7 @@ private extension APIUser {
     
     // PRE: Is needed an existing user
     func newCreditCard() -> Route {
-        return Route(method: .post, uri: Schemes.Users.newCard, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Users.newCard, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
                 self.debug("Handler", event: .e)
@@ -103,7 +103,7 @@ private extension APIUser {
     // PRE: Is needed an existing user
     
     func removeCreditCard() -> Route {
-        return Route(method: .delete, uri: Schemes.Users.removeCard, handler: { (request, response) in
+        return Route(method: .delete, uri: Schemes.URLs.Users.removeCard, handler: { (request, response) in
             let userId = request.urlVariables["id"]
             let cardId = request.urlVariables["cid"]
             

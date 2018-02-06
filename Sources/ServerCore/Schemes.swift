@@ -15,27 +15,18 @@ internal struct Schemes {
     private static let stripeURL = "https://api.stripe.com/v1"
     private static let pointsURL = baseURL + "/points/{pid}"
     
-    struct Users {
-        static let base = Schemes.userURL
-        static let newCard = Schemes.Users.base + "/cards"
-        static let removeCard = Schemes.Users.base + "/cards/{cid}"
-    }
-    
-    struct Scripts {
-        static let createServices = Schemes.scriptsURL + "/services/create"
-        static let createHampPoints = Schemes.scriptsURL + "/hamppoints/create"
-    }
-    
-    struct Auth {
-        static let signin = Schemes.authURL + "/signin"
-        static let signup = Schemes.authURL + "/signup"
-        static let restore = Schemes.authURL + "/restore/{id}"
-    }
-    
     struct URLs {
-        static let transactions = Schemes.transactionsURL
-        static let transactionsID = Schemes.transactionsURL + "/{tid}"
-        static let transactionsDeliver = Schemes.transactionsURL + "/{tid}/deliver"
+        struct Auth {
+            static let signin = Schemes.authURL + "/signin"
+            static let signup = Schemes.authURL + "/signup"
+            static let restore = Schemes.authURL + "/restore/{id}"
+        }
+        
+        struct Users {
+            static let base = Schemes.userURL
+            static let newCard = Schemes.URLs.Users.base + "/cards"
+            static let removeCard = Schemes.URLs.Users.base + "/cards/{cid}"
+        }
         
         struct Stripe {
             static let customers = Schemes.stripeURL + "/customers"
@@ -46,6 +37,17 @@ internal struct Schemes {
         
         struct Points {
             static let reset = Schemes.pointsURL + "/{lid}/reset"
+        }
+        
+        struct Transactions {
+            static let transactions = Schemes.transactionsURL
+            static let transactionsID = Schemes.transactionsURL + "/{tid}"
+            static let transactionsDeliver = Schemes.transactionsURL + "/{tid}/deliver"
+        }
+        
+        struct Scripts {
+            static let createServices = Schemes.scriptsURL + "/services/create"
+            static let createHampPoints = Schemes.scriptsURL + "/hamppoints/create"
         }
     }
     

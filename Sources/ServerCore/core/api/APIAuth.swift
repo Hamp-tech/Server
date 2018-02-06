@@ -25,7 +25,7 @@ class APIAuth: APIBase {
 private extension APIAuth {
     
     func signin() -> Route {
-        return Route(method: .post, uri: Schemes.Auth.signin, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Auth.signin, handler: { (request, response) in
             self.debug()
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
@@ -44,7 +44,7 @@ private extension APIAuth {
     }
     
     func signup() -> Route {
-        return Route(method: .post, uri: Schemes.Auth.signup, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Auth.signup, handler: { (request, response) in
             self.debug()
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
@@ -68,7 +68,7 @@ private extension APIAuth {
     
     func restore() -> Route {
         // TODO: implement
-        return Route(method: .post, uri: Schemes.Auth.restore, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Auth.restore, handler: { (request, response) in
             var hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.message = "TODO: IMPLEMENT"
             response.setBody(string: hampyResponse.json)

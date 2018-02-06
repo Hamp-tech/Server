@@ -24,7 +24,7 @@ class APITransactions: APIBase {
 
 private extension APITransactions {
     func newTransaction() -> Route {
-        return Route(method: .post, uri: Schemes.URLs.transactions, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Transactions.transactions, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
                 self.debug("Handler", event: .e)
@@ -41,7 +41,7 @@ private extension APITransactions {
     }
     
     func userTransactions() -> Route {
-        return Route(method: .get, uri: Schemes.URLs.transactions, handler: { (request, response) in
+        return Route(method: .get, uri: Schemes.URLs.Transactions.transactions, handler: { (request, response) in
             self.debug("Started")
             let hampyResponse = self.transactions(userID: request.urlVariables["id"]!)
             self.debug(hampyResponse.json)
@@ -52,7 +52,7 @@ private extension APITransactions {
     }
     
     func update() -> Route {
-        return Route(method: .put, uri: Schemes.URLs.transactionsID, handler: { (request, response) in
+        return Route(method: .put, uri: Schemes.URLs.Transactions.transactionsID, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
                 self.debug("Handler", event: .e)
@@ -69,7 +69,7 @@ private extension APITransactions {
     }
     
     func deliver() -> Route {
-        return Route(method: .post, uri: Schemes.URLs.transactionsDeliver, handler: { (request, response) in
+        return Route(method: .post, uri: Schemes.URLs.Transactions.transactionsDeliver, handler: { (request, response) in
             let data = request.postBodyString?.data(using: .utf8)
             guard let d = data else {
                 Logger.d("Handler", event: .e)

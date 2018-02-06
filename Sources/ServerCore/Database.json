@@ -1,0 +1,114 @@
+{
+    "points": {
+        "43700": [
+            {
+                "city" : "El Vendrell",
+                "CP" : "43700",
+                "lockers" : [
+                    {
+                        "code" : 1111,
+                        "number" : 1,
+                        "identifier" : "1",
+                        "available" : false,
+                        "capacity" : "S"
+                    },
+                    {
+                        "code" : 1112,
+                        "number" : 2,
+                        "identifier" : "2",
+                        "available" : true,
+                        "capacity" : "S"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 3,
+                        "identifier" : "3",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 4,
+                        "identifier" : "4",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 5,
+                        "identifier" : "5",
+                        "available" : true,
+                        "capacity" : "M"
+                    }
+                    {
+                        "code" : 1113,
+                        "number" : 6,
+                        "identifier" : "6",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 7,
+                        "identifier" : "7",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 8,
+                        "identifier" : "8",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 9,
+                        "identifier" : "9",
+                        "available" : true,
+                        "capacity" : "M"
+                    },
+                    {
+                        "code" : 1113,
+                        "number" : 10,
+                        "identifier" : "10",
+                        "available" : true,
+                        "capacity" : "M"
+                    }
+                ],
+                "identifier" : "1",
+                "location" : {
+                    "name" : "1",
+                    "longitude" : 0,
+                    "latitude" : 0
+                },
+                "address" : "C/ foo bar 1",
+                "lastActivity" : "2018-02-03T12:28:39.114"
+            }
+        ]
+    },
+    "services" : [
+        {
+            "active" : true,
+            "price" : 13,
+            "size" : "S",
+            "identifier" : "1",
+            "imageURL" : "",
+            "description" : "Description small bag",
+            "name" : "Small bag",
+            "lastActivity" : "2018-02-03T12:28:36.990"
+        },
+        {
+            "active" : true,
+            "price" : 15,
+            "size" : "M",
+            "identifier" : "2",
+            "imageURL" : "",
+            "description" : "Description small bag",
+            "name" : "Small bag",
+            "lastActivity" : "2018-02-03T12:28:36.990"
+        }
+
+
+    ]
+}
