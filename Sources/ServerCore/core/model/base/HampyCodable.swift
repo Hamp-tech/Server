@@ -21,7 +21,12 @@ extension HampyCodable {
         var d = [String:Any]()
         for (key, value) in Mirror(reflecting: self).children where key != nil {
             if case Optional<Any>.some(_) = value {
-                d[key!] = value as AnyObject
+                
+                #if os(Linux)
+                    d[key!] = value as! AnyObject
+                #else
+                    d[key!] = value as AnyObject
+                #endif
             }
         }
         
