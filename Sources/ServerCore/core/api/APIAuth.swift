@@ -78,7 +78,7 @@ private extension APIAuth {
     }
 }
 
-internal extension APIAuth {
+extension APIAuth {
     
     func signin(body: Data) -> HampyResponse<HampyUser> {
         var hampyResponse: HampyResponse<HampyUser>!
@@ -103,35 +103,35 @@ internal extension APIAuth {
     }
     
     func signup(body: Data, completionBlock:@escaping (HampyResponse<HampyUser>) -> ()) {
-        var user = try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
-        user.lastActivity = Date().iso8601()
-        user.identifier = UUID.generateHampIdentifier()
-    
-        var userToFind = HampyUser()
-        userToFind.email = user.email
-        let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
-        
-        if existsResult.0 {
-            completionBlock(APIHampyResponsesFactory.Auth.signupFailConflict())
-            self.debug("User exists!")
-        } else {
-            Logger.d("Create costumer started")
-            StripeGateway.createCustomer(userID: user.identifier!) { (stripeResponse) in
-                switch stripeResponse.code {
-                case .ok:
-                    self.debug("Create costumer finished")
-                    self.debug("Create user on database")
-                    user.stripeID = stripeResponse.data!["id"] as? String
-                    user.cards = []
-                    let _ = self.repositories!.usersRepository.create(obj: user)
-                    self.debug("Create user on database finished")
-                    
-                    completionBlock(APIHampyResponsesFactory.Auth.signupOK(user: user))
-                default:
-                    completionBlock(APIHampyResponsesFactory.Auth.signupFailUnknown())
-                    self.debug("Create costumer error, look logs!", event: .e)
-                }
-            }
-        }
+//        var user = try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
+//        user.lastActivity = Date().iso8601()
+//        user.identifier = UUID.generateHampIdentifier()
+//
+//        var userToFind = HampyUser()
+//        userToFind.email = user.email
+//        let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
+//
+//        if existsResult.0 {
+//            completionBlock(APIHampyResponsesFactory.Auth.signupFailConflict())
+//            self.debug("User exists!")
+//        } else {
+//            Logger.d("Create costumer started")
+//            StripeGateway.createCustomer(userID: user.identifier!) { (stripeResponse) in
+//                switch stripeResponse.code {
+//                case .ok:
+//                    self.debug("Create costumer finished")
+//                    self.debug("Create user on database")
+//                    user.stripeID = stripeResponse.data!["id"] as? String
+//                    user.cards = []
+//                    let _ = self.repositories!.usersRepository.create(obj: user)
+//                    self.debug("Create user on database finished")
+//
+//                    completionBlock(APIHampyResponsesFactory.Auth.signupOK(user: user))
+//                default:
+//                    completionBlock(APIHampyResponsesFactory.Auth.signupFailUnknown())
+//                    self.debug("Create costumer error, look logs!", event: .e)
+//                }
+//            }
+//        }
     }
 }

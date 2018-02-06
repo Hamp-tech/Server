@@ -84,12 +84,12 @@ private extension APIPoints {
     }
 }
 
-internal extension APIPoints {
+extension APIPoints {
     func resetLocker(pid: String, lid: String) -> HampyResponse<String> {
         var point = self.repositories!.pointsRepository.find(properties: ["identifier": pid]).first
         var locker = point!.lockers!.filter{$0.identifier == lid}.first!
         locker.available = true
-        locker.code = String(arc4random_uniform(9999)).leftPadding(toLength: 4, withPad: "0")
+//        locker.code = String(arc4random_uniform(9999)).leftPadding(toLength: 4, withPad: "0")
         point!.updateLocker(locker: locker)
         
         _ = self.repositories?.pointsRepository.update(obj: point!)

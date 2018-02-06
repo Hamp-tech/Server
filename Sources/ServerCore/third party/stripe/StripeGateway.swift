@@ -9,14 +9,17 @@ import Foundation
 import PerfectHTTP
 import PerfectCURL
 
+
 struct StripeGateway: Stripeable {
-    static func createCustomer(userID: String, completion: @escaping Stripeable.StripeResponse) {
+    typealias StripeResponse = (HampyResponse<[String: Any]>) -> ()
+    
+    static func createCustomer(userID: String, completion: @escaping StripeResponse) {
         let url = Schemes.URLs.Stripe.customers.replacingOccurrences(of: "{id}", with: userID)
         let params = ["description": "Customer linked with \(userID)"]
         request(url: url, params: params, completion: completion)
     }
     
-    static func createCard(customer: String, card: HampyCreditCard, completion: @escaping Stripeable.StripeResponse) {
+    static func createCard(customer: String, card: HampyCreditCard, completion: @escaping StripeResponse) {
         let url = Schemes.URLs.Stripe.cards.replacingOccurrences(of: "{id}", with: customer)
         
         let dict = card.dict
@@ -29,18 +32,18 @@ struct StripeGateway: Stripeable {
         request(url: url, params: aux, completion: completion)
     }
     
-    static func removeCard(customer: String, cardId: String, completion: @escaping Stripeable.StripeResponse) {
+    static func removeCard(customer: String, cardId: String, completion: @escaping StripeResponse) {
         let url = Schemes.URLs.Stripe.removeCard.replacingOccurrences(of: "{id}", with: customer).replacingOccurrences(of: "{cid}", with: cardId)
         Logger.d(url)
         
         request(url: url, method: .delete, completion: completion)
     }
     
-    static func cards(customer: String, completion: @escaping Stripeable.StripeResponse) {
+    static func cards(customer: String, completion: @escaping StripeResponse) {
         
     }
     
-    static func pay(customer: String, cardToken: String, amount: Float32, userID: String, completion: @escaping Stripeable.StripeResponse) {
+    static func pay(customer: String, cardToken: String, amount: Float32, userID: String, completion: @escaping StripeResponse) {
         
         let url = Schemes.URLs.Stripe.pay
 
@@ -55,7 +58,7 @@ struct StripeGateway: Stripeable {
         request(url: url, params: params, completion: completion)
     }
     
-    static func request(url: String, method: HTTPMethod = .post, params: Stripeable.Params? = nil, completion: @escaping Stripeable.StripeResponse) {
+    static func request(url: String, method: HTTPMethod = .post, params: [String: Any]? = nil, completion: @escaping StripeResponse) {
         let user = CURLRequest.Option.userPwd("sk_test_l2R4Rs5kioHANlDDkj2XlKxj")
         let contentType = CURLRequest.Option.addHeader(CURLRequest.Header.Name.contentType, "application/x-www-form-urlencoded")
         let met = CURLRequest.Option.httpMethod(method)

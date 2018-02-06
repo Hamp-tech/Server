@@ -84,9 +84,7 @@ private extension APITransactions {
             response.completed()
         })
     }
-}
-
-internal extension APITransactions {
+    
     func newTransaction(data: Data, userID: String, completionBlock: @escaping (HampyResponse<HampyTransaction>) -> ()) {
         var hampyResponse: HampyResponse<HampyTransaction>!
         
@@ -118,19 +116,19 @@ internal extension APITransactions {
                               amount: transaction.booking!.price!,
                               userID: userID,
                               completion: { (resp) in
-                
-                if resp.code == .ok {
-                    self.debug("Paid successfully")
-                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: lockers)
-                    let _ = self.createTransaction(transaction: &transaction)
-                    
-                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
-                } else {
-                    self.debug("Paid error: \(resp.message)", event: .e)
-                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
-                }
-                
-                completionBlock(hampyResponse)
+                                
+                                if resp.code == .ok {
+                                    self.debug("Paid successfully")
+                                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: lockers)
+                                    let _ = self.createTransaction(transaction: &transaction)
+                                    
+                                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                                } else {
+                                    self.debug("Paid error: \(resp.message)", event: .e)
+                                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
+                                }
+                                
+                                completionBlock(hampyResponse)
             })
             // END PAY STRIPE
             
@@ -203,9 +201,7 @@ internal extension APITransactions {
         
         return hampyResponse
     }
-}
-
-private extension APITransactions {
+    
     func basketServices(booking: HampyBooking) -> [HampyService] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
         let services = self.repositories!.servicesRepository.find(elements: servicesIdentifiers!)
@@ -237,6 +233,4 @@ private extension APITransactions {
         
         return (false, APIHampyResponsesFactory.Transaction.transactionFailed(message: "Error saving transaction"))
     }
-    
-    
 }

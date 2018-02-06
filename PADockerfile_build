@@ -1,12 +1,23 @@
 FROM perfectlysoft/perfectassistant:4.0
 RUN apt-get -y update && apt-get install -y libbson-dev
 RUN apt-get -y update && apt-get install -y libmongoc-dev
+RUN apt-get -y update && apt-get install -y libbson-dev
+RUN apt-get -y update && apt-get install -y libmongoc-dev
 # Perfect-LinuxBridge.git--5433499499634561434/PADockerfile
 RUN apt-get -y update && apt-get install -y uuid-dev
 
 # Perfect-COpenSSL-Linux.git--3841498012799333837/PADockerfile
 RUN apt-get -y update && apt-get install -y libssl-dev
 
+# Perfect-LinuxBridge.git-2462304242049991767/PADockerfile
+RUN apt-get -y update && apt-get install -y uuid-dev
+
 # Perfect-libcurl.git--411989353909344441/PADockerfile
+RUN apt-get -y update && apt-get install -y libcurl4-openssl-dev
+
+# Perfect-COpenSSL-Linux.git-1373621681117399666/PADockerfile
+RUN apt-get -y update && apt-get install -y libssl-dev
+
+# Perfect-libcurl.git--6494719955323420738/PADockerfile
 RUN apt-get -y update && apt-get install -y libcurl4-openssl-dev
 RUN rm -rf /var/lib/apt/lists/*

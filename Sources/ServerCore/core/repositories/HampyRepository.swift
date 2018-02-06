@@ -8,7 +8,7 @@
 import Foundation
 import PerfectMongoDB
 
-internal class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
+class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     var mongoDatabase: MongoDatabase
     var mongoCollection: MongoCollection!
     

@@ -5,7 +5,7 @@
 //  Created by Joan Molinas Ramon on 8/12/17.
 //
 
-internal struct Schemes {
+struct Schemes {
     private static let baseURL = "/api/v1"
     private static let userURL = baseURL + "/users/{id}"
     private static let authURL = baseURL + "/auth"
