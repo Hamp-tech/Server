@@ -29,6 +29,7 @@ private extension APITransactions {
             guard let d = data else {
                 self.debug("Handler", event: .e)
                 assert(false)
+                return
             }
             self.debug("Started")
             self.newTransaction(data: d, userID: request.urlVariables["id"]!, completionBlock: { (resp) in
@@ -57,6 +58,7 @@ private extension APITransactions {
             guard let d = data else {
                 self.debug("Handler", event: .e)
                 assert(false)
+                return
             }
             
             let hampyResponse = self.update(transactionID: request.urlVariables["tid"]!, data: d)
@@ -74,6 +76,7 @@ private extension APITransactions {
             guard let d = data else {
                 Logger.d("Handler", event: .e)
                 assert(false)
+                return
             }
             
             let hampyResponse = self.deliver(transactionID: request.urlVariables["tid"]!, data: d)
@@ -84,7 +87,9 @@ private extension APITransactions {
             response.completed()
         })
     }
-    
+}
+
+internal extension APITransactions {
     func newTransaction(data: Data, userID: String, completionBlock: @escaping (HampyResponse<HampyTransaction>) -> ()) {
         var hampyResponse: HampyResponse<HampyTransaction>!
         
@@ -152,7 +157,7 @@ private extension APITransactions {
         var transaction = self.repositories!.transactionsRepository.find(properties: ["identifier" : transactionID]).first!
         do {
             let auxTransaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
-            transaction.phase = auxTransaction.phase
+            transaction.phases = auxTransaction.phases
             
             _ = self.repositories?.transactionsRepository.update(obj: transaction)
             
@@ -180,7 +185,6 @@ private extension APITransactions {
             let numbers = booking.deliveryLockers!.map{$0.number!}
             let lockers = point?.findLockers(numbersOfLocker: numbers)
             transaction.booking?.deliveryLockers = lockers
-            transaction.phase = .toDeliver
             transaction.deliveryDate = Date().iso8601()
             _ = self.repositories?.transactionsRepository.update(obj: transaction)
             
@@ -201,7 +205,9 @@ private extension APITransactions {
         
         return hampyResponse
     }
-    
+}
+
+private extension APITransactions {
     func basketServices(booking: HampyBooking) -> [HampyService] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
         let services = self.repositories!.servicesRepository.find(elements: servicesIdentifiers!)
@@ -226,7 +232,6 @@ private extension APITransactions {
     }
     
     func createTransaction(transaction: inout HampyTransaction) ->  (created: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
-        transaction.phase = .toPickUp
         let result = repositories!.transactionsRepository.create(obj: transaction)
         
         if case .success = result { return (true, nil) }

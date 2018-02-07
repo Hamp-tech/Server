@@ -1,0 +1,12 @@
+[Unit]
+Description=Perfect deployed server
+
+[Service]
+Type=simple
+WorkingDirectory=/perfect-deployed/server
+ExecStart=/perfect-deployed/server/Server
+Restart=always
+PIDFile=/var/run/server.pid
+
+[Install]
+WantedBy=multi-user.target

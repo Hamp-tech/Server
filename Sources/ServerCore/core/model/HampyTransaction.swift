@@ -17,16 +17,6 @@ struct HampyTransaction: HampyDatabaseable {
         case canceled
     }
     
-    enum Phase: Int, Codable {
-        case toPickUp
-        case washing
-        case drying
-        case folding
-        case toDeliver
-        case delivering
-        case delivered
-    }
-    
     // MARK: - Properties
     static var databaseScheme: String = Schemes.Mongo.Collections.transactions
     var identifier: String?
@@ -36,7 +26,7 @@ struct HampyTransaction: HampyDatabaseable {
     var pickUpDate: String?
     var deliveryDate: String?
     var dbState: DBState?
-    var phase: Phase?
+    var phases: [HampyTransactionPhase]?
     var lastActivity: String?
     var created: String?
     

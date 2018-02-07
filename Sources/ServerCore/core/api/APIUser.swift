@@ -29,6 +29,7 @@ private extension APIUser {
             guard let d = data else {
                 self.debug("Handler", event: .e)
                 assert(false)
+                return
             }
             self.debug("Started")
             var hampyResponse = HampyResponse<HampyUser>()
@@ -66,6 +67,7 @@ private extension APIUser {
             guard let d = data else {
                 self.debug("Handler", event: .e)
                 assert(false)
+                return
             }
             var hampyResponse =  HampyResponse<HampyCreditCard>()
             var user = self.repositories!.usersRepository.find(properties: ["identifier": request.urlVariables["id"]!]).first!
@@ -110,6 +112,7 @@ private extension APIUser {
             guard let uid = userId, let cid = cardId else {
                 self.debug("Handler", event: .e)
                 assert(false)
+                return
             }
             
             var user = self.repositories!.usersRepository.find(properties: ["identifier": uid]).first!

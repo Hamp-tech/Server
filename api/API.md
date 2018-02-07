@@ -4,6 +4,10 @@
 ```
 http://localhost:8181/api/v1
 ```
+**Content-Type**
+```
+application/json
+```
 
 ### Description
 
