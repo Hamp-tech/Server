@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PerfectMongoDB
 import MongoKitten
 
 
@@ -21,29 +20,19 @@ extension Dictionary where Key == String  {
 }
 
 class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
-    var mongoDatabase: MongoDatabase
-    var mongoCollection: PerfectMongoDB.MongoCollection!
     var database: Database
     var collection: MongoKitten.MongoCollection!
     
-    required init(database: Database, mongoDatabase: MongoDatabase) {
+    required init(database: Database) {
         guard type(of: self) != HampyRepository.self else {
              fatalError("HampyRepository instances can not be created")
         }
-        self.mongoDatabase = mongoDatabase
-        self.mongoCollection = self.mongoDatabase.getCollection(name: T.databaseScheme)
         self.database = database
         self.collection = database[T.databaseScheme]
         print(collection)
     }
 
     func aux(doc: Document) throws -> T {
-        do {
-            Logger.d(doc.makeExtendedJSONString())
-            try HampySingletons.sharedJSONDecoder.decode(T.self, from: Data.init(bytes: doc.makeExtendedJSONData()))
-        } catch {
-            print(error.localizedDescription)
-        }
       return try HampySingletons.sharedJSONDecoder.decode(T.self, from: Data.init(bytes: doc.makeExtendedJSONData()))
     }
     
@@ -121,6 +110,6 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     }
     
     func close() {
-        mongoCollection.close()
+        
     }
 }

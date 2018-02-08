@@ -6,18 +6,14 @@
 //
 
 import Foundation
-import PerfectMongoDB
 import MongoKitten
 
 protocol HampyRepositable {
     associatedtype T
     
-    var mongoDatabase: MongoDatabase { get }
-    var mongoCollection: PerfectMongoDB.MongoCollection! { get }
-    
     var database: Database { get }
     
-    init(database: Database, mongoDatabase: MongoDatabase)
+    init(database: Database)
     
     func find(doc: Document) -> [T]
     func find(properties: Dictionary<String, Any?>) -> [T]

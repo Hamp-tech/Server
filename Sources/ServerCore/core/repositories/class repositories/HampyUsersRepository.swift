@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PerfectMongoDB
 
 class HampyUsersRepository: HampyRepository<HampyUser>{
     typealias T = HampyUser

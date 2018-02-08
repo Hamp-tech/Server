@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PerfectMongoDB
 
 class HampyPointsRepository: HampyRepository<HampyPoint> {
     typealias T = HampyPoint
