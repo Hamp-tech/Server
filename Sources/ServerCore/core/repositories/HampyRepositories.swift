@@ -7,11 +7,13 @@
 
 import Foundation
 import PerfectMongoDB
+import MongoKitten
 
 class HampyRepositories {
     
     // MARK: - Properties
     private let mongoDatabase: MongoDatabase
+    private let database: Database
     let usersRepository: HampyRepository<HampyUser>
     let pointsRepository: HampyRepository<HampyPoint>
     let servicesRepository: HampyRepository<HampyService>
@@ -19,13 +21,14 @@ class HampyRepositories {
     let transactionsRepository: HampyRepository<HampyTransaction>
     
     // MARK: - Life cycle
-    init(mongoDatabase: MongoDatabase) {
+    init(database: Database, mongoDatabase: MongoDatabase) {
         self.mongoDatabase = mongoDatabase
-        self.usersRepository = HampyUsersRepository(mongoDatabase: mongoDatabase)
-        self.pointsRepository = HampyPointsRepository(mongoDatabase: mongoDatabase)
-        self.servicesRepository = HampyServicesRespository(mongoDatabase: mongoDatabase)
-        self.bookingRepository = HampyBookingRepository(mongoDatabase: mongoDatabase)
-        self.transactionsRepository = HampyTransactionsRepository(mongoDatabase: mongoDatabase)
+        self.database = database
+        self.usersRepository = HampyUsersRepository(database: database, mongoDatabase: mongoDatabase)
+        self.pointsRepository = HampyPointsRepository(database: database, mongoDatabase: mongoDatabase)
+        self.servicesRepository = HampyServicesRespository(database: database, mongoDatabase: mongoDatabase)
+        self.bookingRepository = HampyBookingRepository(database: database, mongoDatabase: mongoDatabase)
+        self.transactionsRepository = HampyTransactionsRepository(database: database, mongoDatabase: mongoDatabase)
     }
     
     func close() {

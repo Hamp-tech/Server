@@ -42,6 +42,118 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MongoKitten::MongoKitten"
+               BuildableName = "MongoKitten.framework"
+               BlueprintName = "MongoKitten"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MongoKitten::MongoSocket"
+               BuildableName = "MongoSocket.framework"
+               BlueprintName = "MongoSocket"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MongoKitten::GeoJSON"
+               BuildableName = "GeoJSON.framework"
+               BlueprintName = "GeoJSON"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "MongoKitten::ExtendedJSON"
+               BuildableName = "ExtendedJSON.framework"
+               BlueprintName = "ExtendedJSON"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Schrodinger::Schrodinger"
+               BuildableName = "Schrodinger.framework"
+               BlueprintName = "Schrodinger"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CryptoKitten::CryptoKitten"
+               BuildableName = "CryptoKitten.framework"
+               BlueprintName = "CryptoKitten"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "Cheetah::Cheetah"
+               BuildableName = "Cheetah.framework"
+               BlueprintName = "Cheetah"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BSON::BSON"
+               BuildableName = "BSON.framework"
+               BlueprintName = "BSON"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "PerfectWebSockets::PerfectWebSockets"
                BuildableName = "PerfectWebSockets.framework"
                BlueprintName = "PerfectWebSockets"

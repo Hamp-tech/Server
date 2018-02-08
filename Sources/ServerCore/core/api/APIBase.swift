@@ -8,17 +8,20 @@
 import Foundation
 import PerfectMongoDB
 import PerfectHTTP
+import MongoKitten
 
 class APIBase: APIAble, Debugable {
     
     // MARK: - Properties
     var mongoDatabase: MongoDatabase
     var repositories: HampyRepositories?
+    var database: Database
     
     // MARK: - Init
-    required init(mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
+    required init(database: Database, mongoDatabase: MongoDatabase, repositories: HampyRepositories? = nil) {
         self.mongoDatabase = mongoDatabase
         self.repositories = repositories
+        self.database = database
     }
     
     func routes() -> Routes {

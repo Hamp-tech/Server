@@ -7,12 +7,14 @@
 
 import PerfectHTTP
 import PerfectMongoDB
+import MongoKitten
 
 protocol APIAble {    
     var mongoDatabase: MongoDatabase { get }
     var repositories: HampyRepositories? { get }
+    var database: Database { get }
 
-    init(mongoDatabase: MongoDatabase, repositories: HampyRepositories?)
+    init(database: Database, mongoDatabase: MongoDatabase, repositories: HampyRepositories?)
     
     func routes() -> Routes
 }

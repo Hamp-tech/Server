@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import PerfectMongoDB
 import PerfectHTTP
 
 class APITransactions: APIBase {

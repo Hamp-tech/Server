@@ -7,7 +7,6 @@
 
 import Foundation
 import PerfectHTTP
-import PerfectMongoDB
 
 
 class APIAuth: APIBase {

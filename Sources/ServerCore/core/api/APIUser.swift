@@ -6,7 +6,6 @@
 //
 
 import PerfectHTTP
-import PerfectMongoDB
 
 class APIUser: APIBase {
     

@@ -9,6 +9,7 @@ import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
 import PerfectMongoDB
+import MongoKitten
 
 public final class Hampy {
     
@@ -18,6 +19,7 @@ public final class Hampy {
     private static let client = try! MongoClient(uri: Schemes.Mongo.uri)
     private static var environtment: HampyEnvirontment = .development
     private static var repositories: HampyRepositories!
+    private static var database = try! MongoKitten.Database("mongodb://localhost/hampdev")
     
     // MARK: - Private API
     public static func start() throws {
@@ -30,12 +32,12 @@ public final class Hampy {
             mongoDatabase.close()
         }
 
-        repositories = HampyRepositories(mongoDatabase: mongoDatabase)
+        repositories = HampyRepositories(database: database, mongoDatabase: mongoDatabase)
         
-        let userAPI = APIUser(mongoDatabase: mongoDatabase, repositories: repositories)
-        let authAPI = APIAuth(mongoDatabase: mongoDatabase, repositories: repositories)
-        let transactionsAPI = APITransactions(mongoDatabase: mongoDatabase, repositories: repositories)
-        let pointsAPI = APIPoints(mongoDatabase: mongoDatabase, repositories: repositories)
+        let userAPI = APIUser(database: database, mongoDatabase: mongoDatabase, repositories: repositories)
+        let authAPI = APIAuth(database: database, mongoDatabase: mongoDatabase, repositories: repositories)
+        let transactionsAPI = APITransactions(database: database, mongoDatabase: mongoDatabase, repositories: repositories)
+        let pointsAPI = APIPoints(database: database, mongoDatabase: mongoDatabase, repositories: repositories)
 
         routes.add(userAPI.routes())
         routes.add(authAPI.routes())
@@ -49,7 +51,7 @@ public final class Hampy {
         if environtment != HampyEnvirontment.development {
             server.setRequestFilters([(APIKeyRequestFilter(), .high)])
         } else {
-            let scriptsAPI = APIScripts(mongoDatabase: mongoDatabase)
+            let scriptsAPI = APIScripts(database: database, mongoDatabase: mongoDatabase)
             server.addRoutes(scriptsAPI.routes())
         }
         
