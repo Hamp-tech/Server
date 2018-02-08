@@ -102,9 +102,9 @@ internal extension APITransactions {
             
             self.debug("Calculating number of lockers")
             
-            var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
+            var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first
             
-            guard let lockers = Foo.lockers(to: services, point: point) else {
+            guard let lockers = Foo.lockers(to: services, point: point!) else {
                 self.debug("Not enough lockers. Lockers needed \(0) and \(0) available")
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
                 completionBlock(hampyResponse)
@@ -123,7 +123,7 @@ internal extension APITransactions {
                                 
                                 if resp.code == .ok {
                                     self.debug("Paid successfully")
-                                    let _ = self.updatePoint(transaction: &transaction, point: &point, lockers: lockers)
+                                    let _ = self.updatePoint(transaction: &transaction, point: &point!, lockers: lockers)
                                     let _ = self.createTransaction(transaction: &transaction)
                                     
                                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
@@ -158,7 +158,7 @@ internal extension APITransactions {
             let auxTransaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
             transaction.phases = auxTransaction.phases
             
-            _ = self.repositories?.transactionsRepository.update(obj: transaction)
+            _ = try! self.repositories?.transactionsRepository.update(obj: transaction)
             
             // Send push, sms to user
             
@@ -185,7 +185,7 @@ internal extension APITransactions {
             let lockers = point?.findLockers(numbersOfLocker: numbers)
             transaction.booking?.deliveryLockers = lockers
             transaction.deliveryDate = Date().iso8601()
-            _ = self.repositories?.transactionsRepository.update(obj: transaction)
+            _ = try! self.repositories?.transactionsRepository.update(obj: transaction)
             
             let user = self.repositories?.usersRepository.find(properties: ["identifier": transaction.userID!]).first!
             
@@ -223,17 +223,17 @@ private extension APITransactions {
         
         transaction.booking?.pickUpLockers = lockers
         
-        let result = repositories!.pointsRepository.update(obj: point)
+        let result = try! repositories!.pointsRepository.update(obj: point)
         
-        if case .success = result { return (true, nil) }
+//        if case .success = result { return (true, nil) }
         
         return (false, APIHampyResponsesFactory.Transaction.transactionFailed(message: "Error updating point"))
     }
     
     func createTransaction(transaction: inout HampyTransaction) ->  (created: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
-        let result = repositories!.transactionsRepository.create(obj: transaction)
+        let result = try! repositories!.transactionsRepository.create(obj: transaction)
         
-        if case .success = result { return (true, nil) }
+//        if case .success = result { return (true, nil) }
         
         return (false, APIHampyResponsesFactory.Transaction.transactionFailed(message: "Error saving transaction"))
     }

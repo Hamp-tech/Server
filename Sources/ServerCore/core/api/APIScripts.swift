@@ -24,7 +24,7 @@ private extension APIScripts {
     // PRE: Is needed an existing user
     func createServices() -> Route {
         return Route(method: .post, uri: Schemes.URLs.Scripts.createServices, handler: { (request, response) in
-            HampyScripts.createServices(database: self.mongoDatabase)
+            HampyScripts.createServices(database: self.database)
             response.appendBody(string: "{ \"status\": \"OK\" }")
             response.completed()
         })
@@ -32,7 +32,7 @@ private extension APIScripts {
     
     func createHampPoints() -> Route {
         return Route(method: .post, uri: Schemes.URLs.Scripts.createHampPoints, handler: { (request, response) in
-            HampyScripts.createHampPoints(database: self.mongoDatabase)
+            HampyScripts.createHampPoints(database: self.database)
             response.appendBody(string: "{ \"status\": \"OK\" }")
             response.completed()
         })

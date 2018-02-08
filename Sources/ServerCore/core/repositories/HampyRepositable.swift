@@ -19,13 +19,12 @@ protocol HampyRepositable {
     
     init(database: Database, mongoDatabase: MongoDatabase)
     
-    func find(query: BSON) -> [T]
-    func find(properties: Dictionary<String, Any>) -> [T]
+    func find(doc: Document) -> [T]
+    func find(properties: Dictionary<String, Any?>) -> [T]
     func find(elements by: Array<Dictionary<String, Any>>) -> [T]
-    func exists(query: BSON) -> (exists: Bool, obj: T?)
+    func exists(doc: Document) -> (exists: Bool, obj: T?)
     func exists(obj: T) -> (exists: Bool, obj: T?)
-    func create(obj: T) -> MongoResult
-    func update(obj: T) -> MongoResult
-    
+    func create(obj: T) throws -> T
+    func update(obj: T) throws -> T
     func close()
 }

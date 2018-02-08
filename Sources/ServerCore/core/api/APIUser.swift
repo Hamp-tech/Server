@@ -36,17 +36,13 @@ private extension APIUser {
             user?.identifier = request.urlVariables["id"]
             
             if let u = user {
-                let result = self.repositories?.usersRepository.update(obj: u)
-                
-                switch result {
-                case .success?:
+                do {
+                    let _ = try self.repositories?.usersRepository.update(obj: u)
                     hampyResponse.message = "User updated successfully"
                     hampyResponse.code = .ok
-                   
-                default:
-                    hampyResponse.message = "User doesn't exists"
+                } catch let error {
+                    hampyResponse.message = error.localizedDescription
                     hampyResponse.code = .badRequest
-                    
                 }
             } else {
                 hampyResponse.code = .badRequest
@@ -85,7 +81,7 @@ private extension APIUser {
                         card.cvc = nil
                         user.cards?.append(card)
                         
-                        _ = self.repositories?.usersRepository.update(obj: user)
+                        _ = try! self.repositories?.usersRepository.update(obj: user)
                         
                         hampyResponse.message = "Card created successfully"
                         hampyResponse.data = card
@@ -125,7 +121,7 @@ private extension APIUser {
                     self.debug("Card removed")
                     if let idx = user.cards?.index(where: {$0.id == cid}) {
                          user.cards!.remove(at: idx)
-                        _ = self.repositories?.usersRepository.update(obj: user)
+                        _ = try! self.repositories?.usersRepository.update(obj: user)
                     }
                     var hampyResponse = resp
                     hampyResponse.message = "Card remove sucessfully"

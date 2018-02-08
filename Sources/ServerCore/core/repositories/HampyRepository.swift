@@ -38,34 +38,14 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     }
 
     func aux(doc: Document) throws -> T {
+        do {
+            Logger.d(doc.makeExtendedJSONString())
+            try HampySingletons.sharedJSONDecoder.decode(T.self, from: Data.init(bytes: doc.makeExtendedJSONData()))
+        } catch {
+            print(error.localizedDescription)
+        }
       return try HampySingletons.sharedJSONDecoder.decode(T.self, from: Data.init(bytes: doc.makeExtendedJSONData()))
     }
-    //
-    func find(query: BSON) -> [T] {
-        let result = self.mongoCollection.find(query: query)
-        var arr = Array<T>()
-        result?.forEach{
-            let data = $0.asString.data(using: .utf8)!
-            
-            do {
-                let o = try HampySingletons.sharedJSONDecoder.decode(T.self, from: data)
-                _ = update(obj: o) // To update date
-                arr.append(o)
-            } catch let error{
-                Logger.d(error.localizedDescription, event: .e)
-            }
-        }
-        
-        
-        return arr
-    }
-    //
-    //
-    func find(properties: Dictionary<String, Any>) -> [T] {
-        let bson = BSON(map: properties)
-        return find(query: bson)
-    }
-    //
     
     func find(doc: Document) -> [T] {
         let query = Query(doc)
@@ -81,22 +61,15 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         return arr
     }
     
-    func find1(properties: Dictionary<String, Any?>) -> [T] {
+    func find(properties: Dictionary<String, Any?>) -> [T] {
         let doc = Document(dictionaryElements: properties.kittenDictionary)
         return find(doc: doc)
     }
     
     func find(elements by: Array<Dictionary<String, Any>>) -> [T] {
-        return by.flatMap {find1(properties: $0)}
+        return by.flatMap {find(properties: $0)}
     }
     
-    //
-    func exists(query: BSON) -> (exists: Bool, obj: T?) {
-        let arr = find(query: query)
-        let exists = arr.count > 0
-        return (exists, exists ? arr[0] : nil)
-    }
-    //
     
     func exists(doc: Document) -> (exists: Bool, obj: T?) {
         let query = Query(doc)
@@ -108,6 +81,8 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
             if let res = result {
                 obj = try aux(doc: res)
             }
+        } catch let error as MongoError {
+            Logger.d(error.debugDescription, event: .e)
         } catch let error {
             Logger.d(error.localizedDescription, event: .e)
         }
@@ -116,60 +91,33 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
     }
     
      func exists(obj: T) -> (exists: Bool, obj: T?) {
-        let doc = Document(obj.json.data(using: .utf8)!)!
-        return exists(doc: doc)
-    }
-    
-    // PRE: Assuming that obj has correct properties setted
-     func create(obj: T) -> MongoResult {
-        let d = Date().iso8601()
-        var o = obj
-        o.lastActivity = d
-        o.created = d
-        
-        let bson = try! BSON(json: o.json)
-        
-        return mongoCollection.save(document: bson)
-    }
-    
-    func create1(obj: T) throws -> T {
-        let d = Date().iso8601()
-        var o = obj
-        o.lastActivity = d
-        o.created = d
-        
-
-        
-        let doc = Document(obj.json.data(using: .utf8)!)!
-        try collection.append(doc)
-        do {
-            try collection.insert(doc)
-        } catch let error {
-            Logger.d(error.localizedDescription, event: .e)
+        let doc = try! Document.init(extendedJSON: obj.json)
+        guard let d = doc else {
+            return (false, nil)
         }
-        
-        return obj
+        return exists(doc: d)
     }
     
-    func update1(obj: T) throws -> T {
-        let doc = Document(obj.json.data(using: .utf8)!)!
-        try collection.update(to: doc)
-        
-        return obj
-    }
-    
-     func update(obj: T) -> MongoResult{
-        guard let id = obj.identifier else { return MongoResult.error(0, 0, "")}
-        
+    func create(obj: T) throws -> T {
+        let d = Date().iso8601()
         var o = obj
-        o.lastActivity = Date().iso8601()
+        o.lastActivity = d
+        o.created = d
         
-        let old = BSON()
-        old.append(key: "identifier", string: id)
+        let doc = try Document.init(extendedJSON: o.json)
+        try collection.insert(doc!)
         
-        let new = BSON()
-        new.append(key: "$set", document: try! BSON(json: o.json))
-        return mongoCollection.update(selector: old, update: new)
+        return obj
+    }
+    
+    func update(obj: T) throws -> T {
+        
+        let query = Query(aqt: AQT.contains(key: "identifier", val: obj.identifier!, options: NSRegularExpression.Options.allowCommentsAndWhitespace))
+        let doc = try Document(extendedJSON: obj.json)!
+        
+        try collection.update(query, to: ["$set": doc], upserting: true)
+        
+        return obj
     }
     
     func close() {
