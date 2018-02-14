@@ -22,14 +22,15 @@ application/json
 POST: /auth/signin
 ```
 > Request
-> ``` json
+``` json
 {
 	"email" : "elon@usehamp.io",
 	"password" : "1234567890"
 }
 ```
+
 > Response
-> ``` json
+``` json
 {
     "message": "",
     "data": {
@@ -69,7 +70,7 @@ POST: /auth/signup
 ```
 
 > Response
->``` json
+``` json
 {
     "message": "",
     "data": {
@@ -91,7 +92,7 @@ POST: /auth/signup
 ```
 POST: /auth/{userid}/restore
 ```
->``` json
+``` json
     TODO    
 ```
 
@@ -101,14 +102,14 @@ POST: /auth/{userid}/restore
 PUT: /users/{userid}
 ```
 > Example request
->``` json
+``` json
 {
 	"name" : "Mark"
 }
->```
+```
 
 > Response
->``` json
+``` json
 {
     "message": "User updated successfully",
     "code": 200
@@ -120,7 +121,7 @@ PUT: /users/{userid}
 POST: /users/{userid}/cards/
 ```
 > Request
->```json
+```json
 {
 	"number": "4242424242424242",
 	"exp_month": 12,
@@ -129,7 +130,7 @@ POST: /users/{userid}/cards/
 }
 ```
 > Response
->``` json
+``` json
 {
     "message": "Card created successfully",
     "data": {
@@ -147,7 +148,7 @@ POST: /users/{userid}/cards/
 DELETE: /users/{userid}/cards/{cardid}
 ```
 > Response
->``` json
+``` json
 {
     "message": "Card removed sucessfully",
     "code": 200
@@ -161,7 +162,7 @@ DELETE: /users/{userid}/cards/{cardid}
 POST: /users/{userid}/transactions
 ```
 > Request
->``` json
+``` json
 {
 	"creditCardIdentifier" : "card_1BvTiFCiVhDLJHAGw2bqSUei",
 	"booking": {
@@ -178,7 +179,7 @@ POST: /users/{userid}/transactions
 }
 ```
 > Response
->``` json
+``` json
 {
     "message": "Services booked",
     "data": {
@@ -216,7 +217,7 @@ POST: /users/{userid}/transactions
 GET: /users/{userid}/transactions/
 ```
 > Response
->``` json
+``` json
 {
     "message": "",
     "data": [
@@ -258,7 +259,7 @@ GET: /users/{userid}/transactions/
 POST: /users/{userid}/transactions/{transactionid}/deliver
 ```
 > Request
->``` json
+``` json
 {
 	"point": "1",
 	"deliveryLockers" : [
@@ -269,7 +270,7 @@ POST: /users/{userid}/transactions/{transactionid}/deliver
 }
 ```
 > Response
->```json
+```json
 {
     "message": "",
     "data": {
@@ -319,7 +320,7 @@ POST: /users/{userid}/transactions/{transactionid}/deliver
 PUT: /users/{userid}/transactions/{transactionid}
 ```
 > Request
->``` json
+``` json
 {
 	"phase": 2
 }
