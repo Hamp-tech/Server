@@ -123,8 +123,8 @@ private extension APIUser {
                          user.cards!.remove(at: idx)
                         _ = try! self.repositories?.usersRepository.update(obj: user)
                     }
-                    var hampyResponse = resp
-                    hampyResponse.message = "Card remove sucessfully"
+                    hampyResponse = resp
+                    hampyResponse.message = "Card removed sucessfully"
                     hampyResponse.data = nil
                 default:
                     break

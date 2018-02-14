@@ -10,11 +10,12 @@ import Foundation
 struct HampyEnvirontment {
     
     // MARK: - Environtments
-    public static let development = HampyEnvirontment(databaseName: Schemes.Mongo.Databases.development)
-    public static let production = HampyEnvirontment(databaseName: Schemes.Mongo.Databases.production)
+    public static let development = HampyEnvirontment(databaseName: Schemes.Mongo.Databases.development, databaseURL: Schemes.Mongo.developmentURL)
+    public static let production = HampyEnvirontment(databaseName: Schemes.Mongo.Databases.production, databaseURL: Schemes.Mongo.productionURL)
     
     // MARK: - Properties
     public private(set) var databaseName: String
+    public private(set) var databaseURL: String
     
 }
 

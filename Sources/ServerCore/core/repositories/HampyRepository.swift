@@ -29,7 +29,6 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         }
         self.database = database
         self.collection = database[T.databaseScheme]
-        print(collection)
     }
 
     func aux(doc: Document) throws -> T {

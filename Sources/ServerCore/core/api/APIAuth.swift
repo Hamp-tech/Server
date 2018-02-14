@@ -90,7 +90,9 @@ extension APIAuth {
             
             if result.0 {
                 self.debug("User exist")
-                hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: result.1!)
+                var u = result.1!
+                u.created = nil
+                hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: u)
             } else {
                 self.debug("User doesn't exist")
                 hampyResponse = APIHampyResponsesFactory.Auth.signinFailNotFound()

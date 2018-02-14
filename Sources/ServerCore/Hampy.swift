@@ -15,18 +15,27 @@ public final class Hampy {
     // MARK: - Properties
     private static var server = HTTPServer()
     private static var routes = Routes()
-    private static var environtment: HampyEnvirontment = .development
+    private static var environtment: HampyEnvirontment!
     private static var repositories: HampyRepositories!
-    private static var database = try! MongoKitten.Database("mongodb://localhost/hampdev")
+    private static var database: Database!
     
     // MARK: - Private API
     public static func start() throws {
         
-    
         defer {
             server.stop()
         }
-
+    
+        #if DEBUG
+            environtment = .development
+        #else
+            environtment = .development
+        #endif
+        
+        Logger.d("Running on \(environtment.databaseName) database", event: .i)
+        
+        database = try! MongoKitten.Database(environtment.databaseURL)
+        
         repositories = HampyRepositories(database: database)
         
         let userAPI = APIUser(database: database, repositories: repositories)
