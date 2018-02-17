@@ -47,6 +47,9 @@ struct HampyScripts {
             Logger.d(error.localizedDescription, event: .e)
         
         }
-        
+    }
+    
+    static func sendTemplateMail() {
+        HampySMTP.foo()
     }
 }

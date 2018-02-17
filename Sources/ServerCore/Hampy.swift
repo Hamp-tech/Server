@@ -22,6 +22,8 @@ public final class Hampy {
     // MARK: - Private API
     public static func start() throws {
         
+        server.documentRoot = "/Users/joan/Desktop/hamp/server/webroot/"
+        
         defer {
             server.stop()
         }
@@ -29,12 +31,16 @@ public final class Hampy {
         #if DEBUG
             environtment = .development
         #else
-            environtment = .development
+            environtment = .production
         #endif
         
         Logger.d("Running on \(environtment.databaseName) database", event: .i)
         
-        database = try! MongoKitten.Database(environtment.databaseURL)
+        do {
+            database = try MongoKitten.Database(environtment.databaseURL)
+        } catch {
+            Logger.d(error.localizedDescription, event: .e)
+        }
         
         repositories = HampyRepositories(database: database)
         
@@ -52,15 +58,13 @@ public final class Hampy {
         server.addRoutes(routes)
         server.serverPort = 8181
         
-        if environtment != HampyEnvirontment.development {
-            server.setRequestFilters([(APIKeyRequestFilter(), .high)])
-        } else {
+//        if environtment != HampyEnvirontment.development {
+//            server.setRequestFilters([(APIKeyRequestFilter(), .high)])
+//        } else {
             let scriptsAPI = APIScripts(database: database)
             server.addRoutes(scriptsAPI.routes())
-        }
-        
+//        }
         try server.start()
-        
     }
 }
 

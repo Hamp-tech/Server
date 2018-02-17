@@ -6,9 +6,6 @@
 //
 
 struct HampyUser: HampyDatabaseable {
-    
-    
-    
     static var databaseScheme: String = Schemes.Mongo.Collections.users
     
     var identifier: String?

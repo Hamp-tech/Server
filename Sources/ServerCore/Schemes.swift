@@ -48,6 +48,7 @@ struct Schemes {
         struct Scripts {
             static let createServices = Schemes.scriptsURL + "/services/create"
             static let createHampPoints = Schemes.scriptsURL + "/hamppoints/create"
+            static let sendTestMail = Schemes.scriptsURL + "/testMail"
         }
     }
     

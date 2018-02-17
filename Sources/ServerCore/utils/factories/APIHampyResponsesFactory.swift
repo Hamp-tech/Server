@@ -50,6 +50,7 @@ extension APIHampyResponsesFactory {
             u.language = nil
             u.tokenFCM = nil
             u.os = nil
+            u.stripeID = nil
             
             var hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.code = .ok

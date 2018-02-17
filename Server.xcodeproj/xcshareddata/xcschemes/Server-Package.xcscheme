@@ -42,6 +42,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "PerfectSMTP::PerfectSMTP"
+               BuildableName = "PerfectSMTP.framework"
+               BlueprintName = "PerfectSMTP"
+               ReferencedContainer = "container:Server.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "MongoKitten::MongoKitten"
                BuildableName = "MongoKitten.framework"
                BlueprintName = "MongoKitten"
@@ -171,20 +185,6 @@
                BlueprintIdentifier = "PerfectCURL::PerfectCURL"
                BuildableName = "PerfectCURL.framework"
                BlueprintName = "PerfectCURL"
-               ReferencedContainer = "container:Server.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "PerfectMongoDB::PerfectMongoDB"
-               BuildableName = "PerfectMongoDB.framework"
-               BlueprintName = "PerfectMongoDB"
                ReferencedContainer = "container:Server.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

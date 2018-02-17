@@ -1,5 +1,6 @@
 FROM perfectlysoft/perfectassistant:4.0
 RUN apt-get -y update && apt-get install -y libbson-dev
+RUN apt-get -y update && apt-get install -y openssl
 RUN apt-get -y update && apt-get install -y libmongoc-dev
 RUN apt-get -y update && apt-get install -y libbson-dev
 RUN apt-get -y update && apt-get install -y libmongoc-dev
@@ -17,6 +18,9 @@ RUN apt-get -y update && apt-get install -y libcurl4-openssl-dev
 
 # Perfect-COpenSSL-Linux.git-1373621681117399666/PADockerfile
 RUN apt-get -y update && apt-get install -y libssl-dev
+
+# Perfect-SMTP.git-11835744489940884/PADockerfile
+RUN apt-get -y update && apt-get install -y libcurl4-openssl-dev
 
 # Perfect-libcurl.git--6494719955323420738/PADockerfile
 RUN apt-get -y update && apt-get install -y libcurl4-openssl-dev

@@ -47,24 +47,6 @@
         }
       },
       {
-        "package": "PerfectCBSON",
-        "repositoryURL": "https://github.com/PerfectSideRepos/Perfect-CBSON.git",
-        "state": {
-          "branch": null,
-          "revision": "284580ca67c25ff11987e94b30af99463a11e7bb",
-          "version": "0.0.4"
-        }
-      },
-      {
-        "package": "PerfectCMongo",
-        "repositoryURL": "https://github.com/PerfectSideRepos/Perfect-CMongo.git",
-        "state": {
-          "branch": null,
-          "revision": "ea0b1508c37c544d0ed4dcf936805d3ff5bae278",
-          "version": "0.0.4"
-        }
-      },
-      {
         "package": "PerfectCURL",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-CURL.git",
         "state": {
@@ -119,21 +101,21 @@
         }
       },
       {
-        "package": "PerfectMongoDB",
-        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-MongoDB.git",
-        "state": {
-          "branch": null,
-          "revision": "121d094951217a5dc6d250dc35a9fd805a0b0156",
-          "version": "3.1.0"
-        }
-      },
-      {
         "package": "PerfectNet",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Net.git",
         "state": {
           "branch": null,
           "revision": "5e137023e0373b3bdd46a5c80c3ec868fd1c383d",
           "version": "3.0.0"
+        }
+      },
+      {
+        "package": "PerfectSMTP",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-SMTP.git",
+        "state": {
+          "branch": null,
+          "revision": "3b6d656902cd88e40e368b36230c33278e06002f",
+          "version": "3.1.1"
         }
       },
       {

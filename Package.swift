@@ -9,6 +9,7 @@ let package = Package(
         .Package(url: "https://github.com/PerfectlySoft/Perfect-HTTPServer.git", majorVersion: 3),
         .Package(url: "https://github.com/PerfectlySoft/Perfect-CURL.git", majorVersion: 3),
         .Package(url: "https://github.com/PerfectlySoft/Perfect-WebSockets.git", majorVersion: 3),
-        .Package(url: "https://github.com/OpenKitten/MongoKitten.git", majorVersion: 4)
+        .Package(url: "https://github.com/OpenKitten/MongoKitten.git", majorVersion: 4),
+        .Package(url: "https://github.com/PerfectlySoft/Perfect-SMTP.git", majorVersion: 3)
         ]
 )

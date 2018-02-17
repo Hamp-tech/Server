@@ -28,20 +28,15 @@ POST: /auth/signin
 	"password" : "1234567890"
 }
 ```
-
 > Response
 ``` json
 {
     "message": "",
     "data": {
-        "phone": "666777888",
-        "gender": "M",
-        "stripeID": "cus_CK7cQdXY17w9Mc",
         "cards": [],
         "surname": "Musk",
         "email": "elon@usehamp.io",
         "identifier": "92da06f492c3435b883d845df00dacd4",
-        "created": "2018-02-14T16:44:35.155",
         "name": "Elon"
     },
     "code": 200
@@ -106,7 +101,7 @@ PUT: /users/{userid}
 {
 	"name" : "Mark"
 }
-```
+>```
 
 > Response
 ``` json

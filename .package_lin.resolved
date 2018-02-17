@@ -164,6 +164,15 @@
         }
       },
       {
+        "package": "PerfectSMTP",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-SMTP.git",
+        "state": {
+          "branch": null,
+          "revision": "3b6d656902cd88e40e368b36230c33278e06002f",
+          "version": "3.1.1"
+        }
+      },
+      {
         "package": "PerfectThread",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Thread.git",
         "state": {
