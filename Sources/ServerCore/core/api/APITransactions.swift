@@ -184,7 +184,7 @@ internal extension APITransactions {
         var hampyResponse = HampyResponse<HampyTransaction>()
         
         var transaction = self.repositories!.transactionsRepository.find(properties: ["identifier" : transactionID]).first!
-        let point = self.repositories?.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first!
+        let point = self.repositories?.pointsRepository.find(properties: ["identifier": transaction.booking!.point?.identifier]).first!
         
         do {
             let booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
