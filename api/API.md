@@ -159,18 +159,22 @@ POST: /users/{userid}/transactions
 > Request
 ``` json
 {
-	"creditCardIdentifier" : "card_1BvTiFCiVhDLJHAGw2bqSUei",
-	"booking": {
-		"basket": [
-			{
-				"service" : "1",
-				"amount" : 1
-			}
-		],
-		"price": 13,
-		"point": "1",
-		"pickUpTime": "1"
-	}
+    "creditCard" : {
+    	"id": "card_1C0CYpCiVhDLJHAGt2bsx9mW"	
+    },
+    "booking": {
+        "basket": [
+            {
+                "service" : "1",
+                "amount" : 2
+            }
+        ],
+        "price": 26,
+        "point": {
+        	"identifier": "1"	
+        },
+        "pickUpTime": "1"
+    }
 }
 ```
 > Response
@@ -178,10 +182,14 @@ POST: /users/{userid}/transactions
 {
     "message": "Services booked",
     "data": {
-        "pickUpDate": "2018-02-14T17:07:52.920",
-        "userID": "92da06f492c3435b883d845df00dacd",
-        "identifier": "27691f3a0f8546d18b665f96111441fa",
-        "creditCardIdentifier": "card_1BvTiFCiVhDLJHAGw2bqSUei",
+        "creditCard": {
+            "number": "4242",
+            "exp_month": 12,
+            "exp_year": 23
+        },
+        "userID": "126fb593b8374dfcb2225bd0d9779a12",
+        "identifier": "b9ebe71c6bda4924a6f660c1c3d964e6",
+        "pickUpDate": "2018-03-05T22:14:29.180",
         "booking": {
             "pickUpLockers": [
                 {
@@ -196,15 +204,25 @@ POST: /users/{userid}/transactions
             "basket": [
                 {
                     "service": "1",
-                    "amount": 1
+                    "amount": 2
                 }
             ],
-            "price": 13,
-            "point": "1"
+            "price": 26,
+            "point": {
+                "city": "El Vendrell",
+                "CP": "43700",
+                "identifier": "1",
+                "location": {
+                    "name": "1",
+                    "longitude": 0,
+                    "latitude": 0
+                },
+                "address": "C? foo bar 1"
+            }
         }
     },
     "code": 200
-}
+}	
 ```
 
 **All transactions from user**
