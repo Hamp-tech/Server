@@ -9,6 +9,7 @@ import Foundation
 
 struct HampyCreditCard: HampyCodable {
     var id: String?
+    var name: String?
     var number: String?
     var exp_month: UInt8?
     var exp_year: UInt8?

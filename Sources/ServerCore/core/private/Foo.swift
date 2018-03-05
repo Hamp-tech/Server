@@ -17,7 +17,8 @@ struct Foo {
     static func lockers(to services: [HampyService], point: HampyPoint) -> [HampyLocker]? {
         let freeLockers = point.freeLockers(with: .S)
 //        let sizes = services.map{$0.size!}
+		guard let fl = freeLockers else { return nil }
         
-        return freeLockers != nil ? [freeLockers!.first!] : nil
+        return fl.count > 0 ? [freeLockers!.first!] : nil
     }
 }

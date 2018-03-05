@@ -76,6 +76,7 @@ struct StripeGateway: Stripeable {
                     message = ""
                 default:
                     message = "Something wrong happened"
+					Logger.d(resp.bodyString, event: .e)
                 }
                 
                 let hampyResponse = HampyResponse<[String : Any]>(code: code, message: message, data: resp.bodyJSON)
