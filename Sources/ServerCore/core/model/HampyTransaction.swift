@@ -29,6 +29,4 @@ struct HampyTransaction: HampyDatabaseable {
     var phases: [HampyTransactionPhase]?
     var lastActivity: String?
     var created: String?
-    
-    
 }

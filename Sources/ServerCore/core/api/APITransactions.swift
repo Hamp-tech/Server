@@ -101,9 +101,10 @@ internal extension APITransactions {
             let services = self.basketServices(booking: transaction.booking!)
             
             self.debug("Calculating number of lockers")
-            
-            var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!]).first
-            
+		
+			var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!.identifier]).first
+			transaction.booking?.point = point
+			
             guard let lockers = Foo.lockers(to: services, point: point!) else {
                 self.debug("Not enough lockers. Lockers needed \(0) and \(0) available")
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
@@ -125,7 +126,7 @@ internal extension APITransactions {
                                     self.debug("Paid successfully")
                                     let _ = self.updatePoint(transaction: &transaction, point: &point!, lockers: lockers)
                                     let _ = self.createTransaction(transaction: &transaction)
-                                    
+                                    transaction.booking?.point?.lockers = nil
                                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
                                 } else {
                                     self.debug("Paid error: \(resp.message)", event: .e)

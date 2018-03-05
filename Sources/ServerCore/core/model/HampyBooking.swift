@@ -19,10 +19,10 @@ struct HampyBooking: HampyDatabaseable {
     var userID: String?
     var basket: Array<HampyHiredService>?
     var price: Float32?
-    var point: String? // Identifier to location
     var pickUpTime: PickUpTime?
     var deliveryLockers: [HampyLocker]?
     var pickUpLockers: [HampyLocker]?
     var lastActivity: String?
     var created: String?
+	var point: HampyPoint?
 }
