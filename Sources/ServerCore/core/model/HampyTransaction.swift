@@ -22,11 +22,11 @@ struct HampyTransaction: HampyDatabaseable {
     var identifier: String?
     var userID: String?
     var booking: HampyBooking?
-    var creditCardIdentifier: String?
     var pickUpDate: String?
     var deliveryDate: String?
     var dbState: DBState?
     var phases: [HampyTransactionPhase]?
     var lastActivity: String?
     var created: String?
+	var creditCard: HampyCreditCard?
 }

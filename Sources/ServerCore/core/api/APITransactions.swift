@@ -113,11 +113,16 @@ internal extension APITransactions {
             }
             
             let user = self.repositories!.usersRepository.find(properties: ["identifier": userID]).first!
+			let card = user.cards?.filter {
+				return $0.id == transaction.creditCard?.id
+			}.first
+			
+			transaction.creditCard = card
             
             // START Stripe
             self.debug("Paying")
             StripeGateway.pay(customer: user.stripeID!,
-                              cardToken: transaction.creditCardIdentifier!,
+                              cardToken: transaction.creditCard!.id!,
                               amount: transaction.booking!.price!,
                               userID: userID,
                               completion: { (resp) in
@@ -127,6 +132,7 @@ internal extension APITransactions {
                                     let _ = self.updatePoint(transaction: &transaction, point: &point!, lockers: lockers)
                                     let _ = self.createTransaction(transaction: &transaction)
                                     transaction.booking?.point?.lockers = nil
+									transaction.creditCard?.id = nil
                                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
                                 } else {
                                     self.debug("Paid error: \(resp.message)", event: .e)
