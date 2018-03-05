@@ -101,7 +101,7 @@ PUT: /users/{userid}
 {
 	"name" : "Mark"
 }
->```
+```
 
 > Response
 ``` json
