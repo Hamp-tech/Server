@@ -56,7 +56,7 @@ public final class Hampy {
         
         
         server.addRoutes(routes)
-        server.serverPort = 8181
+        server.serverPort = 8080
         
 //        if environtment != HampyEnvirontment.development {
 //            server.setRequestFilters([(APIKeyRequestFilter(), .high)])

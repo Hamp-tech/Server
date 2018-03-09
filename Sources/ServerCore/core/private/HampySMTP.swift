@@ -10,7 +10,7 @@ import PerfectSMTP
 struct HampySMTP {
     
     // MARK: - Properties
-    private static let sharedClient = SMTPClient(url: "smtps://smtp.gmail.com", username: "joanmramon@gmail.com", password: "Arcanine123")
+    private static let sharedClient = SMTPClient(url: "smtps://smtp.gmail.com", username: "joanmramon@gmail.com", password: "")
     
     static func foo() {
         let email = EMail(client: sharedClient)

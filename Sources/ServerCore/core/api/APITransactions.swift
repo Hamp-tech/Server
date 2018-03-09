@@ -105,7 +105,9 @@ internal extension APITransactions {
 			var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!.identifier]).first
 			transaction.booking?.point = point
 			
-            guard let lockers = Foo.lockers(to: services, point: point!) else {
+			let lockers = LockersToServiceCalculator.lockers(to: services, point: point!)
+			
+            guard lockers.count > 0 else {
                 self.debug("Not enough lockers. Lockers needed \(0) and \(0) available")
                 hampyResponse = APIHampyResponsesFactory.Transaction.transactionNotEnoughLockers()
                 completionBlock(hampyResponse)
@@ -142,8 +144,6 @@ internal extension APITransactions {
                                 completionBlock(hampyResponse)
             })
             // END PAY STRIPE
-            
-            // END 1st Version
         } catch let error {
             self.debug(error.localizedDescription, event: .e)
             hampyResponse = APIHampyResponsesFactory.Transaction.transactionFailed(message: error.localizedDescription)
@@ -217,7 +217,7 @@ private extension APITransactions {
     func basketServices(booking: HampyBooking) -> [HampyService] {
         let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
         let services = self.repositories!.servicesRepository.find(elements: servicesIdentifiers!)
-        
+		
         return services
     }
     
@@ -230,15 +230,13 @@ private extension APITransactions {
         
         transaction.booking?.pickUpLockers = lockers
         
-        let result = try! repositories!.pointsRepository.update(obj: point)
-        
-//        if case .success = result { return (true, nil) }
+        let _ = try! repositories!.pointsRepository.update(obj: point)
         
         return (false, APIHampyResponsesFactory.Transaction.transactionFailed(message: "Error updating point"))
     }
     
     func createTransaction(transaction: inout HampyTransaction) ->  (created: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
-        let result = try! repositories!.transactionsRepository.create(obj: transaction)
+        let _ = try! repositories!.transactionsRepository.create(obj: transaction)
         
 //        if case .success = result { return (true, nil) }
         

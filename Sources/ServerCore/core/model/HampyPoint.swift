@@ -43,6 +43,11 @@ struct HampyPoint: HampyDatabaseable {
         
         return lock.filter{$0.available!}.filter{$0.capacity == capacity}
     }
+	
+	func freeLockers() -> [HampyLocker] {
+		guard let lock = lockers else { return [] }
+		return lock.filter{ $0.available! }
+	}
     
     mutating func updateLocker(locker: HampyLocker) {
         let idx = lockers?.index{$0.identifier == locker.identifier}
