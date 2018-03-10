@@ -9,6 +9,7 @@ import PerfectLib
 import PerfectHTTP
 import PerfectHTTPServer
 import MongoKitten
+import Foundation
 
 public final class Hampy {
     
@@ -24,7 +25,7 @@ public final class Hampy {
         
         server.documentRoot = "/Users/joan/Desktop/hamp/server/webroot/"
         
-        defer {
+        defer { 
             server.stop()
         }
     
@@ -41,7 +42,7 @@ public final class Hampy {
         } catch {
             Logger.d(error.localizedDescription, event: .e)
         }
-        
+		
         repositories = HampyRepositories(database: database)
         
         let userAPI = APIUser(database: database, repositories: repositories)
@@ -56,7 +57,7 @@ public final class Hampy {
         
         
         server.addRoutes(routes)
-        server.serverPort = 8080
+        server.serverPort = 8181
         
 //        if environtment != HampyEnvirontment.development {
 //            server.setRequestFilters([(APIKeyRequestFilter(), .high)])

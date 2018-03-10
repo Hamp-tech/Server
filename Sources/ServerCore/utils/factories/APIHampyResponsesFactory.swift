@@ -13,11 +13,7 @@ extension APIHampyResponsesFactory {
     struct Auth {
         static func signupOK(user: HampyUser) -> HampyResponse<HampyUser> {
             var u = user
-            u.password = nil
-            u.lastActivity = nil
-            u.language = nil
-            u.tokenFCM = nil
-            u.os = nil
+            u.hidePropertiesToResponse()
             
             var hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.code = .created
@@ -45,12 +41,7 @@ extension APIHampyResponsesFactory {
         
         static func signinOK(user: HampyUser) -> HampyResponse<HampyUser> {
             var u = user
-            u.password = nil
-            u.lastActivity = nil
-            u.language = nil
-            u.tokenFCM = nil
-            u.os = nil
-            u.stripeID = nil
+           	u.hidePropertiesToResponse()
             
             var hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.code = .ok

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HampyBooking: HampyDatabaseable {
+class HampyBooking: HampyDatabaseable {
     static var databaseScheme: String = Schemes.Mongo.Collections.bookings
     
     enum PickUpTime: String, HampyCodable {
@@ -18,11 +18,34 @@ struct HampyBooking: HampyDatabaseable {
     var identifier: String?
     var userID: String?
     var basket: Array<HampyHiredService>?
-    var price: Float32?
+    var price: Float?
     var pickUpTime: PickUpTime?
     var deliveryLockers: [HampyLocker]?
     var pickUpLockers: [HampyLocker]?
     var lastActivity: String?
     var created: String?
 	var point: HampyPoint?
+	
+	init(identifier: String?,
+		 userID: String?,
+		 basket: [HampyHiredService]?,
+		 price: Float?,
+		 pickUpTime: PickUpTime?,
+		 deliveryLockers: [HampyLocker]?,
+		 pickUpLockers: [HampyLocker]?,
+		 lastActivity: String?,
+		 created: String?,
+		 point: HampyPoint?
+		) {
+		self.identifier = identifier
+		self.userID = userID
+		self.basket = basket
+		self.price = price
+		self.pickUpTime = pickUpTime
+		self.deliveryLockers = deliveryLockers
+		self.pickUpLockers = pickUpLockers
+		self.lastActivity = lastActivity
+		self.created = created
+		self.point = point
+	}
 }

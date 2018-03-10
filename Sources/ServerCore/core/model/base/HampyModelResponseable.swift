@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol HampyModelResponseable {
+	mutating func hidePropertiesToResponse()
+}

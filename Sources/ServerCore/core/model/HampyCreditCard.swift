@@ -7,11 +7,25 @@
 
 import Foundation
 
-struct HampyCreditCard: HampyCodable {
+class HampyCreditCard: HampyCodable {
     var id: String?
     var name: String?
     var number: String?
     var exp_month: UInt8?
     var exp_year: UInt8?
     var cvc: String?
+	
+	init(id: String?,
+		 name: String?,
+		 number: String?,
+		 exp_month: UInt8?,
+		 exp_year: UInt8?,
+		 cvc: String?) {
+		self.id = id
+		self.name = name
+		self.number = number
+		self.exp_month = exp_month
+		self.exp_year = exp_year
+		self.cvc = cvc
+	}
 }

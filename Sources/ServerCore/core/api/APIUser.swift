@@ -40,6 +40,11 @@ private extension APIUser {
                     let _ = try self.repositories?.usersRepository.update(obj: u)
                     hampyResponse.message = "User updated successfully"
                     hampyResponse.code = .ok
+					
+					// TODO: Change it
+					var u = self.repositories?.usersRepository.find(properties: ["identifier": user!.identifier]).first
+					u?.hidePropertiesToResponse()
+					hampyResponse.data = u
                 } catch let error {
                     hampyResponse.message = error.localizedDescription
                     hampyResponse.code = .badRequest
@@ -69,7 +74,7 @@ private extension APIUser {
             
             do {
                 self.debug("Creating card")
-                var card = try HampySingletons.sharedJSONDecoder.decode(HampyCreditCard.self, from: d)
+                let card = try HampySingletons.sharedJSONDecoder.decode(HampyCreditCard.self, from: d)
                 StripeGateway.createCard(customer: user.stripeID!, card: card, completion: { (resp) in
                     hampyResponse.code = resp.code
                     hampyResponse.message = resp.message
