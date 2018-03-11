@@ -23,7 +23,7 @@ extension HampyCodable {
             if case Optional<Any>.some(_) = value {
                 
                 #if os(Linux)
-					d[key!] = value as! AnyObject
+					d[key!] = unwrap(value)
                 #else
                     d[key!] = value as AnyObject
                 #endif
@@ -32,6 +32,13 @@ extension HampyCodable {
         
         return d
     }
+}
+func unwrap<T>(_ any: T) -> Any {
+	let mirror = Mirror(reflecting: any)
+	guard mirror.displayStyle == .optional, let first = mirror.children.first else {
+		return any
+	}
+	return unwrap(first.value)
 }
 
 
