@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "Cheetah",
-        "repositoryURL": "https://github.com/OpenKitten/Cheetah.git",
-        "state": {
-          "branch": null,
-          "revision": "801f4fa278670719bec074b708241878ad5fb25e",
-          "version": "2.0.2"
-        }
-      },
-      {
         "package": "COpenSSL",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-COpenSSL.git",
         "state": {
@@ -29,21 +20,21 @@
         }
       },
       {
+        "package": "Cheetah",
+        "repositoryURL": "https://github.com/OpenKitten/Cheetah.git",
+        "state": {
+          "branch": null,
+          "revision": "801f4fa278670719bec074b708241878ad5fb25e",
+          "version": "2.0.2"
+        }
+      },
+      {
         "package": "CryptoKitten",
         "repositoryURL": "https://github.com/OpenKitten/CryptoKitten.git",
         "state": {
           "branch": null,
           "revision": "bf7a4d6dbd6f4bbd96ae620101239446d2cdd3f9",
           "version": "0.2.3"
-        }
-      },
-      {
-        "package": "cURL",
-        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-libcurl.git",
-        "state": {
-          "branch": null,
-          "revision": "672f6695d9ae04fce16ad01decef0649e0b872b0",
-          "version": "2.0.6"
         }
       },
       {
@@ -74,15 +65,6 @@
         }
       },
       {
-        "package": "PerfectCrypto",
-        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Crypto.git",
-        "state": {
-          "branch": null,
-          "revision": "a0565cd234faee0167f5f0540ad71516efc11a0b",
-          "version": "3.0.3"
-        }
-      },
-      {
         "package": "PerfectCURL",
         "repositoryURL": "https://github.com/PerfectlySoft/Perfect-CURL.git",
         "state": {
@@ -98,6 +80,15 @@
           "branch": null,
           "revision": "b63e46909aad937c6434766f8f8c6720d8f3bd05",
           "version": "0.0.4"
+        }
+      },
+      {
+        "package": "PerfectCrypto",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-Crypto.git",
+        "state": {
+          "branch": null,
+          "revision": "a0565cd234faee0167f5f0540ad71516efc11a0b",
+          "version": "3.0.3"
         }
       },
       {
@@ -170,6 +161,15 @@
           "branch": null,
           "revision": "d7030fe0a4a6eeddc02044650a8b409a4f57365a",
           "version": "1.0.1"
+        }
+      },
+      {
+        "package": "cURL",
+        "repositoryURL": "https://github.com/PerfectlySoft/Perfect-libcurl.git",
+        "state": {
+          "branch": null,
+          "revision": "672f6695d9ae04fce16ad01decef0649e0b872b0",
+          "version": "2.0.6"
         }
       }
     ]

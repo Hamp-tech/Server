@@ -198,9 +198,9 @@ internal extension APITransactions {
             
             if let token = user?.tokenFCM {
                 self.debug("Sending firebase notification")
-                FirebaseGateway.sendNotification(token: token, params: [:], completion: { (resp) in
-                    self.debug(resp.json)
-                })
+//                FirebaseGateway.sendNotification(token: token, params: [:], completion: { (resp) in
+//                    self.debug(resp.json)
+//                })
             }
             hampyResponse.code = .ok
             hampyResponse.data = transaction

@@ -52,6 +52,11 @@ struct Schemes {
         }
     }
     
+    struct Firebase {
+        static let projectURL = "https://fcm.googleapis.com/v1/projects/hamp-57b75/messages:send"
+        static let serverKey = "AAAAy4fbhJI:APA91bHorPwBSF-RNecyB50zhgPJvaCi-5EsvwU5Feb5NHtbWanyUWqnrWVVFRGejwkPG1dcC0Ov-4LwjQBHJFNiR_DiAed7bplpZcwnFt2oXE5LaUTTpvHgbY4xQXDZcSjgScy1QWxZ"
+    }
+    
     struct Mongo {
         static let productionURL = "mongodb://hamp:HampCluster18@cluster0-shard-00-00-rf4vj.mongodb.net:27017,cluster0-shard-00-01-rf4vj.mongodb.net:27017,cluster0-shard-00-02-rf4vj.mongodb.net:27017/hampdev?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin"
         static let developmentURL = "mongodb://localhost/hampdev"
@@ -68,6 +73,7 @@ struct Schemes {
             static let points = "points"
             static let bookings = "bookings"
             static let transactions = "transactions"
+            static let pushNotifications = "push_notifications"
         }
     }
     
