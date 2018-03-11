@@ -15,20 +15,18 @@ struct StripeGateway: Stripeable {
     
     static func createCustomer(userID: String, completion: @escaping StripeResponse) {
         let url = Schemes.URLs.Stripe.customers.replacingOccurrences(of: "{id}", with: userID)
+
         let params = ["description": "Customer linked with \(userID)"]
         request(url: url, params: params, completion: completion)
     }
     
     static func createCard(customer: String, card: HampyCreditCard, completion: @escaping StripeResponse) {
         let url = Schemes.URLs.Stripe.cards.replacingOccurrences(of: "{id}", with: customer)
-        
         let dict = card.dict
-        
+		
         var aux = [String: Any]()
         aux["source[object]"] = "card"
-        
         dict.forEach{aux["source[\($0)]"] = $1}
-
         request(url: url, params: aux, completion: completion)
     }
     

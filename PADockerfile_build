@@ -1,7 +1,5 @@
 FROM perfectlysoft/perfectassistant:4.0
-RUN apt-get -y update && apt-get install -y libbson-dev
 RUN apt-get -y update && apt-get install -y openssl
-RUN apt-get -y update && apt-get install -y libmongoc-dev
 RUN apt-get -y update && apt-get install -y libbson-dev
 RUN apt-get -y update && apt-get install -y libmongoc-dev
 # Perfect-LinuxBridge.git--5433499499634561434/PADockerfile

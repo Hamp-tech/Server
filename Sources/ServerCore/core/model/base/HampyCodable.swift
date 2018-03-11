@@ -23,7 +23,7 @@ extension HampyCodable {
             if case Optional<Any>.some(_) = value {
                 
                 #if os(Linux)
-                    d[key!] = value as! AnyObject
+					d[key!] = value as! AnyObject
                 #else
                     d[key!] = value as AnyObject
                 #endif

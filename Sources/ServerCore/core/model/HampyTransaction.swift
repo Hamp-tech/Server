@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HampyTransaction: HampyDatabaseable {
+class HampyTransaction: HampyDatabaseable {
     // To be able to use 2 phase commits
     enum DBState: String, Codable {
         case initial
@@ -19,7 +19,8 @@ struct HampyTransaction: HampyDatabaseable {
     
     // MARK: - Properties
     static var databaseScheme: String = Schemes.Mongo.Collections.transactions
-    var identifier: String?
+	
+	var identifier: String?
     var userID: String?
     var booking: HampyBooking?
     var pickUpDate: String?
@@ -29,4 +30,7 @@ struct HampyTransaction: HampyDatabaseable {
     var lastActivity: String?
     var created: String?
 	var creditCard: HampyCreditCard?
+	
+	// MARK: - Life cycle
+	// TODO: Create init
 }

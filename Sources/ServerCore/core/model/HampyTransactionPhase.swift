@@ -17,7 +17,7 @@ enum Phase: Int, Codable {
     case delivered
 }
 
-struct HampyTransactionPhase: HampyCodable {
+class HampyTransactionPhase: HampyCodable {
     var employeeId: String?
     var phase : Phase
     var date: String = {

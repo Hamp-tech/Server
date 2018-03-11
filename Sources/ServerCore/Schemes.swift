@@ -57,7 +57,7 @@ struct Schemes {
         static let developmentURL = "mongodb://localhost/hampdev"
         
         struct Databases {
-            static let production = "hamp"
+            static let production = "hampdev"
             static let development = "hampdev"
         }
         

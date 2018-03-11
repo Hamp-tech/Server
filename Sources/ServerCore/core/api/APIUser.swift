@@ -71,10 +71,11 @@ private extension APIUser {
             }
             var hampyResponse =  HampyResponse<HampyCreditCard>()
             var user = self.repositories!.usersRepository.find(properties: ["identifier": request.urlVariables["id"]!]).first!
-            
+						
             do {
                 self.debug("Creating card")
                 let card = try HampySingletons.sharedJSONDecoder.decode(HampyCreditCard.self, from: d)
+
                 StripeGateway.createCard(customer: user.stripeID!, card: card, completion: { (resp) in
                     hampyResponse.code = resp.code
                     hampyResponse.message = resp.message

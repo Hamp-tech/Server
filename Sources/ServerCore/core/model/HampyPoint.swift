@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct HampyPoint: HampyDatabaseable {
+class HampyPoint: HampyDatabaseable {
     static var databaseScheme: String = Schemes.Mongo.Collections.points
     
     var identifier: String?
@@ -49,7 +49,7 @@ struct HampyPoint: HampyDatabaseable {
 		return lock.filter{ $0.available! }
 	}
     
-    mutating func updateLocker(locker: HampyLocker) {
+	func updateLocker(locker: HampyLocker) {
         let idx = lockers?.index{$0.identifier == locker.identifier}
         guard idx != NSNotFound else { return }
         self.lockers?[idx!] = locker

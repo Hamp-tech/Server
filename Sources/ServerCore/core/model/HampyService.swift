@@ -5,7 +5,7 @@
 //  Created by Joan Molinas Ramon on 19/1/18.
 //
 
-struct HampyService: HampyDatabaseable {
+class HampyService: HampyDatabaseable {
     static var databaseScheme: String = Schemes.Mongo.Collections.services
     
     var identifier: String?

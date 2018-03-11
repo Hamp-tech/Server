@@ -23,18 +23,18 @@ public final class Hampy {
     // MARK: - Private API
     public static func start() throws {
         
-        server.documentRoot = "/Users/joan/Desktop/hamp/server/webroot/"
-        
+//        server.documentRoot = "/Users/joan/Desktop/hamp/server/webroot/"
+		
         defer { 
             server.stop()
         }
     
-        #if DEBUG
-            environtment = .development
-        #else
+//        #if DEBUG
+//            environtment = .development
+//        #else
             environtment = .production
-        #endif
-        
+//        #endif
+		
         Logger.d("Running on \(environtment.databaseName) database", event: .i)
         
         do {
@@ -59,12 +59,12 @@ public final class Hampy {
         server.addRoutes(routes)
         server.serverPort = 8181
         
-//        if environtment != HampyEnvirontment.development {
-//            server.setRequestFilters([(APIKeyRequestFilter(), .high)])
-//        } else {
-            let scriptsAPI = APIScripts(database: database)
-            server.addRoutes(scriptsAPI.routes())
-//        }
+////        if environtment != HampyEnvirontment.development {
+////            server.setRequestFilters([(APIKeyRequestFilter(), .high)])
+////        } else {
+//            let scriptsAPI = APIScripts(database: database)
+//            server.addRoutes(scriptsAPI.routes())
+////        }
         try server.start()
     }
 }

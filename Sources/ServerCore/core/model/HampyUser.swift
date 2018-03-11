@@ -5,7 +5,7 @@
 //  Created by Joan Molinas Ramon on 8/12/17.
 //
 
-struct HampyUser: HampyDatabaseable, HampyModelResponseable {
+class HampyUser: HampyDatabaseable, HampyModelResponseable {
 	
     static var databaseScheme: String = Schemes.Mongo.Collections.users
     
@@ -27,7 +27,7 @@ struct HampyUser: HampyDatabaseable, HampyModelResponseable {
     var cards: [HampyCreditCard]?
     var created: String? = nil
 	
-	mutating func hidePropertiesToResponse() {
+	func hidePropertiesToResponse() {
 		self.password = nil
 		self.lastActivity = nil
 		self.language = nil

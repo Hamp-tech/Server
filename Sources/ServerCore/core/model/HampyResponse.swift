@@ -22,7 +22,7 @@ enum HampyHTTPCode: Int, Codable {
 
 }
 
-struct HampyResponse<T>: HampyCodable where T: Codable {
+class HampyResponse<T>: HampyCodable where T: Codable {
     var code: HampyHTTPCode
     var message: String
     var data: T? = nil
