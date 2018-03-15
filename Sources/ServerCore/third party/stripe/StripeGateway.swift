@@ -62,7 +62,6 @@ struct StripeGateway: Stripeable {
         let met = CURLRequest.Option.httpMethod(method)
         let dataPost = CURLRequest.Option.postString(params?.toPostParams() ?? "")
         
-        
         CURLRequest(url, options: [met, user, contentType, dataPost]).perform { (confirmation) in
             do {
                 let resp = try confirmation()
@@ -79,6 +78,7 @@ struct StripeGateway: Stripeable {
                 
                 let hampyResponse = HampyResponse<[String : Any]>(code: code, message: message, data: resp.bodyJSON)
                 completion(hampyResponse)
+                
             } catch let error as CURLResponse.Error {
                 print("Failed: response code \(error.response.bodyJSON)")
                 Logger.d("FIRE COMPLETION HANDLER \(error.localizedDescription)", event: .e)

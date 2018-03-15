@@ -32,4 +32,11 @@ class FirebaseNotification: HampyDatabaseable, HampyModelResponseable {
         lastActivity = nil
         created = nil
     }
+    
+    enum CodingKeys: String, CodingKey {
+        case identifier
+        case lastActivity
+        case created
+        case message = ""
+    }
 }

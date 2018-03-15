@@ -38,13 +38,14 @@ private extension APIUser {
             if let u = user {
                 do {
                     let _ = try self.repositories?.usersRepository.update(obj: u)
+                    let databaseUser = self.repositories?.usersRepository.find(properties: ["identifier": u.identifier]).first
                     hampyResponse.message = "User updated successfully"
                     hampyResponse.code = .ok
 					
 					// TODO: Change it
 					var u = self.repositories?.usersRepository.find(properties: ["identifier": user!.identifier]).first
 					u?.hidePropertiesToResponse()
-					hampyResponse.data = u
+					hampyResponse.data = databaseUser
                 } catch let error {
                     hampyResponse.message = error.localizedDescription
                     hampyResponse.code = .badRequest

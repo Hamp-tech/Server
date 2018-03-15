@@ -31,7 +31,6 @@ class HampyUser: HampyDatabaseable, HampyModelResponseable {
 		self.password = nil
 		self.lastActivity = nil
 		self.language = nil
-		self.tokenFCM = nil
 		self.os = nil
 		self.stripeID = nil
 	}

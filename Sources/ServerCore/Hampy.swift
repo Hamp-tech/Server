@@ -57,7 +57,7 @@ public final class Hampy {
         
         
         server.addRoutes(routes)
-        server.serverPort = 8080
+        server.serverPort = 8181
         
 ////        if environtment != HampyEnvirontment.development {
 ////            server.setRequestFilters([(APIKeyRequestFilter(), .high)])
@@ -65,18 +65,6 @@ public final class Hampy {
 //            let scriptsAPI = APIScripts(database: database)
 //            server.addRoutes(scriptsAPI.routes())
 ////        }
-        
-		FirebaseHandler.sendNotification(
-			notification: FirebaseNotification(
-				message: FirebaseNotificationMessage(
-					token: "123",
-					body: FirebaseNotificationMessageBody(
-						title: "Test fcm",
-						body: "This is the body baby"
-					)
-				)
-			)
-		)
         try server.start()
     }
 }

@@ -53,7 +53,7 @@ struct Schemes {
     }
     
     struct Firebase {
-        static let projectURL = "https://fcm.googleapis.com/v1/projects/hamp-57b75/messages:send"
+        static let projectURL = "https://fcm.googleapis.com/fcm/send"
         static let serverKey = "AAAAy4fbhJI:APA91bHorPwBSF-RNecyB50zhgPJvaCi-5EsvwU5Feb5NHtbWanyUWqnrWVVFRGejwkPG1dcC0Ov-4LwjQBHJFNiR_DiAed7bplpZcwnFt2oXE5LaUTTpvHgbY4xQXDZcSjgScy1QWxZ"
     }
     

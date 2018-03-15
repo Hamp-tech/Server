@@ -19,15 +19,7 @@ struct Logger {
         print(log)
         
         if inAnExternalFile {
-            
-//            do {
-//                let folder = try Folder(path: "/Users/joan/Desktop/hamp/server")
-//                let file = try folder.createFileIfNeeded(withName: "HampServer.log")
-//                try file.write(string: log)
-//                file.
-//            } catch let error {
-//                print(error.localizedDescription)
-//            }
+			
         }
     }
 }
