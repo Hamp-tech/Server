@@ -31,8 +31,8 @@ private extension APIUser {
                 return
             }
             self.debug("Started")
-            var hampyResponse = HampyResponse<HampyUser>()
-            var user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
+			let hampyResponse = HampyResponse<HampyUser>()
+			let user = try? HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: d)
             user?.identifier = request.urlVariables["id"]
             
             if let u = user {
@@ -43,7 +43,7 @@ private extension APIUser {
                     hampyResponse.code = .ok
 					
 					// TODO: Change it
-					var u = self.repositories?.usersRepository.find(properties: ["identifier": user!.identifier]).first
+					let u = self.repositories?.usersRepository.find(properties: ["identifier": user!.identifier]).first
 					u?.hidePropertiesToResponse()
 					hampyResponse.data = databaseUser
                 } catch let error {
@@ -70,8 +70,8 @@ private extension APIUser {
                 assert(false)
                 return
             }
-            var hampyResponse =  HampyResponse<HampyCreditCard>()
-            var user = self.repositories!.usersRepository.find(properties: ["identifier": request.urlVariables["id"]!]).first!
+			let hampyResponse =  HampyResponse<HampyCreditCard>()
+			let user = self.repositories!.usersRepository.find(properties: ["identifier": request.urlVariables["id"]!]).first!
 						
             do {
                 self.debug("Creating card")
@@ -117,7 +117,7 @@ private extension APIUser {
                 return
             }
             
-            var user = self.repositories!.usersRepository.find(properties: ["identifier": uid]).first!
+			let user = self.repositories!.usersRepository.find(properties: ["identifier": uid]).first!
             
             self.debug("Removing card")
             StripeGateway.removeCard(customer: user.stripeID!, cardId: cid, completion: { (resp) in

@@ -22,8 +22,6 @@ public final class Hampy {
     
     // MARK: - Private API
     public static func start() throws {
-        
-//        server.documentRoot = "/Users/joan/Desktop/hamp/server/webroot/"
 		
         defer { 
             server.stop()
@@ -57,7 +55,7 @@ public final class Hampy {
         
         
         server.addRoutes(routes)
-        server.serverPort = 8181
+        server.serverPort = 8080
         
 ////        if environtment != HampyEnvirontment.development {
 ////            server.setRequestFilters([(APIKeyRequestFilter(), .high)])

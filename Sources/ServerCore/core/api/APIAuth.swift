@@ -70,7 +70,7 @@ private extension APIAuth {
     func restore() -> Route {
         // TODO: implement
         return Route(method: .post, uri: Schemes.URLs.Auth.restore, handler: { (request, response) in
-            var hampyResponse = HampyResponse<HampyUser>()
+			let hampyResponse = HampyResponse<HampyUser>()
             hampyResponse.message = "TODO: IMPLEMENT"
             response.setBody(string: hampyResponse.json)
             response.completed()
@@ -90,7 +90,7 @@ extension APIAuth {
             
             if result.0 {
                 self.debug("User exist")
-                var u = result.1!
+                let u = result.1!
                 u.created = nil
                 hampyResponse = APIHampyResponsesFactory.Auth.signinOK(user: u)
             } else {
@@ -106,11 +106,11 @@ extension APIAuth {
     }
     
     func signup(body: Data, completionBlock:@escaping (HampyResponse<HampyUser>) -> ()) {
-        var user = try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
+		let user = try! HampySingletons.sharedJSONDecoder.decode(HampyUser.self, from: body)
         user.lastActivity = Date().iso8601()
         user.identifier = UUID.generateHampIdentifier()
 
-        var userToFind = HampyUser()
+		let userToFind = HampyUser()
         userToFind.email = user.email
         let existsResult = self.repositories!.usersRepository.exists(obj: userToFind)
 
