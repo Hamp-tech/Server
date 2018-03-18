@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HampyCreditCard: HampyCodable {
+class HampyCreditCard: HampyCodable, HampyModelResponseable {
     var id: String?
     var name: String?
     var number: String?
@@ -27,5 +27,13 @@ class HampyCreditCard: HampyCodable {
 		self.exp_month = exp_month
 		self.exp_year = exp_year
 		self.cvc = cvc
+	}
+	
+	func hidePropertiesToResponse() {
+		id = nil
+		name = nil
+		exp_year = nil
+		exp_month = nil
+		cvc = nil
 	}
 }

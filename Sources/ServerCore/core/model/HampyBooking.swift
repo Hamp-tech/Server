@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HampyBooking: HampyDatabaseable {
+class HampyBooking: HampyDatabaseable, HampyModelResponseable {
     static var databaseScheme: String = Schemes.Mongo.Collections.bookings
     
     enum PickUpTime: String, HampyCodable {
@@ -47,5 +47,9 @@ class HampyBooking: HampyDatabaseable {
 		self.lastActivity = lastActivity
 		self.created = created
 		self.point = point
+	}
+	
+	func hidePropertiesToResponse() {
+		point?.lockers = nil
 	}
 }

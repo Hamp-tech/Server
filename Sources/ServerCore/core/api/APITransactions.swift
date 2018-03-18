@@ -93,7 +93,7 @@ internal extension APITransactions {
         var hampyResponse: HampyResponse<HampyTransaction>!
         
         do {
-            var transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
+            let transaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
             transaction.userID = userID
             transaction.identifier = UUID.generateHampIdentifier()
             transaction.pickUpDate = Date().iso8601()
@@ -102,7 +102,7 @@ internal extension APITransactions {
             
             self.debug("Calculating number of lockers")
 		
-			var point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!.identifier]).first
+			let point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!.identifier]).first
 			transaction.booking?.point = point
 			
 			let lockers = LockersToServiceCalculator.lockers(to: services, point: point!)
@@ -131,11 +131,11 @@ internal extension APITransactions {
                                 
                                 if resp.code == .ok {
                                     self.debug("Paid successfully")
-                                    self.updatePoint(transaction: transaction, point: &point!, lockers: lockers)
-                                    let _ = self.createTransaction(transaction: &transaction)
-                                    transaction.booking?.point?.lockers = nil
-									transaction.creditCard?.id = nil
-                                    hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
+                                    self.updatePoint(transaction: transaction, point: point!, lockers: lockers)
+                                    self.createTransaction(transaction: transaction)
+                                    transaction.hidePropertiesToResponse()
+									
+									hampyResponse = APIHampyResponsesFactory.Transaction.transactionSuccess(transaction: transaction)
                                 } else {
                                     self.debug("Paid error: \(resp.message)", event: .e)
                                     hampyResponse = APIHampyResponsesFactory.Transaction.transactionStripeFailed()
@@ -163,12 +163,10 @@ internal extension APITransactions {
         let transaction = self.repositories!.transactionsRepository.find(properties: ["identifier" : transactionID]).first!
         do {
             let auxTransaction = try HampySingletons.sharedJSONDecoder.decode(HampyTransaction.self, from: data)
-            transaction.phases = auxTransaction.phases
-            
+//            transaction.phases = auxTransaction.phases
+			
             _ = try! self.repositories?.transactionsRepository.update(obj: transaction)
-            
-            // Send push, sms to user
-            
+			
             hampyResponse.code = .ok
             hampyResponse.data = transaction
             
@@ -231,7 +229,7 @@ private extension APITransactions {
         return services
     }
     
-    func updatePoint(transaction: HampyTransaction, point: inout HampyPoint, lockers: [HampyLocker]) {
+    func updatePoint(transaction: HampyTransaction, point: HampyPoint, lockers: [HampyLocker]) {
         lockers.forEach { $0.available = false }
         
         transaction.booking?.pickUpLockers = lockers
@@ -240,11 +238,7 @@ private extension APITransactions {
     }
 	
     
-    func createTransaction(transaction: inout HampyTransaction) ->  (created: Bool, errorResponse: HampyResponse<HampyTransaction>?) {
+    func createTransaction(transaction: HampyTransaction) {
         let _ = try! repositories!.transactionsRepository.create(obj: transaction)
-        
-//        if case .success = result { return (true, nil) }
-        
-        return (false, APIHampyResponsesFactory.Transaction.transactionFailed(message: "Error saving transaction"))
     }
 }

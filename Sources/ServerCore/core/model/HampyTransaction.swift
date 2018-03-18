@@ -7,7 +7,8 @@
 
 import Foundation
 
-class HampyTransaction: HampyDatabaseable {
+class HampyTransaction: HampyDatabaseable, HampyModelResponseable {
+
     // To be able to use 2 phase commits
     enum DBState: String, Codable {
         case initial
@@ -25,12 +26,19 @@ class HampyTransaction: HampyDatabaseable {
     var booking: HampyBooking?
     var pickUpDate: String?
     var deliveryDate: String?
-    var dbState: DBState?
-    var phases: [HampyTransactionPhase]?
+//    var dbState: DBState?
+//    var phases: [HampyTransactionPhase]?
     var lastActivity: String?
     var created: String?
 	var creditCard: HampyCreditCard?
 	
 	// MARK: - Life cycle
+	
 	// TODO: Create init
+	func hidePropertiesToResponse() {
+		lastActivity = nil
+		booking?.hidePropertiesToResponse()
+		creditCard?.hidePropertiesToResponse()
+		
+	}
 }
