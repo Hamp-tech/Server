@@ -49,12 +49,12 @@ class HampyRepository<T>: HampyRepositable where T: HampyDatabaseable {
         return arr
     }
     
-    func find(properties: Dictionary<String, Any?>) -> [T] {
+	func find(properties: [String: Any?]) -> [T] {
         let doc = Document(dictionaryElements: properties.kittenDictionary)
         return find(doc: doc)
     }
     
-    func find(elements by: Array<Dictionary<String, Any>>) -> [T] {
+	func find(elements by: [[String: Any]]) -> [T] {
         return by.flatMap {find(properties: $0)}
     }
     

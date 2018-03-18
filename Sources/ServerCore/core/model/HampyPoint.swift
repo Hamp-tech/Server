@@ -36,4 +36,19 @@ class HampyPoint: HampyDatabaseable {
         self.lastActivity = lastActivity
         self.created = created
     }
+	
+	func freeLockers() -> [HampyLocker] {
+		guard let ls = lockers else { return [] }
+		return ls.filter(isLockerAvailable)
+	}
+	
+	func oneLocker(of size: Size) -> HampyLocker? {
+		let locker = lockers?.filter(isLockerAvailable).filter{$0.capacity == size}.first
+		return locker
+	}
+	
+	private func isLockerAvailable(locker: HampyLocker) -> Bool {
+		return locker.available
+	}
+	
 }

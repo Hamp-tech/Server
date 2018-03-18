@@ -99,12 +99,11 @@ internal extension APITransactions {
             transaction.pickUpDate = Date().iso8601()
             
             let services = self.basketServices(booking: transaction.booking!)
-            
-            self.debug("Calculating number of lockers")
-		
+			
 			let point = self.repositories!.pointsRepository.find(properties: ["identifier": transaction.booking!.point!.identifier]).first
 			transaction.booking?.point = point
 			
+			self.debug("Calculating number of lockers")
 			let lockers = LockersToServiceCalculator.lockers(to: services, point: point!)
 			
             guard lockers.count > 0 else {
@@ -115,10 +114,7 @@ internal extension APITransactions {
             }
             
             let user = self.repositories!.usersRepository.find(properties: ["identifier": userID]).first!
-			let card = user.cards?.filter {
-				return $0.id == transaction.creditCard?.id
-			}.first
-			
+			let card = user.cards?.filter { $0.id == transaction.creditCard?.id }.first
 			transaction.creditCard = card
             
             // START Stripe
@@ -186,7 +182,7 @@ internal extension APITransactions {
         
         do {
             let booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
-            let numbers = booking.deliveryLockers!.map{$0.number!}
+            let numbers = booking.deliveryLockers!.map{$0.number}
 //            let lockers = point?.findLockers(numbersOfLocker: numbers)
 //            transaction.booking?.deliveryLockers = lockers
             transaction.deliveryDate = Date().iso8601()
@@ -221,19 +217,34 @@ internal extension APITransactions {
     }
 }
 
+class _HampyHiredService {
+	var amount: UInt8
+	var service: HampyService
+	
+	init(amount: UInt8, service: HampyService) {
+		self.amount = amount
+		self.service = service
+	}
+}
+
 private extension APITransactions {
-    func basketServices(booking: HampyBooking) -> [HampyService] {
-        let servicesIdentifiers = booking.basket?.map{ ["identifier" : $0.service as Any] }
-        let services = self.repositories!.servicesRepository.find(elements: servicesIdentifiers!)
+	func basketServices(booking: HampyBooking) -> [_HampyHiredService] {
+	
+		let servicesHired = booking.basket?.map{ (["identifier" : $0.service as Any], $0.amount) }
+		let services = self.repositories!.servicesRepository.find(elements: servicesHired!.map{$0.0})
 		
-        return services
+		var _services = [_HampyHiredService]()
+		for s in services {
+			let amount = servicesHired!.filter{($0.0["identifier"] as! String) == s.identifier}.first!.1!
+			let _service = _HampyHiredService(amount: amount, service: s)
+			_services.append(_service)
+		}
+        return _services
     }
-    
+
     func updatePoint(transaction: HampyTransaction, point: HampyPoint, lockers: [HampyLocker]) {
         lockers.forEach { $0.available = false }
-        
         transaction.booking?.pickUpLockers = lockers
-        
         let _ = try! repositories!.pointsRepository.update(obj: point)
     }
 	

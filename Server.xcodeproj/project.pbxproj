@@ -2283,6 +2283,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E9C28D6205F2E1100D88AE8 /* model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
 		OBJ_11 /* core */ = {
 			isa = PBXGroup;
 			children = (
@@ -3061,6 +3068,7 @@
 		OBJ_42 /* private */ = {
 			isa = PBXGroup;
 			children = (
+				4E9C28D6205F2E1100D88AE8 /* model */,
 				OBJ_43 /* HampySMTP.swift */,
 				OBJ_44 /* LockersToServiceCalculator.swift */,
 			);
