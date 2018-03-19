@@ -218,10 +218,10 @@ internal extension APITransactions {
 }
 
 class _HampyHiredService {
-	var amount: UInt8
+	var amount: Int
 	var service: HampyService
 	
-	init(amount: UInt8, service: HampyService) {
+	init(amount: Int, service: HampyService) {
 		self.amount = amount
 		self.service = service
 	}

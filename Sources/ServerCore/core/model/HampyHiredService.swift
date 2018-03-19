@@ -7,10 +7,10 @@
 
 class HampyHiredService: HampyCodable {
     var service: String? // Service identifier
-    var amount: UInt8?
+    var amount: Int?
 	
 	init(service: String?,
-		 amount: UInt8?) {
+		 amount: Int?) {
 		self.service = service
 		self.amount = amount
 	}
