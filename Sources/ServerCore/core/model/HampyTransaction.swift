@@ -39,6 +39,5 @@ class HampyTransaction: HampyDatabaseable, HampyModelResponseable {
 		lastActivity = nil
 		booking?.hidePropertiesToResponse()
 		creditCard?.hidePropertiesToResponse()
-		
 	}
 }

@@ -182,9 +182,11 @@ internal extension APITransactions {
         
         do {
             let booking = try HampySingletons.sharedJSONDecoder.decode(HampyBooking.self, from: data)
-            let numbers = booking.deliveryLockers!.map{$0.number}
-//            let lockers = point?.findLockers(numbersOfLocker: numbers)
-//            transaction.booking?.deliveryLockers = lockers
+            let numbers = booking.deliveryLockers!.map{$0.number!}
+            let lockers = point?.lockers(of: numbers)
+			lockers?.forEach{$0.available = true}
+			
+			transaction.booking?.deliveryLockers = lockers
             transaction.deliveryDate = Date().iso8601()
             _ = try! self.repositories?.transactionsRepository.update(obj: transaction)
             
@@ -207,6 +209,7 @@ internal extension APITransactions {
                 // Send sms
             }
             hampyResponse.code = .ok
+			transaction.hidePropertiesToResponse()
             hampyResponse.data = transaction
             
         } catch let error {
@@ -215,16 +218,6 @@ internal extension APITransactions {
         
         return hampyResponse
     }
-}
-
-class _HampyHiredService {
-	var amount: Int
-	var service: HampyService
-	
-	init(amount: Int, service: HampyService) {
-		self.amount = amount
-		self.service = service
-	}
 }
 
 private extension APITransactions {

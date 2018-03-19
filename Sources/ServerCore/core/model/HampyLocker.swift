@@ -7,11 +7,11 @@
 
 class HampyLocker: HampyCodable {
     
-    var identifier: String
-    var number: Int
-    var code: String
-    var available: Bool
-    var capacity: Size
+    var identifier: String?
+    var number: Int?
+    var code: String?
+    var available: Bool?
+    var capacity: Size?
     
     init(identifier: String, number: Int, code: String, available: Bool, capacity: Size) {
         self.identifier = identifier

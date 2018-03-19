@@ -17,7 +17,7 @@ class HampyBooking: HampyDatabaseable, HampyModelResponseable {
     
     var identifier: String?
     var userID: String?
-    var basket: Array<HampyHiredService>?
+    var basket: [HampyHiredService]?
     var price: Float?
     var pickUpTime: PickUpTime?
     var deliveryLockers: [HampyLocker]?

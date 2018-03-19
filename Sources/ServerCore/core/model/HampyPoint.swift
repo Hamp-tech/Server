@@ -47,8 +47,12 @@ class HampyPoint: HampyDatabaseable {
 		return locker
 	}
 	
+	func lockers(of numbers: [Int]) -> [HampyLocker] {
+		return lockers!.filter{numbers.contains($0.number!)}
+	}
+
 	private func isLockerAvailable(locker: HampyLocker) -> Bool {
-		return locker.available
+		return locker.available!
 	}
 	
 }
